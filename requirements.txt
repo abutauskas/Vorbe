@@ -1,8 +1,10 @@
 # Backend deps for api_server.py, deployed as a Vercel Python function.
-# Kept lightweight on purpose: Groq handles inference, so no torch/transformers
-# needed here. See requirements-finetune.txt for the optional self-hosting path.
+# Kept lightweight on purpose: Groq/OpenRouter handle inference, so no
+# torch/transformers needed here. See requirements-finetune.txt for the
+# optional self-hosting path.
 fastapi==0.104.1
 uvicorn==0.24.0
 pydantic==2.5.0
 groq==1.7.0
+httpx==0.28.1
 python-dotenv==1.0.1

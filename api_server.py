@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 from groq import Groq
 from typing import Optional
+import httpx
 import json
 import logging
 import os
@@ -36,10 +37,19 @@ app.add_middleware(
 )
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
-# Only used when a request includes an image - gpt-oss-120b is text-only.
+# Groq is only used for vision now - text generation runs on OpenRouter (below).
 GROQ_VISION_MODEL = os.environ.get("GROQ_VISION_MODEL", "qwen/qwen3.8-27b")
 groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
+
+# Text generation runs on two free OpenRouter models, routed by task type:
+# a coding-focused model for script generation/bug fixing/security review,
+# and a documentation-focused model for API/concept explanations. Both are
+# free-tier ($0/request, confirmed via usage.cost) and OpenAI-compatible.
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
+OPENROUTER_CODING_MODEL = os.environ.get("OPENROUTER_CODING_MODEL", "poolside/laguna-s-2.1:free")
+OPENROUTER_DOC_MODEL = os.environ.get("OPENROUTER_DOC_MODEL", "minimax/minimax-m3:free")
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+DOCUMENTATION_TASK_TYPES = {"documentation"}
 
 # Groq's own cap for inline base64 images. The frontend compresses images
 # client-side to stay well under this, but a direct API call could bypass
@@ -123,9 +133,11 @@ async def load_system_prompts():
         qa_pairs = []
 
     if groq_client is None:
-        logger.warning("GROQ_API_KEY isn't set - /generate will fail until it is")
+        logger.warning("GROQ_API_KEY isn't set - image attachments will fail until it is")
+    if not OPENROUTER_API_KEY:
+        logger.warning("OPENROUTER_API_KEY isn't set - text /generate will fail until it is")
     else:
-        logger.info(f"Using Groq model: {GROQ_MODEL}")
+        logger.info(f"Using OpenRouter models: {OPENROUTER_CODING_MODEL} (coding), {OPENROUTER_DOC_MODEL} (documentation)")
 
 
 def stem(word: str) -> str:
@@ -194,7 +206,11 @@ def find_relevant_docs(prompt: str, max_entries: int = 4, max_chars: int = 900) 
 @app.get("/health")
 async def health():
     """Check if the server is alive"""
-    return {"status": "healthy", "backend": "groq", "configured": groq_client is not None}
+    return {
+        "status": "healthy",
+        "backend": "openrouter+groq",
+        "configured": bool(OPENROUTER_API_KEY) and groq_client is not None,
+    }
 
 
 @app.get("/api/info")
@@ -208,26 +224,39 @@ async def info():
     }
 
 
+async def call_openrouter(model: str, system: str, user_content, max_tokens: int, temperature: float):
+    """Call an OpenRouter chat completion and return (text, tokens_used)."""
+    async with httpx.AsyncClient(timeout=60) as client:
+        resp = await client.post(
+            OPENROUTER_URL,
+            headers={
+                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user_content},
+                ],
+                "max_tokens": max_tokens,
+                "temperature": temperature,
+            },
+        )
+    resp.raise_for_status()
+    data = resp.json()
+    message = data["choices"][0]["message"]
+    # Reasoning models (Poolside included) can burn the whole token budget on
+    # an internal `reasoning` field and leave `content` null if max_tokens is
+    # too tight - fall back to that rather than returning nothing.
+    text = message.get("content") or message.get("reasoning")
+    tokens_used = (data.get("usage") or {}).get("total_tokens", 0)
+    return text, tokens_used
+
+
 @app.post("/generate", response_model=GenerateResponse)
 async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_token)):
-    """Generate a response for the user's prompt via Groq."""
-
-    if groq_client is None:
-        raise HTTPException(status_code=503, detail="GROQ_API_KEY isn't configured")
-
-    model = GROQ_MODEL
-    user_content = request.prompt
-
-    if request.image:
-        if not request.image.startswith("data:image/"):
-            raise HTTPException(status_code=400, detail="image must be a data:image/...;base64,... URL")
-        if len(request.image) > MAX_IMAGE_DATA_URL_BYTES:
-            raise HTTPException(status_code=413, detail="Attached image is too large")
-        model = GROQ_VISION_MODEL
-        user_content = [
-            {"type": "text", "text": request.prompt},
-            {"type": "image_url", "image_url": {"url": request.image}},
-        ]
+    """Generate a response for the user's prompt - OpenRouter for text, Groq for vision."""
 
     try:
         system = system_prompts.get(
@@ -244,18 +273,41 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
                 + relevant_docs
             )
 
-        completion = groq_client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": system},
-                {"role": "user", "content": user_content},
-            ],
-            max_tokens=request.max_tokens,
-            temperature=request.temperature,
-        )
+        if request.image:
+            if groq_client is None:
+                raise HTTPException(status_code=503, detail="GROQ_API_KEY isn't configured")
+            if not request.image.startswith("data:image/"):
+                raise HTTPException(status_code=400, detail="image must be a data:image/...;base64,... URL")
+            if len(request.image) > MAX_IMAGE_DATA_URL_BYTES:
+                raise HTTPException(status_code=413, detail="Attached image is too large")
 
-        response_text = completion.choices[0].message.content
-        tokens_used = completion.usage.total_tokens if completion.usage else 0
+            user_content = [
+                {"type": "text", "text": request.prompt},
+                {"type": "image_url", "image_url": {"url": request.image}},
+            ]
+            completion = groq_client.chat.completions.create(
+                model=GROQ_VISION_MODEL,
+                messages=[
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user_content},
+                ],
+                max_tokens=request.max_tokens,
+                temperature=request.temperature,
+            )
+            response_text = completion.choices[0].message.content
+            tokens_used = completion.usage.total_tokens if completion.usage else 0
+        else:
+            if not OPENROUTER_API_KEY:
+                raise HTTPException(status_code=503, detail="OPENROUTER_API_KEY isn't configured")
+
+            model = (
+                OPENROUTER_DOC_MODEL
+                if request.task_type in DOCUMENTATION_TASK_TYPES
+                else OPENROUTER_CODING_MODEL
+            )
+            response_text, tokens_used = await call_openrouter(
+                model, system, request.prompt, request.max_tokens, request.temperature
+            )
 
         return GenerateResponse(
             response=response_text,
@@ -263,6 +315,8 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
             tokens_used=tokens_used
         )
 
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Something went wrong: {e}")
         raise HTTPException(status_code=500, detail=str(e))

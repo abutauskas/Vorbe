@@ -162,8 +162,39 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-image {
+            display: block;
+            max-width: 240px;
+            max-height: 240px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            object-fit: cover;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 6px 0;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            animation: typingBounce 1.2s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-4px); opacity: 1; }
         }
 
         .user-message {
@@ -347,6 +378,12 @@
             transform: scale(1.08);
         }
 
+        .icon-btn:disabled,
+        .skill-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .skill-btn {
             height: 30px;
             padding: 0 12px;
@@ -429,10 +466,10 @@
         .input-row {
             display: flex;
             gap: 8px;
-            align-items: center;
+            align-items: flex-end;
         }
 
-        .input-row input {
+        .input-row textarea {
             flex: 1;
             border: none;
             outline: none;
@@ -441,6 +478,14 @@
             font-family: inherit;
             color: var(--text);
             background: transparent;
+            resize: none;
+            max-height: 160px;
+            overflow-y: auto;
+            line-height: 1.4;
+        }
+
+        .input-row textarea:disabled {
+            opacity: 0.6;
         }
 
         .send-btn {
@@ -498,7 +543,7 @@
                 </button>
             </div>
 
-            <div class="messages" id="messages"></div>
+            <div class="messages" id="messages" aria-live="polite"></div>
 
             <div class="input-area">
                 <div class="input-shell">
@@ -516,12 +561,11 @@
                         <div class="skill-menu" id="skillMenu" hidden></div>
                     </div>
                     <div class="input-row">
-                        <input
-                            type="text"
+                        <textarea
                             id="input"
+                            rows="1"
                             placeholder="Describe what you want to create or fix..."
-                            onkeypress="if(event.key==='Enter') send()"
-                        />
+                        ></textarea>
                         <button class="send-btn" id="sendBtn" onclick="handleSendClick()" aria-label="Send" title="Send">
                             <img id="sendBtnIcon" src="res/Send.png" alt="">
                         </button>
@@ -733,6 +777,22 @@
 
         document.getElementById("attachmentRemove").addEventListener("click", clearAttachment);
 
+        // --- Input box: auto-grow + Enter to send, Shift+Enter for a newline ---
+        const inputEl = document.getElementById("input");
+
+        function autoGrowInput() {
+            inputEl.style.height = "auto";
+            inputEl.style.height = Math.min(inputEl.scrollHeight, 160) + "px";
+        }
+        inputEl.addEventListener("input", autoGrowInput);
+
+        inputEl.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSendClick();
+            }
+        });
+
         // Single newlines read as line breaks in chat responses, matching
         // how most AI assistants format text (not strict CommonMark, which
         // needs a blank line for a new paragraph).
@@ -747,6 +807,11 @@
             sendBtnIcon.src = loading ? "res/Stop.png" : "res/Send.png";
             sendBtn.title = loading ? "Stop" : "Send";
             sendBtn.setAttribute("aria-label", loading ? "Stop" : "Send");
+            // The send button stays enabled (it doubles as Stop); everything
+            // else that could start a second, overlapping request gets locked.
+            inputEl.disabled = loading;
+            attachBtn.disabled = loading;
+            skillBtn.disabled = loading;
         }
 
         function handleSendClick() {
@@ -758,15 +823,18 @@
         }
 
         async function send() {
-            const input = document.getElementById("input");
-            const message = input.value.trim();
+            const message = inputEl.value.trim();
 
             if ((!message && !attachedFile) || isLoading) return;
 
-            const displayText = attachedFile
+            const isImageAttachment = attachedFile && attachedFile.kind === "image";
+            // An image thumbnail renders in the bubble itself, so it doesn't
+            // need the "[Attached: name]" text too - a text/code attachment
+            // has no visual, so it still gets the label.
+            const displayText = attachedFile && !isImageAttachment
                 ? `${message}\n\n[Attached: ${attachedFile.name}]`.trim()
                 : message;
-            addMessage(displayText, "user");
+            addMessage(displayText, "user", false, isImageAttachment ? attachedFile.dataUrl : null);
 
             let prompt = message;
             let image = null;
@@ -780,9 +848,11 @@
             }
             clearAttachment();
 
-            input.value = "";
+            inputEl.value = "";
+            autoGrowInput();
             setLoading(true);
             activeAbortController = new AbortController();
+            const typingEl = addTypingIndicator();
 
             try {
                 const response = await fetch(`${API_URL}/generate`, {
@@ -801,42 +871,102 @@
                     })
                 });
 
+                typingEl.remove();
+
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
+                    if (response.status === 429) {
+                        throw new Error("You're sending messages too fast - wait a moment and try again.");
+                    }
+                    // FastAPI's HTTPException responses carry the real reason
+                    // in `detail` - surface that instead of a bare status code.
+                    let detail = `Something went wrong (HTTP ${response.status}).`;
+                    try {
+                        const errBody = await response.json();
+                        if (errBody && errBody.detail) detail = errBody.detail;
+                    } catch { /* body wasn't JSON - keep the generic message */ }
+                    throw new Error(detail);
                 }
 
                 const data = await response.json();
                 addMessage(data.response, "assistant");
             } catch (error) {
+                typingEl.remove();
                 if (error.name === "AbortError") {
                     addMessage("Stopped.", "assistant");
+                } else if (error instanceof TypeError) {
+                    // fetch() itself rejected before a response came back -
+                    // offline, DNS failure, CORS, etc.
+                    addMessage("Couldn't reach the server. Check your connection and try again.", "assistant", true);
                 } else {
-                    addMessage(`Error: ${error.message}. Is the API server running?`, "assistant", true);
+                    addMessage(error.message, "assistant", true);
                 }
             } finally {
                 activeAbortController = null;
                 setLoading(false);
+                inputEl.focus();
             }
         }
 
-        function addMessage(text, role, isError = false) {
+        function addTypingIndicator() {
+            const messagesDiv = document.getElementById("messages");
+            const el = document.createElement("div");
+            el.className = "message assistant-message typing-indicator";
+            el.innerHTML = "<span class=\"typing-dot\"></span><span class=\"typing-dot\"></span><span class=\"typing-dot\"></span>";
+            messagesDiv.appendChild(el);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            return el;
+        }
+
+        function addMessage(text, role, isError = false, imageDataUrl = null) {
             const messagesDiv = document.getElementById("messages");
             const messageEl = document.createElement("div");
             messageEl.className = `message ${role}-message` + (isError ? " error" : "");
 
-            // Full markdown rendering (headings, bold, tables, lists, code,
-            // links, etc.), then sanitized - marked doesn't escape anything
-            // on its own, so untrusted text (the model's output, or a
-            // pasted attachment) could otherwise inject arbitrary HTML/JS.
-            const html = marked.parse(text);
-            messageEl.innerHTML = DOMPurify.sanitize(html);
+            if (imageDataUrl) {
+                const thumb = document.createElement("img");
+                thumb.src = imageDataUrl;
+                thumb.className = "message-image";
+                thumb.alt = "Attached image";
+                messageEl.appendChild(thumb);
+            }
+
+            if (role === "assistant") {
+                const textEl = document.createElement("div");
+                // Full markdown rendering (headings, bold, tables, lists, code,
+                // links, etc.), then sanitized - marked doesn't escape anything
+                // on its own, so untrusted text (the model's output) could
+                // otherwise inject arbitrary HTML/JS. Falls back to a plain
+                // notice if the backend ever returns an empty response.
+                const html = marked.parse(text || "_No response received._");
+                textEl.innerHTML = DOMPurify.sanitize(html);
+                messageEl.appendChild(textEl);
+            } else if (text) {
+                // Plain text for the user's own message - markdown-rendering
+                // their literal input would mangle things like variable_names
+                // or math like (a * b) into unintended emphasis.
+                const textEl = document.createElement("div");
+                textEl.textContent = text;
+                textEl.style.whiteSpace = "pre-wrap";
+                messageEl.appendChild(textEl);
+            }
+
             messagesDiv.appendChild(messageEl);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            if (role === "assistant") {
+                // Scroll so the top of the new reply is visible instead of
+                // snapping straight to the bottom - a long answer's opening
+                // line would otherwise scroll straight past the viewport.
+                messageEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+
+            return messageEl;
         }
 
         document.addEventListener("DOMContentLoaded", () => {
             addMessage("Welcome to Vorbe. Pick a skill and describe what you need.", "assistant");
-            document.getElementById("input").focus();
+            inputEl.focus();
         });
     </script>
 </body>

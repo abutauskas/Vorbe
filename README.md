@@ -33,7 +33,7 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Open `.env` and paste in a free key from [console.groq.com](https://console.groq.com), then:
+Open `.env` and paste in a free key from [openrouter.ai/keys](https://openrouter.ai/keys) (text generation). Add a [console.groq.com](https://console.groq.com) key too if you want image attachments to work. Then:
 
 ```bash
 vercel dev
@@ -43,17 +43,17 @@ Then open the local URL `vercel dev` prints and click through to the chat, or go
 
 ### Deploy to the internet
 
-Vorbe deploys entirely to Vercel for free - frontend and backend both, powered by Groq's free API. See [VERCEL_QUICKSTART.md](./VERCEL_QUICKSTART.md).
+Vorbe deploys entirely to Vercel for free - frontend and backend both, powered by free-tier LLM APIs. See [VERCEL_QUICKSTART.md](./VERCEL_QUICKSTART.md).
 
 ## How it works
 
-Vorbe sends your prompt to Groq's hosted API along with a system prompt tailored to the task you picked (script generation, bug fixing, documentation, and so on), built from the Vortex training data in `vortex_training_data/`. The web interface is a simple chat UI; the backend is a thin FastAPI layer that talks to Groq. Everything is open source, so you can see exactly how it works.
+Vorbe sends your prompt to a free OpenRouter model, picked by the task you selected - a coding-focused model for script generation, bug fixing, and security review, a documentation-focused model for API/concept questions - along with a system prompt built from the Vortex training data in `vortex_training_data/`. Image attachments go through Groq's vision model instead. The web interface is a simple chat UI; the backend is a thin FastAPI layer that talks to both APIs. Everything is open source, so you can see exactly how it works.
 
 Want the assistant running on an actual fine-tuned model instead of a system prompt? `finetune_deepseek_coder.py` and `finetune_codeqwen.py` are still here for that - see "Self-hosting the fine-tuned model" below.
 
 ## System requirements
 
-**Default (Groq-backed):** Just Python and a free Groq API key - no GPU, no heavy RAM, no model download.  
+**Default (API-backed):** Just Python and a free OpenRouter API key (plus optionally Groq for image attachments) - no GPU, no heavy RAM, no model download.  
 **Self-hosting the fine-tuned model instead:** Python 3.10, 16GB RAM, GPU with 8GB VRAM (see `requirements-finetune.txt` and `app_hf_spaces.py`).  
 **Cloud:** Deploys free to Vercel (see [VERCEL_QUICKSTART.md](./VERCEL_QUICKSTART.md))  
 
@@ -92,7 +92,7 @@ MIT License. That means you can use it however you want - commercially, personal
 
 ## Thanks
 
-Built on [Groq](https://groq.com/), [FastAPI](https://fastapi.tiangolo.com/), and [Vercel](https://vercel.com/). The optional self-hosted path also uses [DeepSeek-Coder](https://github.com/deepseek-ai/deepseek-coder) and [Transformers](https://huggingface.co/docs/transformers).
+Built on [OpenRouter](https://openrouter.ai/), [Groq](https://groq.com/), [FastAPI](https://fastapi.tiangolo.com/), and [Vercel](https://vercel.com/). The optional self-hosted path also uses [DeepSeek-Coder](https://github.com/deepseek-ai/deepseek-coder) and [Transformers](https://huggingface.co/docs/transformers).
 
 For Vortex - https://playvortex.io
 

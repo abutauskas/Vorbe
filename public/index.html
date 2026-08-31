@@ -18,6 +18,7 @@
             --text-secondary: #6e6e77;
             --accent-bg: #0d0d0d;
             --accent-text: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.08);
         }
 
         :root[data-theme="dark"] {
@@ -28,6 +29,7 @@
             --text-secondary: #9a9aa2;
             --accent-bg: #f2f2f3;
             --accent-text: #0d0d0d;
+            --shadow: rgba(0, 0, 0, 0.4);
         }
 
         html {
@@ -150,10 +152,38 @@
             text-align: center;
         }
 
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            margin-bottom: 22px;
+        }
+
+        .eyebrow-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--brand);
+            flex-shrink: 0;
+        }
+
         .hero h1 {
-            font-size: 2.4em;
+            font-size: 2.6em;
             letter-spacing: -0.02em;
+            line-height: 1.2;
             margin-bottom: 16px;
+        }
+
+        .hero h1 .accent {
+            background: linear-gradient(90deg, var(--brand), #7a2ecf);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .hero p {
@@ -167,6 +197,97 @@
             display: flex;
             gap: 12px;
             justify-content: center;
+        }
+
+        .trust-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .trust-badge {
+            font-size: 0.78em;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        .preview {
+            max-width: 600px;
+            margin: 40px auto 0;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            text-align: left;
+            box-shadow: 0 12px 34px var(--shadow);
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-panel);
+        }
+
+        .preview-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .preview-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .preview-user {
+            align-self: flex-end;
+            max-width: 85%;
+            background: var(--accent-bg);
+            color: var(--accent-text);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.85em;
+        }
+
+        .preview-code {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            line-height: 1.65;
+            overflow-x: auto;
+            color: var(--text);
+            white-space: pre;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .eyebrow, .hero h1, .hero p, .hero-actions, .preview, .trust-row {
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        .hero h1 { animation-delay: 0.05s; }
+        .hero p { animation-delay: 0.1s; }
+        .hero-actions { animation-delay: 0.15s; }
+        .preview { animation-delay: 0.2s; }
+        .trust-row { animation-delay: 0.25s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
         }
 
         .btn-secondary {
@@ -200,7 +321,19 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 20px;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+            animation: fadeInUp 0.4s ease both;
         }
+
+        .feature:hover {
+            transform: translateY(-3px);
+            border-color: var(--text-secondary);
+        }
+
+        .feature:nth-child(1) { animation-delay: 0.05s; }
+        .feature:nth-child(2) { animation-delay: 0.1s; }
+        .feature:nth-child(3) { animation-delay: 0.15s; }
+        .feature:nth-child(4) { animation-delay: 0.2s; }
 
         .feature-icon {
             width: 32px;
@@ -242,6 +375,16 @@
         }
 
         @media (max-width: 480px) {
+            header {
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 16px 20px;
+            }
+
+            .hero {
+                padding: 60px 20px 48px;
+            }
+
             .hero h1 {
                 font-size: 1.8em;
             }
@@ -263,11 +406,33 @@
     </header>
 
     <section class="hero">
-        <h1>An AI assistant built for Vortex developers</h1>
-        <p>It helps you write code faster. Describe what you want and get working code, paste a bug and get it fixed, or ask how a Vortex API works. Free and open source.</p>
+        <div class="eyebrow"><span class="eyebrow-dot"></span>Free forever, no credit card</div>
+        <h1>The AI assistant that helps Vortex developers code <span class="accent">faster</span></h1>
+        <p>Describe what you want and get working code, paste a bug and get it fixed, or ask how a Vortex API works. Free and open source.</p>
         <div class="hero-actions">
             <a class="btn-primary" href="/app">Start chatting</a>
             <a class="btn-secondary" href="https://github.com/abutauskas/Vorbe">View on GitHub</a>
+        </div>
+
+        <div class="preview">
+            <div class="preview-header">
+                <span class="preview-dot"></span>
+                <span class="preview-dot"></span>
+                <span class="preview-dot"></span>
+            </div>
+            <div class="preview-body">
+                <div class="preview-user">Create a script that spawns a red part at position (0, 10, 0)</div>
+                <div class="preview-code">local part = Instance.new("Part")
+part.Color = Color3.fromRGB(255, 0, 0)
+part.Position = Vector3.new(0, 10, 0)
+part.Parent = workspace</div>
+            </div>
+        </div>
+
+        <div class="trust-row">
+            <span class="trust-badge">Free &amp; open source</span>
+            <span class="trust-badge">No credit card required</span>
+            <span class="trust-badge">Powered by OpenRouter + Groq</span>
         </div>
     </section>
 
