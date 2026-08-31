@@ -138,6 +138,21 @@
             cursor: pointer;
             display: inline-block;
             transition: transform 0.15s ease, opacity 0.15s ease;
+            /* Opt this button out of any browser-level repaint (forced-colors
+               mode, a browser's own heuristic dark-mode override, etc.) that
+               might be recoloring it independently of the page's own CSS. */
+            forced-color-adjust: none;
+        }
+
+        /* Literal colors, not the --accent-text variable, as a second line
+           of defense in case something in a specific browser was failing to
+           resolve the custom property correctly on this element. */
+        :root[data-theme="light"] .btn-primary {
+            color: #ffffff;
+        }
+
+        :root[data-theme="dark"] .btn-primary {
+            color: #0d0d0d;
         }
 
         .btn-primary:hover {
@@ -150,26 +165,6 @@
             margin: 0 auto;
             padding: 90px 24px 60px;
             text-align: center;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 6px 14px;
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            font-size: 0.8em;
-            color: var(--text-secondary);
-            margin-bottom: 22px;
-        }
-
-        .eyebrow-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--brand);
-            flex-shrink: 0;
         }
 
         .hero h1 {
@@ -276,7 +271,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .eyebrow, .hero h1, .hero p, .hero-actions, .preview, .trust-row {
+        .hero h1, .hero p, .hero-actions, .preview, .trust-row {
             animation: fadeInUp 0.5s ease both;
         }
 
@@ -406,7 +401,6 @@
     </header>
 
     <section class="hero">
-        <div class="eyebrow"><span class="eyebrow-dot"></span>Free forever, no credit card</div>
         <h1>The AI assistant that helps Vortex developers code <span class="accent">faster</span></h1>
         <p>Describe what you want and get working code, paste a bug and get it fixed, or ask how a Vortex API works. Free and open source.</p>
         <div class="hero-actions">
@@ -432,7 +426,6 @@ part.Parent = workspace</div>
         <div class="trust-row">
             <span class="trust-badge">Free &amp; open source</span>
             <span class="trust-badge">No credit card required</span>
-            <span class="trust-badge">Powered by OpenRouter + Groq</span>
         </div>
     </section>
 
