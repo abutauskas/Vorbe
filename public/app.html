@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vorbe</title>
     <link rel="icon" type="image/png" href="res/VorbeTabIcon.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/18.0.11/lib/marked.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.4.14/purify.min.js"></script>
     <style>
         :root[data-theme="light"] {
             --bg: #ffffff;
@@ -207,6 +209,72 @@
             border: none;
             padding: 0;
             background: none;
+        }
+
+        /* Markdown elements rendered from chat messages (marked.js output) */
+        .assistant-message h1,
+        .assistant-message h2,
+        .assistant-message h3,
+        .assistant-message h4 {
+            margin: 16px 0 8px;
+            line-height: 1.3;
+        }
+
+        .assistant-message h1 { font-size: 1.4em; }
+        .assistant-message h2 { font-size: 1.2em; }
+        .assistant-message h3 { font-size: 1.05em; }
+        .assistant-message h4 { font-size: 1em; }
+
+        .assistant-message p {
+            margin: 8px 0;
+        }
+
+        .assistant-message ul,
+        .assistant-message ol {
+            margin: 8px 0;
+            padding-left: 24px;
+        }
+
+        .assistant-message li {
+            margin: 4px 0;
+        }
+
+        .assistant-message a {
+            color: var(--text);
+            text-decoration: underline;
+        }
+
+        .assistant-message blockquote {
+            margin: 8px 0;
+            padding: 4px 12px;
+            border-left: 3px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .assistant-message hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 16px 0;
+        }
+
+        .assistant-message table {
+            border-collapse: collapse;
+            margin: 8px 0;
+            font-size: 0.9em;
+            display: block;
+            overflow-x: auto;
+        }
+
+        .assistant-message th,
+        .assistant-message td {
+            border: 1px solid var(--border);
+            padding: 6px 10px;
+            text-align: left;
+        }
+
+        .assistant-message th {
+            background: var(--bg-panel);
+            font-weight: 600;
         }
 
         .input-area {
@@ -665,14 +733,10 @@
 
         document.getElementById("attachmentRemove").addEventListener("click", clearAttachment);
 
-        function escapeHtml(str) {
-            return str
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#39;");
-        }
+        // Single newlines read as line breaks in chat responses, matching
+        // how most AI assistants format text (not strict CommonMark, which
+        // needs a blank line for a new paragraph).
+        marked.setOptions({ breaks: true, gfm: true });
 
         let activeAbortController = null;
 
@@ -760,15 +824,12 @@
             const messageEl = document.createElement("div");
             messageEl.className = `message ${role}-message` + (isError ? " error" : "");
 
-            // Escape first, then apply the small set of intentional markdown
-            // transforms - keeps any HTML in the source text inert.
-            const escaped = escapeHtml(text);
-            const formattedText = escaped
-                .replace(/```(?:luau|lua)?\n([\s\S]*?)```/g, "<pre><code>$1</code></pre>")
-                .replace(/`([^`]+)`/g, "<code>$1</code>")
-                .replace(/\n/g, "<br>");
-
-            messageEl.innerHTML = formattedText;
+            // Full markdown rendering (headings, bold, tables, lists, code,
+            // links, etc.), then sanitized - marked doesn't escape anything
+            // on its own, so untrusted text (the model's output, or a
+            // pasted attachment) could otherwise inject arbitrary HTML/JS.
+            const html = marked.parse(text);
+            messageEl.innerHTML = DOMPurify.sanitize(html);
             messagesDiv.appendChild(messageEl);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
