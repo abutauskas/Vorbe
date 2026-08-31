@@ -74,6 +74,12 @@ PLATFORM_CONTEXT = (
     "This is NOT CM Labs' \"Vortex Studio\" physics/robotics simulator - "
     "never reference that product's APIs (a C++ vtx:: namespace, lua_State, "
     "RemoteEventServer, vsWorld, and similar), since none of that applies here. "
+    "Vortex has NO documented GUI/UI system as of the current public docs - "
+    "no ScreenGui, Frame, TextLabel, TextButton, ImageLabel, or any other "
+    "GuiObject-style class exists in the class reference. If asked to build "
+    "a GUI, shop UI, menu, HUD, or similar on-screen interface, say plainly "
+    "that this isn't a documented Vortex feature yet rather than generating "
+    "Roblox-style ScreenGui code, which does not carry over. "
     "If you're not certain about a specific class, method, or property, say "
     "so plainly rather than inventing plausible-sounding details."
 )
