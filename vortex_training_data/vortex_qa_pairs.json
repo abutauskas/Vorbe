@@ -1308,5 +1308,155 @@
     ],
     "answer": "local UserInputService = game:GetService(\"UserInputService\") UserInputService.InputBegan:Connect(function(Input, GameProccessedEvent)     if GameProccessedEvent then        print(\"Game Proccessed Event\")     end     if Input.KeyCode == Enum.KeyCode.R then         print(\"R\")     end end)",
     "topic": "Examples"
+  },
+  {
+    "questions": [
+      "What is remoteevent?",
+      "Explain remoteevent in Vortex",
+      "How do I use remoteevent?",
+      "Tell me about remoteevent"
+    ],
+    "answer": "An Instance that sends data between server and client, in either direction. Always use WaitForChild to access it reliably. Source: https://github.com/TheHaloDeveloper/vortex-docs (content/reference/classes/)",
+    "topic": "RemoteEvent"
+  },
+  {
+    "questions": [
+      "What is fireclient?",
+      "Explain fireclient in Vortex",
+      "How do I use fireclient?",
+      "Tell me about fireclient"
+    ],
+    "answer": "RemoteEvent:FireClient(player: Player, ...arguments): () - fires data from the server to one specific client.",
+    "topic": "FireClient"
+  },
+  {
+    "questions": [
+      "What is fireallclients?",
+      "Explain fireallclients in Vortex",
+      "How do I use fireallclients?",
+      "Tell me about fireallclients"
+    ],
+    "answer": "RemoteEvent:FireAllClients(...arguments): () - fires data from the server to every connected client.",
+    "topic": "FireAllClients"
+  },
+  {
+    "questions": [
+      "What is fireserver?",
+      "Explain fireserver in Vortex",
+      "How do I use fireserver?",
+      "Tell me about fireserver"
+    ],
+    "answer": "RemoteEvent:FireServer(...arguments): () - fires data from the client to the server.",
+    "topic": "FireServer"
+  },
+  {
+    "questions": [
+      "What is onclientevent?",
+      "Explain onclientevent in Vortex",
+      "How do I use onclientevent?",
+      "Tell me about onclientevent"
+    ],
+    "answer": "RemoteEvent.OnClientEvent(...arguments): Signal - fires on the client when it receives data from the server.",
+    "topic": "OnClientEvent"
+  },
+  {
+    "questions": [
+      "What is onserverevent?",
+      "Explain onserverevent in Vortex",
+      "How do I use onserverevent?",
+      "Tell me about onserverevent"
+    ],
+    "answer": "RemoteEvent.OnServerEvent(player: Player, ...arguments): Signal - fires on the server when it receives data from a client.",
+    "topic": "OnServerEvent"
+  },
+  {
+    "questions": [
+      "What is remotefunction?",
+      "Explain remotefunction in Vortex",
+      "How do I use remotefunction?",
+      "Tell me about remotefunction"
+    ],
+    "answer": "An Instance for two-way server/client communication that returns a computed value, unlike RemoteEvent. Always use WaitForChild to access it reliably. There is no InvokeAllClients, since there's no way to guarantee every player returns a value. Source: https://github.com/TheHaloDeveloper/vortex-docs (content/reference/classes/)",
+    "topic": "RemoteFunction"
+  },
+  {
+    "questions": [
+      "What is invokeclient?",
+      "Explain invokeclient in Vortex",
+      "How do I use invokeclient?",
+      "Tell me about invokeclient"
+    ],
+    "answer": "RemoteFunction:InvokeClient(player: Player, ...arguments): Variant - server calls client code and returns the client's computed result.",
+    "topic": "InvokeClient"
+  },
+  {
+    "questions": [
+      "What is invokeserver?",
+      "Explain invokeserver in Vortex",
+      "How do I use invokeserver?",
+      "Tell me about invokeserver"
+    ],
+    "answer": "RemoteFunction:InvokeServer(...arguments): Variant - client calls server code and returns the server's computed result.",
+    "topic": "InvokeServer"
+  },
+  {
+    "questions": [
+      "What is onclientinvoke?",
+      "Explain onclientinvoke in Vortex",
+      "How do I use onclientinvoke?",
+      "Tell me about onclientinvoke"
+    ],
+    "answer": "RemoteFunction.OnClientInvoke - assign a function here to handle server-to-client invocations. The function must return a value.",
+    "topic": "OnClientInvoke"
+  },
+  {
+    "questions": [
+      "What is onserverinvoke?",
+      "Explain onserverinvoke in Vortex",
+      "How do I use onserverinvoke?",
+      "Tell me about onserverinvoke"
+    ],
+    "answer": "RemoteFunction.OnServerInvoke - assign a function here, (player, ...arguments), to handle client-to-server invocations. The function must return a value.",
+    "topic": "OnServerInvoke"
+  },
+  {
+    "questions": [
+      "What is player?",
+      "Explain player in Vortex",
+      "How do I use player?",
+      "Tell me about player"
+    ],
+    "answer": "Represents one connected client. Each Player is automatically parented to the Players service. Has a Name (string) property. Source: https://github.com/TheHaloDeveloper/vortex-docs (content/reference/classes/)",
+    "topic": "Player"
+  },
+  {
+    "questions": [
+      "What is localplayer?",
+      "Explain localplayer in Vortex",
+      "How do I use localplayer?",
+      "Tell me about localplayer"
+    ],
+    "answer": "Players.LocalPlayer returns the current client's own Player instance. Only meaningful in client-side code.",
+    "topic": "LocalPlayer"
+  },
+  {
+    "questions": [
+      "What is replicatedstorage?",
+      "Explain replicatedstorage in Vortex",
+      "How do I use replicatedstorage?",
+      "Tell me about replicatedstorage"
+    ],
+    "answer": "A shared storage container visible to both server and client. Properties of objects placed here automatically replicate from server to client - useful for shared assets, configs, and for RemoteEvents/RemoteFunctions both sides need to reach. Source: https://github.com/TheHaloDeveloper/vortex-docs (content/reference/classes/)",
+    "topic": "ReplicatedStorage"
+  },
+  {
+    "questions": [
+      "What is part?",
+      "Explain part in Vortex",
+      "How do I use part?",
+      "Tell me about part"
+    ],
+    "answer": "A basic rectangular-prism primitive used to build 3D scenes. Key properties: Color (Color3), Transparency (float), Material (Enum.Material), CastShadow (bool), Anchored (bool), CanCollide (bool), Truss (bool), Position/Rotation/Size (Vector3), Name (string). A part can't be unanchored while collision is disabled. Truss parts are climbable and should stay anchored to avoid unpredictable behavior. Source: https://github.com/TheHaloDeveloper/vortex-docs (content/reference/classes/)",
+    "topic": "Part"
   }
 ]

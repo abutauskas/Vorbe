@@ -128,6 +128,14 @@ async def load_system_prompts():
         logger.info(f"Using Groq model: {GROQ_MODEL}")
 
 
+def stem(word: str) -> str:
+    """Trivial plural normalizer ("events" -> "event") so a prompt asking
+    about "remote events" still matches a topic named "RemoteEvent"."""
+    if len(word) > 4 and word.endswith("s") and not word.endswith("ss"):
+        return word[:-1]
+    return word
+
+
 def find_relevant_docs(prompt: str, max_entries: int = 4, max_chars: int = 900) -> str:
     """Keyword-overlap lookup over the real Vortex QA pairs, so answers can
     be grounded in verified docs instead of invented from scratch. No
@@ -142,13 +150,20 @@ def find_relevant_docs(prompt: str, max_entries: int = 4, max_chars: int = 900) 
     # short words (e.g. "part") spuriously match inside unrelated longer
     # words, and let single-letter topics like "R"/"G"/"B" match almost
     # anything.
-    prompt_words = {w for w in re.findall(r"[a-z0-9]+", prompt_lower) if len(w) > 3}
+    prompt_words = {stem(w) for w in re.findall(r"[a-z0-9]+", prompt_lower) if len(w) > 3}
 
     scored = []
     for entry in qa_pairs:
-        topic_lower = entry.get("topic", "").lower()
+        topic = entry.get("topic", "")
+        topic_lower = topic.lower()
         answer_lower = entry.get("answer", "").lower()
-        answer_words = set(re.findall(r"[a-z0-9]+", answer_lower))
+        if "stub" in answer_lower:
+            continue  # placeholder pages with no real content - would only waste budget
+        answer_words = {stem(w) for w in re.findall(r"[a-z0-9]+", answer_lower)}
+        # CamelCase topics ("RemoteEvent") split into their own words
+        # ("remote", "event") so they match a spaced-out prompt ("remote
+        # events") - a straight substring check misses that entirely.
+        topic_words = {stem(w.lower()) for w in re.findall(r"[A-Z][a-z0-9]*|[a-z0-9]+", topic)}
 
         score = 0
         if topic_lower and len(topic_lower) > 2 and topic_lower in prompt_lower:
@@ -156,6 +171,7 @@ def find_relevant_docs(prompt: str, max_entries: int = 4, max_chars: int = 900) 
         # Only match against topic/answer, not `questions` - every entry's
         # questions follow the same "What is X? / Tell me about X?" template,
         # so common words there would spuriously match every single entry.
+        score += 2 * len(prompt_words & topic_words)
         score += len(prompt_words & answer_words)
 
         if score >= 2:  # filter out single-coincidence matches

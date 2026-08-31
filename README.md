@@ -59,7 +59,7 @@ Want the assistant running on an actual fine-tuned model instead of a system pro
 
 ## What's included
 
-- **Training data** - 548 conversation pairs from Vortex docs
+- **Training data** - 548 conversation pairs from Vortex docs, including fact-extracted entries from [TheHaloDeveloper/vortex-docs](https://github.com/TheHaloDeveloper/vortex-docs)
 - **Scripts** - Fine-tuning, web interface, everything
 - **Docs** - Setup guides, deployment guides, contribution guides
 - **Open source** - MIT License, do what you want with it
