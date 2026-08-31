@@ -795,7 +795,7 @@
                     body: JSON.stringify({
                         prompt: prompt,
                         task_type: currentTask,
-                        max_tokens: 512,
+                        max_tokens: 2048,
                         temperature: 0.7,
                         ...(image ? { image } : {})
                     })

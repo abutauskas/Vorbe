@@ -52,7 +52,7 @@ class GenerateRequest(BaseModel):
     """What the user is asking for"""
     prompt: str
     task_type: str = "script_generation"
-    max_tokens: int = 512
+    max_tokens: int = 2048
     temperature: float = 0.7
     image: Optional[str] = None  # data:image/...;base64,... - never a remote URL
 
