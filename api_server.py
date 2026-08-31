@@ -15,6 +15,7 @@ from typing import Optional
 import json
 import logging
 import os
+import re
 
 # Loads variables from a local .env file if one exists (no-op otherwise, so
 # this is safe in production where Vercel injects env vars directly).
@@ -46,6 +47,26 @@ groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 MAX_IMAGE_DATA_URL_BYTES = 4 * 1024 * 1024
 
 system_prompts = {}
+qa_pairs = []
+
+# There's a real, unrelated product also called "Vortex Studio" (CM Labs'
+# robotics/vehicle physics simulator, C++/Lua-based). Without this, the
+# model blends real facts about that product with invented details for
+# this platform, producing confident-sounding but wrong answers - e.g.
+# claiming Vortex uses "Lua 5.3, not Luau" or citing fabricated vtx::
+# C++ classes. Prepended to every system prompt below.
+PLATFORM_CONTEXT = (
+    "Vortex here is a Roblox-like game development platform: scripts are "
+    "written in Luau, and the object model uses services such as Workspace, "
+    "ReplicatedStorage, ServerScriptService, and StarterPlayerScripts, with "
+    "Instance-based objects (Parts with properties like Position, Size, "
+    "Color, Anchored, CanCollide, and methods like SetAttribute/GetAttribute). "
+    "This is NOT CM Labs' \"Vortex Studio\" physics/robotics simulator - "
+    "never reference that product's APIs (a C++ vtx:: namespace, lua_State, "
+    "RemoteEventServer, vsWorld, and similar), since none of that applies here. "
+    "If you're not certain about a specific class, method, or property, say "
+    "so plainly rather than inventing plausible-sounding details."
+)
 
 
 class GenerateRequest(BaseModel):
@@ -81,8 +102,8 @@ def check_auth_token(authorization: str = Header(default=None)) -> None:
 
 @app.on_event("startup")
 async def load_system_prompts():
-    """Load the per-task system prompts built from Vortex training data"""
-    global system_prompts
+    """Load the per-task system prompts and reference docs built from Vortex training data"""
+    global system_prompts, qa_pairs
 
     try:
         with open("vortex_training_data/system_prompts.json", 'r') as f:
@@ -93,10 +114,65 @@ async def load_system_prompts():
         logger.warning(f"Couldn't load task prompts: {e}")
         system_prompts = {}
 
+    try:
+        with open("vortex_training_data/vortex_qa_pairs.json", 'r', encoding='utf-8') as f:
+            qa_pairs = json.load(f)
+        logger.info(f"Loaded {len(qa_pairs)} reference QA pairs for grounding")
+    except Exception as e:
+        logger.warning(f"Couldn't load reference QA pairs: {e}")
+        qa_pairs = []
+
     if groq_client is None:
         logger.warning("GROQ_API_KEY isn't set - /generate will fail until it is")
     else:
         logger.info(f"Using Groq model: {GROQ_MODEL}")
+
+
+def find_relevant_docs(prompt: str, max_entries: int = 4, max_chars: int = 900) -> str:
+    """Keyword-overlap lookup over the real Vortex QA pairs, so answers can
+    be grounded in verified docs instead of invented from scratch. No
+    embeddings - the corpus (~130 entries) is small enough that keyword
+    matching is good enough, and it's zero extra dependencies or cost.
+    """
+    if not qa_pairs:
+        return ""
+
+    prompt_lower = prompt.lower()
+    # Whole-word matching, not substring containment - substring checks let
+    # short words (e.g. "part") spuriously match inside unrelated longer
+    # words, and let single-letter topics like "R"/"G"/"B" match almost
+    # anything.
+    prompt_words = {w for w in re.findall(r"[a-z0-9]+", prompt_lower) if len(w) > 3}
+
+    scored = []
+    for entry in qa_pairs:
+        topic_lower = entry.get("topic", "").lower()
+        answer_lower = entry.get("answer", "").lower()
+        answer_words = set(re.findall(r"[a-z0-9]+", answer_lower))
+
+        score = 0
+        if topic_lower and len(topic_lower) > 2 and topic_lower in prompt_lower:
+            score += 5  # exact topic name mentioned - strong signal
+        # Only match against topic/answer, not `questions` - every entry's
+        # questions follow the same "What is X? / Tell me about X?" template,
+        # so common words there would spuriously match every single entry.
+        score += len(prompt_words & answer_words)
+
+        if score >= 2:  # filter out single-coincidence matches
+            scored.append((score, entry))
+
+    scored.sort(key=lambda x: x[0], reverse=True)
+
+    lines = []
+    total_chars = 0
+    for _, entry in scored[:max_entries]:
+        line = f"- {entry.get('topic', '')}: {entry.get('answer', '')}"
+        if total_chars + len(line) > max_chars:
+            break
+        lines.append(line)
+        total_chars += len(line)
+
+    return "\n".join(lines)
 
 
 @app.get("/health")
@@ -142,6 +218,15 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
             request.task_type,
             "You are an expert Vortex Luau programmer."
         )
+        system = f"{system}\n\n{PLATFORM_CONTEXT}"
+
+        relevant_docs = find_relevant_docs(request.prompt)
+        if relevant_docs:
+            system += (
+                "\n\nRelevant reference documentation (verified - treat this "
+                "as source of truth over anything you'd otherwise assume):\n"
+                + relevant_docs
+            )
 
         completion = groq_client.chat.completions.create(
             model=model,
