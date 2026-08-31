@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Vorbe</title>
+    <meta name="description" content="Terms of Service for Vorbe, a free AI coding assistant for Vortex developers.">
+    <link rel="icon" type="image/png" href="res/VorbeTabIcon.png">
+    <style>
+        :root[data-theme="light"] {
+            --bg: #ffffff;
+            --bg-panel: #f7f7f8;
+            --border: #e3e3e6;
+            --text: #0d0d0d;
+            --text-secondary: #6e6e77;
+            --accent-bg: #0d0d0d;
+            --accent-text: #ffffff;
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #121212;
+            --bg-panel: #1c1c1e;
+            --border: #2e2e32;
+            --text: #f2f2f3;
+            --text-secondary: #9a9aa2;
+            --accent-bg: #f2f2f3;
+            --accent-text: #0d0d0d;
+        }
+
+        html {
+            --brand: #a13dff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand-mark {
+            height: 44px;
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-mark img {
+            height: 26px;
+            width: auto;
+            display: block;
+        }
+
+        :root[data-theme="light"] .brand-mark img {
+            filter: invert(1) brightness(0.1);
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .header-links a:hover {
+            color: var(--text);
+        }
+
+        .theme-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+            transform: scale(1.08);
+        }
+
+        .theme-toggle img {
+            width: 16px;
+            height: 16px;
+        }
+
+        :root[data-theme="light"] .theme-toggle img {
+            filter: invert(1) brightness(0.1);
+        }
+
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 56px 24px 80px;
+        }
+
+        main h1 {
+            font-size: 1.9em;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .effective-date {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 36px;
+        }
+
+        main h2 {
+            font-size: 1.15em;
+            margin: 32px 0 10px;
+        }
+
+        main p, main li {
+            line-height: 1.65;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        main ul, main ol {
+            padding-left: 22px;
+            margin-bottom: 12px;
+        }
+
+        main a {
+            color: var(--text);
+        }
+
+        .callout {
+            border: 1px solid var(--border);
+            background: var(--bg-panel);
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 32px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+        }
+
+        footer a {
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand-mark"><img src="res/VorbeBannerLogo.png" alt="Vorbe"></div>
+        <div class="header-links">
+            <a href="/">Home</a>
+            <a href="https://github.com/abutauskas/Vorbe">GitHub</a>
+            <button class="theme-toggle" id="themeToggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+                <img id="themeIcon" src="res/Moon.png" alt="">
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <h1>Terms of Service</h1>
+        <div class="effective-date">Effective Date: 31 August 2026</div>
+
+        <div class="callout">
+            This is a plain-language summary, not a substitute for the full terms below: Vorbe suggests code, it doesn't guarantee it. Review anything it generates before you use it anywhere, especially inside Vortex - and make sure your use of it follows Vortex's own rules. If something you do with generated output causes a problem, that's on you, not on Vorbe.
+        </div>
+
+        <h2>1. What Vorbe Is</h2>
+        <p>Vorbe is a free, open-source tool, available at vorber.vercel.app and its associated website, chat interface, and API (together, the "Service"), that uses third-party AI models to generate suggested Luau code, explanations, and other text in response to prompts you provide, aimed at people developing on the Vortex platform. Vorbe is a suggestion engine, not a compiler, linter, security scanner, or guarantee of correctness. It does not execute, test, publish or submit anything on your behalf. By accessing or using the Service, you agree to these Terms of Service ("Terms"). If you do not agree, do not use the Service.</p>
+
+        <h2>2. Not Affiliated with Vortex</h2>
+        <p>Vorbe is an independent, unofficial project. It is not created by, affiliated with, endorsed by, or sponsored by Vortex, its operator, or any related entity, and it is not affiliated with any other product that shares the "Vortex" name. Any trademarks referenced belong to their respective owners and are used only to describe compatibility.</p>
+
+        <h2>3. Eligibility</h2>
+        <p>You must be able to form a binding contract to use the Service. If you are a minor in your jurisdiction, you may only use the Service with the involvement and consent of a parent or legal guardian.</p>
+
+        <h2>4. AI-Generated Output; No Warranty of Accuracy</h2>
+        <p>Everything Vorbe returns is generated by third-party AI models and is provided for informational and illustrative purposes only. AI-generated output can be incomplete, incorrect, insecure, outdated, or simply wrong, and may occasionally resemble patterns present in the models' training data. Vorbe does not warrant that any output is accurate, safe, fit for any particular purpose, free of third-party rights, or compliant with the rules of any platform, including Vortex's own Terms of Service and Community Guidelines.</p>
+
+        <h2>5. Your Responsibility</h2>
+        <p>You are solely responsible for any code, text, or other content you obtain from the Service and for any decision to review, modify, test, run, publish, distribute, or otherwise use it. Before using anything Vorbe generates - especially inside Vortex or any other platform - you must independently review it, satisfy yourself that it is safe and appropriate, and ensure your use of it complies with:</p>
+        <ul>
+            <li>these Terms;</li>
+            <li>the terms of service, community guidelines and rules of any platform you use it on or with, including Vortex's; and</li>
+            <li>all laws that apply to you.</li>
+        </ul>
+        <p>If you use anything generated by the Service in a way that breaches a third party's terms (including Vortex's), infringes anyone's rights, or breaks the law, that is your action and your responsibility alone. Vorbe does not review, endorse, supervise, or take responsibility for how you use its output.</p>
+
+        <h2>6. Acceptable Use</h2>
+        <p>You must not use the Service to generate, and we reserve the right to restrict or terminate access to anyone who uses the Service to generate:</p>
+        <ul>
+            <li>malware, exploits, cheats, or tools intended to bypass another platform's security, anti-cheat, or moderation systems;</li>
+            <li>content that is illegal, that infringes another person's rights, or that facilitates harming, harassing, or exploiting any person, including a child; or</li>
+            <li>content intended to violate the terms of service of Vortex or of any other platform.</li>
+        </ul>
+        <p>This is a restriction on use of the Service, not a guarantee that anyone who agrees to it will comply with it - see Section 5.</p>
+
+        <h2>7. No Account, No Guarantee of Availability</h2>
+        <p>The Service currently does not require an account. It is provided free of charge, without any subscription, purchase, or virtual currency. We may change, suspend, rate-limit, or discontinue the Service, or any part of it, at any time, without notice and without liability to you.</p>
+
+        <h2>8. Third-Party AI Providers</h2>
+        <p>Vorbe relies on third-party AI providers, currently including OpenRouter and Groq, to generate output. Your prompts, and any file or image you attach, are sent to those providers to generate a response; see their own terms and privacy policies for how they handle that data. We do not control, and are not responsible for, the availability, behavior, or output of those third-party services.</p>
+
+        <h2>9. Intellectual Property</h2>
+        <p>The Vorbe name, website, and underlying source code are open source under the MIT License available in the project's repository; see that repository for the exact license terms. We do not claim ownership of, or any license to, code or content you input into the Service or receive from it, beyond what is necessary to operate the Service - for example, transmitting your prompt to the AI provider that generates a response. You are responsible for determining whether output the Service gives you is free to use for your purposes; we make no representation about the ownership or originality of AI-generated output.</p>
+
+        <h2>10. Disclaimer of Warranties</h2>
+        <p>To the fullest extent permitted by law, the Service is provided "as is" and "as available", without warranties of any kind, whether express, implied, or statutory, including implied warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the Service will be uninterrupted, secure, or error-free.</p>
+
+        <h2>11. Limitation of Liability</h2>
+        <p>To the fullest extent permitted by law, in no event will Vorbe, its creator, or its contributors be liable for any indirect, incidental, special, consequential, or punitive damages, or for any loss of data, profits, or goodwill, arising out of or relating to your use of the Service or anything generated by it, even if advised of the possibility of such damages. Because the Service is provided free of charge, our total aggregate liability to you for any claim arising out of or relating to the Service will not exceed ten United States dollars (US$10).</p>
+        <p>Nothing in this Section limits any liability that cannot lawfully be limited under the law that applies to you.</p>
+
+        <h2>12. Indemnification</h2>
+        <p>To the extent permitted by law, you agree to indemnify, defend, and hold harmless Vorbe's creator and contributors from and against any claim, demand, loss, liability, damage, cost, or expense, including reasonable legal fees, arising out of or relating to: (a) your use of the Service; (b) anything you do with output generated by the Service, including any use that breaches a third party's terms of service, including Vortex's, or infringes any right; or (c) your breach of these Terms.</p>
+
+        <h2>13. Termination</h2>
+        <p>We may restrict, suspend, or block your access to the Service at any time, for any reason, including where we reasonably believe you have breached these Terms.</p>
+
+        <h2>14. Changes to These Terms</h2>
+        <p>We may update these Terms from time to time. If we make a material change, we will update the Effective Date above. Continued use of the Service after a change takes effect means you accept the updated Terms.</p>
+
+        <h2>15. Governing Law</h2>
+        <p>These Terms are governed by the laws of the Republic of Lithuania, without regard to its conflict of law principles, except to the extent a mandatory law of your own country of residence gives you rights that cannot be excluded, in which case those rights are unaffected. If you are a consumer resident elsewhere in the European Union, you also have the benefit of the mandatory consumer protection law of your own country of residence, and nothing in these Terms limits those rights.</p>
+
+        <h2>16. Miscellaneous</h2>
+        <p>If any part of these Terms is found unenforceable, the rest remains in effect. These Terms are the entire agreement between you and Vorbe regarding the Service. Questions can be raised by opening an issue at <a href="https://github.com/abutauskas/Vorbe">github.com/abutauskas/Vorbe</a>.</p>
+    </main>
+
+    <footer>
+        MIT License. Built by vorbe contributors. <a href="https://github.com/abutauskas/Vorbe">Contribute on GitHub</a>.
+    </footer>
+
+    <script>
+        function getPreferredTheme() {
+            const stored = localStorage.getItem("vorbe-theme");
+            if (stored === "light" || stored === "dark") return stored;
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute("data-theme", theme);
+            document.getElementById("themeIcon").src = theme === "dark" ? "res/Sun.png" : "res/Moon.png";
+            localStorage.setItem("vorbe-theme", theme);
+        }
+
+        applyTheme(getPreferredTheme());
+
+        document.getElementById("themeToggle").addEventListener("click", () => {
+            const current = document.documentElement.getAttribute("data-theme");
+            applyTheme(current === "dark" ? "light" : "dark");
+        });
+    </script>
+</body>
+</html>

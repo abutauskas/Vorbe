@@ -1,0 +1,45 @@
+name: Update docs grounding data
+
+# Keeps vortex_training_data/vortex_qa_pairs.json in sync with
+# github.com/TheHaloDeveloper/vortex-docs on its own, so the AI's grounding
+# data doesn't go stale even if nobody's actively maintaining the project.
+# A push here to main triggers Vercel to redeploy automatically.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # every Monday at 06:00 UTC
+  workflow_dispatch: {} # lets you trigger a run manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install httpx python-dotenv
+
+      - name: Run docs sync
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python update_docs.py
+
+      - name: Commit changes if any
+        run: |
+          git config user.name "vorbe-docs-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add vortex_training_data/vortex_qa_pairs.json vortex_training_data/docs_manifest.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update Vortex docs grounding data"
+            git push
+          fi
