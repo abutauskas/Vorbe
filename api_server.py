@@ -58,6 +58,12 @@ MAX_IMAGE_DATA_URL_BYTES = 4 * 1024 * 1024
 
 system_prompts = {}
 qa_pairs = []
+# Built at startup from qa_pairs (see derive_confirmed_classes) - a concrete
+# allowlist of classes the docs actually confirm exist, so the model has a
+# hard boundary to check against instead of a vague "if unsure" instruction,
+# which doesn't help when it's confidently *wrong* (e.g. assuming Vortex has
+# Roblox's GUI system) rather than actually uncertain.
+CONFIRMED_CLASSES_CONTEXT = ""
 
 # There's a real, unrelated product also called "Vortex Studio" (CM Labs'
 # robotics/vehicle physics simulator, C++/Lua-based). Without this, the
@@ -119,7 +125,7 @@ def check_auth_token(authorization: str = Header(default=None)) -> None:
 @app.on_event("startup")
 async def load_system_prompts():
     """Load the per-task system prompts and reference docs built from Vortex training data"""
-    global system_prompts, qa_pairs
+    global system_prompts, qa_pairs, CONFIRMED_CLASSES_CONTEXT
 
     try:
         with open("vortex_training_data/system_prompts.json", 'r') as f:
@@ -138,6 +144,26 @@ async def load_system_prompts():
         logger.warning(f"Couldn't load reference QA pairs: {e}")
         qa_pairs = []
 
+    try:
+        with open("vortex_training_data/confirmed_classes.json", 'r', encoding='utf-8') as f:
+            confirmed_classes = json.load(f)
+    except Exception as e:
+        logger.warning(f"Couldn't load confirmed_classes.json: {e}")
+        confirmed_classes = []
+
+    if confirmed_classes:
+        CONFIRMED_CLASSES_CONTEXT = (
+            "The ONLY Vortex classes confirmed in the current documentation "
+            "are: " + ", ".join(confirmed_classes) + ". If a script would "
+            "need a class not on this list - this includes any GUI, "
+            "ScreenGui, Frame, TextButton, or other on-screen UI class - say "
+            "plainly that it isn't confirmed to exist in Vortex rather than "
+            "assuming it works like the Roblox equivalent. Only go beyond "
+            "this list if the user's own prompt or the reference "
+            "documentation below explicitly confirms something else."
+        )
+        logger.info(f"Confirmed-classes allowlist: {len(confirmed_classes)} classes")
+
     if groq_client is None:
         logger.warning("GROQ_API_KEY isn't set - image attachments will fail until it is")
     if not OPENROUTER_API_KEY:
@@ -154,11 +180,16 @@ def stem(word: str) -> str:
     return word
 
 
-def find_relevant_docs(prompt: str, max_entries: int = 4, max_chars: int = 900) -> str:
+def find_relevant_docs(prompt: str, max_entries: int = 8, max_chars: int = 2500) -> str:
     """Keyword-overlap lookup over the real Vortex QA pairs, so answers can
     be grounded in verified docs instead of invented from scratch. No
-    embeddings - the corpus (~130 entries) is small enough that keyword
+    embeddings - the corpus (~150 entries) is small enough that keyword
     matching is good enough, and it's zero extra dependencies or cost.
+
+    Budget was tighter (4 entries / 900 chars) back when this ran on Groq's
+    8K-tokens/minute free tier; text generation now runs on OpenRouter,
+    which has no such per-minute token cap (see GenerateRequest.max_tokens),
+    so there's room to surface more grounding per request.
     """
     if not qa_pairs:
         return ""
@@ -270,6 +301,8 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
             "You are an expert Vortex Luau programmer."
         )
         system = f"{system}\n\n{PLATFORM_CONTEXT}"
+        if CONFIRMED_CLASSES_CONTEXT:
+            system += f"\n\n{CONFIRMED_CLASSES_CONTEXT}"
 
         relevant_docs = find_relevant_docs(request.prompt)
         if relevant_docs:

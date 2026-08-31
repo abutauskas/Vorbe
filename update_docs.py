@@ -17,7 +17,13 @@ What it does, per run:
 4. Replaces only the entries this script previously generated from that
    file (tracked per-file in the manifest), so hand-curated entries are
    never touched and edits to a doc don't leave stale duplicates behind.
-5. Writes the updated QA pairs and manifest back to disk. The GitHub
+5. Rebuilds vortex_training_data/confirmed_classes.json from every class
+   page's exact frontmatter `title:` field - this is the allowlist
+   api_server.py uses to stop the model from assuming Vortex has a class
+   (like Roblox's GUI system) that isn't actually documented. Cheap: a
+   raw-file fetch per class page, no LLM call, so it's rebuilt in full
+   every run regardless of what changed.
+6. Writes the updated QA pairs and manifest back to disk. The GitHub
    Action wrapping this script commits the result if anything changed,
    which triggers Vercel to redeploy - fully hands-off.
 
@@ -46,6 +52,8 @@ DOCS_PREFIXES = ("content/guides/", "content/reference/")
 
 QA_PAIRS_PATH = "vortex_training_data/vortex_qa_pairs.json"
 MANIFEST_PATH = "vortex_training_data/docs_manifest.json"
+CONFIRMED_CLASSES_PATH = "vortex_training_data/confirmed_classes.json"
+CLASSES_PREFIX = "content/reference/classes/"
 
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 OPENROUTER_MODEL = os.environ.get("OPENROUTER_DOC_MODEL", "minimax/minimax-m3:free")
@@ -97,6 +105,52 @@ def gh_headers():
     if GITHUB_TOKEN:
         headers["Authorization"] = f"Bearer {GITHUB_TOKEN}"
     return headers
+
+
+def extract_title(content):
+    """The page's exact `title:` from its YAML frontmatter - the authoritative
+    name for a class (correctly cased, e.g. "SpawnLocation"), far more
+    reliable than guessing from a kebab-case filename or mining citation
+    text elsewhere."""
+    match = re.match(r"^---\s*\n(.*?\n)---", content, re.S)
+    if not match:
+        return None
+    title_match = re.search(r"^title:\s*(.+)$", match.group(1), re.M)
+    return title_match.group(1).strip() if title_match else None
+
+
+def rebuild_confirmed_classes(doc_files):
+    """Full rebuild, every run, from every class page currently in the docs
+    repo - not just the ones that changed. Cheap (raw fetch, no LLM call)."""
+    class_files = [f for f in doc_files if f["path"].startswith(CLASSES_PREFIX)]
+    classes = []
+    for f in class_files:
+        try:
+            content = fetch_raw(f["path"])
+        except httpx.HTTPError as e:
+            logger.warning(f"  couldn't fetch {f['path']} for the class list: {e}")
+            continue
+        title = extract_title(content)
+        if title:
+            classes.append(title)
+        else:
+            logger.warning(f"  no title frontmatter in {f['path']}, skipping")
+    # If most fetches failed (e.g. GitHub having a bad moment mid-run),
+    # don't overwrite a good file with a mostly-empty one - api_server.py
+    # treats this list as an allowlist, so a bad write here would make the
+    # model wrongly refuse classes that actually exist.
+    if class_files and len(classes) < 0.8 * len(class_files):
+        logger.error(
+            f"Only got {len(classes)}/{len(class_files)} class titles - "
+            "leaving the existing confirmed_classes.json untouched"
+        )
+        return None
+
+    classes = sorted(set(classes))
+    with open(CONFIRMED_CLASSES_PATH, "w", encoding="utf-8") as out:
+        json.dump(classes, out, indent=2)
+    logger.info(f"confirmed_classes.json: {len(classes)} classes")
+    return classes
 
 
 def list_doc_files():
@@ -202,6 +256,12 @@ def main():
         logger.error(f"Couldn't list docs from GitHub: {e}")
         sys.exit(1)
 
+    # Always rebuilt in full, regardless of what's "changed" below - it's
+    # cheap (no LLM calls) and it's the allowlist api_server.py leans on to
+    # stop the model from assuming an undocumented class exists, so it
+    # shouldn't silently go stale just because no QA pairs needed updating.
+    rebuild_confirmed_classes(doc_files)
+
     changed = [
         f for f in doc_files
         if manifest.get(f["path"], {}).get("sha") != f["sha"]
@@ -209,7 +269,7 @@ def main():
     logger.info(f"{len(doc_files)} doc files total, {len(changed)} new or changed")
 
     if not changed:
-        logger.info("Nothing to do.")
+        logger.info("No QA pairs to update.")
         return
 
     if len(changed) > MAX_FILES_PER_RUN:
