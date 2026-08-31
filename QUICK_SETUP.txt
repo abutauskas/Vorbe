@@ -1,0 +1,59 @@
+QUICK SETUP - 5 MINUTES
+
+What to do:
+
+1. Download files from /mnt/user-data/outputs/
+   Files you need:
+   - README.md
+   - LICENSE
+   - .gitignore
+   - CONTRIBUTING.md
+   - CODE_OF_CONDUCT.md
+   - requirements.txt
+   - requirements-vercel.txt
+   - Dockerfile
+   - vercel.json
+   - api_server.py
+   - app_hf_spaces.py
+   - finetune_deepseek_coder.py
+   - finetune_codeqwen.py
+   - prepare_vortex_training_data.py
+   - index.html
+   - vortex_training_data/ folder
+   - .github/ISSUE_TEMPLATE/ folder
+
+2. In VSCode:
+   - Open your Vorbe repo folder
+   - Create .github/ISSUE_TEMPLATE/ folder
+   - Create vortex_training_data/ folder
+   - Add all the files into the repo
+
+3. Commit and push:
+   git add .
+   git commit -m "Initial commit: Vorbe - AI Coding Assistant for Vortex"
+   git push origin main
+
+4. Check GitHub:
+   https://github.com/abutauskas/Vorbe
+   All files should be there.
+
+5. Vercel auto-deploys:
+   Check https://vorber.vercel.app/
+   Should be updated with new code.
+
+Done.
+
+---
+
+Optional good-to-haves:
+- VERCEL_QUICKSTART.md (for deployment guide)
+- DEPLOYMENT_GUIDE.md (for more details)
+
+Don't need in repo:
+- All the other .md files (they're reference docs)
+- The .txt summary files
+- This file
+
+Just stick to the list above and you're good.
+
+Questions? Check VSCODE_SETUP.md for more details.

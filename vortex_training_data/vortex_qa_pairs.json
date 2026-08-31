@@ -1,0 +1,1312 @@
+[
+  {
+    "questions": [
+      "What is setattribute?",
+      "Explain setattribute in Vortex",
+      "How do I use setattribute?",
+      "Tell me about setattribute"
+    ],
+    "answer": "Sets a pre-existing attributes value to a new value. Instance:SetAttribute(Attribute: String, Value: Variant)",
+    "topic": "SetAttribute"
+  },
+  {
+    "questions": [
+      "What is parameters?",
+      "Explain parameters in Vortex",
+      "How do I use parameters?",
+      "Tell me about parameters"
+    ],
+    "answer": "Attribute: string The Name of the attribute being set. Value: Variant The Value to set the specified Attribute to.",
+    "topic": "Parameters"
+  },
+  {
+    "questions": [
+      "What is returns?",
+      "Explain returns in Vortex",
+      "How do I use returns?",
+      "Tell me about returns"
+    ],
+    "answer": "() The SetAttribute Method is used for modifying an attributes value or creating a new attribute value if there is no attribute. If the value given is nil, the attribute will be removed.",
+    "topic": "Returns"
+  },
+  {
+    "questions": [
+      "What is examples?",
+      "Explain examples in Vortex",
+      "How do I use examples?",
+      "Tell me about examples"
+    ],
+    "answer": "In the code snippet below, it sets the `\"Id\"` Attribute of the Part to `1`. local Part = workspace:WaitForChild(\"Part\") Part:SetAttribute(\"Id\", 1) ___________________",
+    "topic": "Examples"
+  },
+  {
+    "questions": [
+      "What is getattribute?",
+      "Explain getattribute in Vortex",
+      "How do I use getattribute?",
+      "Tell me about getattribute"
+    ],
+    "answer": "Instance:GetAttribute(Attribute: String): Variant",
+    "topic": "GetAttribute"
+  },
+  {
+    "questions": [
+      "What is parameters?",
+      "Explain parameters in Vortex",
+      "How do I use parameters?",
+      "Tell me about parameters"
+    ],
+    "answer": "Attribute: string The Name of the attribute being retrieved.",
+    "topic": "Parameters"
+  },
+  {
+    "questions": [
+      "What is returns?",
+      "Explain returns in Vortex",
+      "How do I use returns?",
+      "Tell me about returns"
+    ],
+    "answer": "Variant The Value which has been given to the Attribute name. If no value is given to the Attribute name then nil is returned. The GetAttribute Method is used for retrieving the Value set to the Attribute name.",
+    "topic": "Returns"
+  },
+  {
+    "questions": [
+      "What is examples?",
+      "Explain examples in Vortex",
+      "How do I use examples?",
+      "Tell me about examples"
+    ],
+    "answer": "In the code snippet below it retrieves the Id Attribute and then prints it. local Part = workspace:WaitForChild(\"Part\") local Id = Part:GetAttribute(\"Id\") print(Id)",
+    "topic": "Examples"
+  },
+  {
+    "questions": [
+      "What is welcome to vortex studio?",
+      "Explain welcome to vortex studio in Vortex",
+      "How do I use welcome to vortex studio?",
+      "Tell me about welcome to vortex studio"
+    ],
+    "answer": "Vortex is a platform that lets you make everything from simple games to large, complex games using Luau. Vortex Engine provides APIs for building your game, creating parts, writing scripts, handling events, and more. This documentation will introduce you to the scripting API, and the features provided by Vortex Engine. If you're new to Vortex Studio, you may want to start with [Your First Script guide](/content/guides/first-script.md).",
+    "topic": "Welcome to Vortex Studio"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Methods</b></summary> Methods of an `Enum`. <br><br> * [GetEnumItems()](#getenumitems): `EnumItem[]` * [FromName(name: `String`)](#fromnamename-string): `EnumItem` * [FromValue(value: `Number`)](#fromvaluevalue-number): `EnumItem` </details>",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is getenumitems()?",
+      "Explain getenumitems() in Vortex",
+      "How do I use getenumitems()?",
+      "Tell me about getenumitems()"
+    ],
+    "answer": "> `EnumItem[]` > > Returns an array of all `EnumItem` options available for the enum. <br/>",
+    "topic": "GetEnumItems()"
+  },
+  {
+    "questions": [
+      "What is fromname(name: `string`)?",
+      "Explain fromname(name: `string`) in Vortex",
+      "How do I use fromname(name: `string`)?",
+      "Tell me about fromname(name: `string`)"
+    ],
+    "answer": "> `EnumItem` > > Finds an `EnumItem` by name. <br/>",
+    "topic": "FromName(name: `String`)"
+  },
+  {
+    "questions": [
+      "What is fromvalue(value: `number`)?",
+      "Explain fromvalue(value: `number`) in Vortex",
+      "How do I use fromvalue(value: `number`)?",
+      "Tell me about fromvalue(value: `number`)"
+    ],
+    "answer": "> `EnumItem` > > Finds an `EnumItem` by value. <br/>",
+    "topic": "FromValue(value: `Number`)"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Properties</b></summary> Properties of a `TweenInfo`. <br><br> * [Time](#time): `Number` * [EasingStyle](https://create.playvortex.io/reference/globals/enum/#easingstyle): `Enum` * [EasingDirection](https://create.playvortex.io/reference/globals/enum/#easingdirection): `Enum` * [RepeatCount](#repeatcount): `Number` * [Reverses](#reverses): `Boolean` * [DelayTime](#delaytime): `Number` </details>",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is time?",
+      "Explain time in Vortex",
+      "How do I use time?",
+      "Tell me about time"
+    ],
+    "answer": "> `Number` > > Duration for the tween, in seconds. <br/>",
+    "topic": "Time"
+  },
+  {
+    "questions": [
+      "What is easingstyle?",
+      "Explain easingstyle in Vortex",
+      "How do I use easingstyle?",
+      "Tell me about easingstyle"
+    ],
+    "answer": "> `Enum.EasingStyle` > > Easing style for the tween. <br/>",
+    "topic": "EasingStyle"
+  },
+  {
+    "questions": [
+      "What is easingdirection?",
+      "Explain easingdirection in Vortex",
+      "How do I use easingdirection?",
+      "Tell me about easingdirection"
+    ],
+    "answer": "> `Enum.EasingDirection` > > Direction in which the tween should execute. <br/>",
+    "topic": "EasingDirection"
+  },
+  {
+    "questions": [
+      "What is repeatcount?",
+      "Explain repeatcount in Vortex",
+      "How do I use repeatcount?",
+      "Tell me about repeatcount"
+    ],
+    "answer": "> `Number` > > Number of times the tween repeats. <br/>",
+    "topic": "RepeatCount"
+  },
+  {
+    "questions": [
+      "What is reverses?",
+      "Explain reverses in Vortex",
+      "How do I use reverses?",
+      "Tell me about reverses"
+    ],
+    "answer": "> `Boolean` > > Whether the tween should reverse to the starting value once it reaches its target. <br/>",
+    "topic": "Reverses"
+  },
+  {
+    "questions": [
+      "What is delaytime?",
+      "Explain delaytime in Vortex",
+      "How do I use delaytime?",
+      "Tell me about delaytime"
+    ],
+    "answer": "> `Number` > > Time before the tween begins, in seconds. <br/>",
+    "topic": "DelayTime"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Properties</b></summary> Properties of a `Color3`. <br><br> * [R](#r): `Number` * [G](#g): `Number` * [B](#b): `Number` </details> <details> <summary><b>Constructors</b></summary> Constructors of a `Color3`. <br><br> * [new(R: `Number`, G: `Number`, B: `Number`)](#newr-number-g-number-b-number): `Color3` * [fromRGB(R: `Number`, G: `Number`, B: `Number`)](#fromrgbr-number-g-number-b-number): `Color3` * [fromHSV(H: `Number`, S: `Number`, V: `Number`)](#fromhsvh-number-s-numbe",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is r?",
+      "Explain r in Vortex",
+      "How do I use r?",
+      "Tell me about r"
+    ],
+    "answer": "> `Number` > > The red value of the color. <br/>",
+    "topic": "R"
+  },
+  {
+    "questions": [
+      "What is g?",
+      "Explain g in Vortex",
+      "How do I use g?",
+      "Tell me about g"
+    ],
+    "answer": "> `Number` > > The green value of the color. <br/>",
+    "topic": "G"
+  },
+  {
+    "questions": [
+      "What is b?",
+      "Explain b in Vortex",
+      "How do I use b?",
+      "Tell me about b"
+    ],
+    "answer": "> `Number` > > The blue value of the color. <br/>",
+    "topic": "B"
+  },
+  {
+    "questions": [
+      "What is new(r: `number`, g: `number`, b: `number`)?",
+      "Explain new(r: `number`, g: `number`, b: `number`) in Vortex",
+      "How do I use new(r: `number`, g: `number`, b: `number`)?",
+      "Tell me about new(r: `number`, g: `number`, b: `number`)"
+    ],
+    "answer": "> `Color3` > > Returns a new `Color3` from the given values. Values range from `0` to `1`. <br/>",
+    "topic": "new(R: `Number`, G: `Number`, B: `Number`)"
+  },
+  {
+    "questions": [
+      "What is fromrgb(r: `number`, g: `number`, b: `number`)?",
+      "Explain fromrgb(r: `number`, g: `number`, b: `number`) in Vortex",
+      "How do I use fromrgb(r: `number`, g: `number`, b: `number`)?",
+      "Tell me about fromrgb(r: `number`, g: `number`, b: `number`)"
+    ],
+    "answer": "> `Color3` > > Returns a new `Color3` from the given values. Values range from `0` to `255`. <br/>",
+    "topic": "fromRGB(R: `Number`, G: `Number`, B: `Number`)"
+  },
+  {
+    "questions": [
+      "What is fromhsv(h: `number`, s: `number`, v: `number`)?",
+      "Explain fromhsv(h: `number`, s: `number`, v: `number`) in Vortex",
+      "How do I use fromhsv(h: `number`, s: `number`, v: `number`)?",
+      "Tell me about fromhsv(h: `number`, s: `number`, v: `number`)"
+    ],
+    "answer": "> `Color3` > > Returns a new `Color3` from the given values. Values range from `0` to `1`. <br/>",
+    "topic": "fromHSV(H: `Number`, S: `Number`, V: `Number`)"
+  },
+  {
+    "questions": [
+      "What is fromhex(hex: `string`)?",
+      "Explain fromhex(hex: `string`) in Vortex",
+      "How do I use fromhex(hex: `string`)?",
+      "Tell me about fromhex(hex: `string`)"
+    ],
+    "answer": "> `Color3` > > Returns a new `Color3` from the given hexadecimal color value. <br/>",
+    "topic": "fromHex(hex: `String`)"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Properties</b></summary> Properties of a `CFrame`. <br><br> * [Position](#position): `Vector3` * [Rotation](#rotation): `CFrame` * [X](#x): `Number` * [Y](#y): `Number` * [Z](#z): `Number` * [LookVector](#lookvector): `Vector3` * [RightVector](#rightvector): `Vector3` * [UpVector](#upvector): `Vector3` * [XVector](#xvector): `Vector3` * [YVector](#yvector): `Vector3` * [ZVector](#zvector): `Vector3` </details> <details> <summary><b>Constructors</b></summary> Constructors of",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is position?",
+      "Explain position in Vortex",
+      "How do I use position?",
+      "Tell me about position"
+    ],
+    "answer": "> `Vector3` > > The 3D position component of the CFrame. <br/>",
+    "topic": "Position"
+  },
+  {
+    "questions": [
+      "What is rotation?",
+      "Explain rotation in Vortex",
+      "How do I use rotation?",
+      "Tell me about rotation"
+    ],
+    "answer": "> `CFrame` > > The 3D rotation component of the CFrame, with the position components reset to zero. <br/>",
+    "topic": "Rotation"
+  },
+  {
+    "questions": [
+      "What is x?",
+      "Explain x in Vortex",
+      "How do I use x?",
+      "Tell me about x"
+    ],
+    "answer": "> `Number`  > > The X-axis coordinate of the CFrame's position component. <br/>",
+    "topic": "X"
+  },
+  {
+    "questions": [
+      "What is y?",
+      "Explain y in Vortex",
+      "How do I use y?",
+      "Tell me about y"
+    ],
+    "answer": "> `Number`  > > The Y-axis coordinate of the CFrame's position component. <br/>",
+    "topic": "Y"
+  },
+  {
+    "questions": [
+      "What is z?",
+      "Explain z in Vortex",
+      "How do I use z?",
+      "Tell me about z"
+    ],
+    "answer": "> `Number`  > > The Z-axis coordinate of the CFrame's position component. <br/>",
+    "topic": "Z"
+  },
+  {
+    "questions": [
+      "What is lookvector?",
+      "Explain lookvector in Vortex",
+      "How do I use lookvector?",
+      "Tell me about lookvector"
+    ],
+    "answer": "> `Vector3`  > > A normalized vector pointing in the forward direction of the CFrame. <br/>",
+    "topic": "LookVector"
+  },
+  {
+    "questions": [
+      "What is rightvector?",
+      "Explain rightvector in Vortex",
+      "How do I use rightvector?",
+      "Tell me about rightvector"
+    ],
+    "answer": "> `Vector3`  > > A normalized vector pointing in the right direction of the CFrame. <br/>",
+    "topic": "RightVector"
+  },
+  {
+    "questions": [
+      "What is upvector?",
+      "Explain upvector in Vortex",
+      "How do I use upvector?",
+      "Tell me about upvector"
+    ],
+    "answer": "> `Vector3`  > > A normalized vector pointing out of the top side of the CFrame. <br/>",
+    "topic": "UpVector"
+  },
+  {
+    "questions": [
+      "What is xvector?",
+      "Explain xvector in Vortex",
+      "How do I use xvector?",
+      "Tell me about xvector"
+    ],
+    "answer": "> `Vector3` > > The X component of the CFrame's rotation matrix. Equivalent to RightVector. <br/>",
+    "topic": "XVector"
+  },
+  {
+    "questions": [
+      "What is yvector?",
+      "Explain yvector in Vortex",
+      "How do I use yvector?",
+      "Tell me about yvector"
+    ],
+    "answer": "> `Vector3` > > The Y component of the CFrame's rotation matrix. Equivalent to UpVector. <br/>",
+    "topic": "YVector"
+  },
+  {
+    "questions": [
+      "What is zvector?",
+      "Explain zvector in Vortex",
+      "How do I use zvector?",
+      "Tell me about zvector"
+    ],
+    "answer": "> `Vector3` > > The Z component of the CFrame's rotation matrix. Equivalent to the negated LookVector (-LookVector). <br/>",
+    "topic": "ZVector"
+  },
+  {
+    "questions": [
+      "What is new()?",
+      "Explain new() in Vortex",
+      "How do I use new()?",
+      "Tell me about new()"
+    ],
+    "answer": "> `CFrame` > > Returns a blank `CFrame` located at the world origin with no rotation. <br/>",
+    "topic": "new()"
+  },
+  {
+    "questions": [
+      "What is new(position: `vector3`)?",
+      "Explain new(position: `vector3`) in Vortex",
+      "How do I use new(position: `vector3`)?",
+      "Tell me about new(position: `vector3`)"
+    ],
+    "answer": "> `CFrame` > > Returns a new `CFrame` from a given `Vector3` position with no rotation. <br/>",
+    "topic": "new(Position: `Vector3`)"
+  },
+  {
+    "questions": [
+      "What is new(x: `number`, y: `number`, z: `number`)?",
+      "Explain new(x: `number`, y: `number`, z: `number`) in Vortex",
+      "How do I use new(x: `number`, y: `number`, z: `number`)?",
+      "Tell me about new(x: `number`, y: `number`, z: `number`)"
+    ],
+    "answer": "> `CFrame` > > Returns a new `CFrame` from the given spatial coordinates with no rotation. <br/>",
+    "topic": "new(X: `Number`, Y: `Number`, Z: `Number`)"
+  },
+  {
+    "questions": [
+      "What is angles(rotationx: `number`, rotationy: `number`, rotationz: `number`)?",
+      "Explain angles(rotationx: `number`, rotationy: `number`, rotationz: `number`) in Vortex",
+      "How do I use angles(rotationx: `number`, rotationy: `number`, rotationz: `number`)?",
+      "Tell me about angles(rotationx: `number`, rotationy: `number`, rotationz: `number`)"
+    ],
+    "answer": "> `CFrame` > > Returns a new `CFrame` rotated around the X, Y and Z axes by the given angles specified in radians. <br/>",
+    "topic": "Angles(RotationX: `Number`, RotationY: `Number`, RotationZ: `Number`)"
+  },
+  {
+    "questions": [
+      "What is lookat(position: `vector3`, target: `vector3`)?",
+      "Explain lookat(position: `vector3`, target: `vector3`) in Vortex",
+      "How do I use lookat(position: `vector3`, target: `vector3`)?",
+      "Tell me about lookat(position: `vector3`, target: `vector3`)"
+    ],
+    "answer": "> `CFrame` > > Returns a new `CFrame` located at the `Position` coordinates and rotated to point directly toward the `Target` coordinates. <br/>",
+    "topic": "lookAt(Position: `Vector3`, Target: `Vector3`)"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Properties</b></summary> Properties of a `Vector3`. <br><br> * [X](#x): `Number` * [Y](#y): `Number` * [Z](#z): `Number` </details> <details> <summary><b>Constructors</b></summary> Constructors of a `Vector3`. <br><br> * [new(X: `Number`, Y: `Number`, Z: `Number`)](#newx-number-y-number-z-number): `Vector3` </details>",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is x?",
+      "Explain x in Vortex",
+      "How do I use x?",
+      "Tell me about x"
+    ],
+    "answer": "> `Number`  > > The X-axis component of the vector. <br/>",
+    "topic": "X"
+  },
+  {
+    "questions": [
+      "What is y?",
+      "Explain y in Vortex",
+      "How do I use y?",
+      "Tell me about y"
+    ],
+    "answer": "> `Number`  > > The Y-axis component of the vector. <br/>",
+    "topic": "Y"
+  },
+  {
+    "questions": [
+      "What is z?",
+      "Explain z in Vortex",
+      "How do I use z?",
+      "Tell me about z"
+    ],
+    "answer": "> `Number`  > > The Z-axis component of the vector. <br/>",
+    "topic": "Z"
+  },
+  {
+    "questions": [
+      "What is new(x: `number`, y: `number`, z: `number`)?",
+      "Explain new(x: `number`, y: `number`, z: `number`) in Vortex",
+      "How do I use new(x: `number`, y: `number`, z: `number`)?",
+      "Tell me about new(x: `number`, y: `number`, z: `number`)"
+    ],
+    "answer": "> `Vector3`  > > Returns a new `Vector3` from the given components. <br/>",
+    "topic": "new(X: `Number`, Y: `Number`, Z: `Number`)"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Properties</b></summary> Properties of an `EnumItem`. <br><br> * [Name](#name): `String` * [Value](#value): `Number` * [EnumType](#enumtype): `Enum` </details>",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is name?",
+      "Explain name in Vortex",
+      "How do I use name?",
+      "Tell me about name"
+    ],
+    "answer": "> `String`  > > The name of the `EnumItem`. <br/>",
+    "topic": "Name"
+  },
+  {
+    "questions": [
+      "What is value?",
+      "Explain value in Vortex",
+      "How do I use value?",
+      "Tell me about value"
+    ],
+    "answer": "> `Number`  > > The integral value assigned to the `EnumItem`. <br/>",
+    "topic": "Value"
+  },
+  {
+    "questions": [
+      "What is enumtype?",
+      "Explain enumtype in Vortex",
+      "How do I use enumtype?",
+      "Tell me about enumtype"
+    ],
+    "answer": "> `Enum`  > > A reference to the parent `Enum` of the `EnumItem`. <br/>",
+    "topic": "EnumType"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "A `spotlight` must be the child of a [`part`](/content/reference/classes/part.md), and takes the position of its parent as its own. There is currently no on/off switch for lights, but setting either the color, brightness, angle, or range to 0 will have the desired effect. Under the `properties` tab, SpotLights visibly have Position, Rotation, and Size attributes. Position and Rotation are `read-only` and size has `no effect`. It is possible these values were left in by accident. <details> <summa",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is angle?",
+      "Explain angle in Vortex",
+      "How do I use angle?",
+      "Tell me about angle"
+    ],
+    "answer": "> `Float` \\ \\ The angle of the emission cone. Smaller angles can produce sharper cutoffs, and wider angles create a softer fall off. <br/>",
+    "topic": "Angle"
+  },
+  {
+    "questions": [
+      "What is brightness?",
+      "Explain brightness in Vortex",
+      "How do I use brightness?",
+      "Tell me about brightness"
+    ],
+    "answer": "> `Float` \\ \\ The emission brightness of the light. Does not affect range. <br/>",
+    "topic": "Brightness"
+  },
+  {
+    "questions": [
+      "What is color?",
+      "Explain color in Vortex",
+      "How do I use color?",
+      "Tell me about color"
+    ],
+    "answer": "> [`Color3`](/content/reference/datatypes/color3.md) \\ \\ Determines the color of the emitted light. Darker colors have the same effect as turning off the light. <br/>",
+    "topic": "Color"
+  },
+  {
+    "questions": [
+      "What is face?",
+      "Explain face in Vortex",
+      "How do I use face?",
+      "Tell me about face"
+    ],
+    "answer": "> [`Enum.Face`](/content/reference/datatypes/enumitem.md) \\ \\ Controls which face of the parent [`part`](/content/reference/classes/part.md) that the light is emitted from. <br/>",
+    "topic": "Face"
+  },
+  {
+    "questions": [
+      "What is name?",
+      "Explain name in Vortex",
+      "How do I use name?",
+      "Tell me about name"
+    ],
+    "answer": "> `String` \\ \\ The name of the `spotlight`, and its label in the explorer. <br/>",
+    "topic": "Name"
+  },
+  {
+    "questions": [
+      "What is range?",
+      "Explain range in Vortex",
+      "How do I use range?",
+      "Tell me about range"
+    ],
+    "answer": "> `Float` \\ \\ The maximum (linear) range that the light can reach. This controls the drop-off of the brightness over time, but does not increase the brightness. <br/>",
+    "topic": "Range"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "Service that holds every player-interactible instance. Consequently, making them the only service as of now whose children can be viewed by the player. <br> Additionally, can be used to raycast. <details> <summary><b>Properties</b></summary> Properties of a Workspace, in the order they appear on Vortex Studio <br><br> <ul> <details> <summary><b>Appearance</b></summary> </details> <details> <summary><b>Transform</b></summary> </details> </ul> </details>",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "> [!NOTE] > `SpawnLocation` inherits from [`part`](./part.md). <details> <summary><b>Properties</b></summary> Properties of a SpawnLocation, in the order they appear on Vortex Studio. <br><br> <ul> <details> <summary><b>Appearance</b></summary> - [Color](./part.md#color): [`Color3`](/content/reference/datatypes/color3.md) - [Transparency](./part.md#transparency): `Float` - [Material](./part.md#material): [`Enum.Material`](/content/reference/datatypes/enumitem.md) <!-- not sure if this should lin",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "When a texture is added to a [`part`](/content/reference/classes/part.md), its `Face` and `name` get set automatically, so adding 6 textures to cover an entire part is very quick. <br><br> <details> <summary><b>Properties</b></summary> Properties of a Texture, in the order they appear on Vortex Studio. <br><br> <ul> <details> <summary><b>Texture</b></summary> - [Face](#face): [`Enum.Face`](/content/reference/datatypes/enumitem.md) - [Texture](#texture): [`Enum.Texture`](/content/reference/dataty",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is face?",
+      "Explain face in Vortex",
+      "How do I use face?",
+      "Tell me about face"
+    ],
+    "answer": "> [`Enum.Face`](/content/reference/datatypes/enumitem.md) \\ \\ Controls which face of the parent [`part`](/content/reference/classes/part.md) that the texture is displayed on. <br/>",
+    "topic": "Face"
+  },
+  {
+    "questions": [
+      "What is texture?",
+      "Explain texture in Vortex",
+      "How do I use texture?",
+      "Tell me about texture"
+    ],
+    "answer": "> [`Enum.Texture`](/content/reference/datatypes/enumitem.md) \\ \\ Sets which texture to render onto the selected face. Currently the only options are `Inlets` or `Studs`.  <br/>",
+    "topic": "Texture"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "ReplicatedStorage is a container for items that should be visible to both the server and the client. Items placed here will automatically get their properties synced from the server. stub",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Syntax</b></summary> `Debris:AddItem(instance: Instance, lifetime: number): ()` </details>",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is overview?",
+      "Explain overview in Vortex",
+      "How do I use overview?",
+      "Tell me about overview"
+    ],
+    "answer": "`Debris` is a service that allows removal of instances without yielding for objects that may lose utility after a set period of time. local Debris = game:GetService(\"Debris\") local part = Instance.new(\"Part\") part.Parent = workspace Debris:AddItem(part, 5)",
+    "topic": "Overview"
+  },
+  {
+    "questions": [
+      "What is lifetime?",
+      "Explain lifetime in Vortex",
+      "How do I use lifetime?",
+      "Tell me about lifetime"
+    ],
+    "answer": "The `AddItem()` method won't execute unless a lifetime parameter is given. The lifetime can be set to any number from positive to negative range.",
+    "topic": "Lifetime"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "[IntValues](https://create.playvortex.io/reference/classes/int-value/) are a very simple way to store an integer outside of a script. You can get/set it's stored integer with `IntValue.Value`.",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is .name?",
+      "Explain .name in Vortex",
+      "How do I use .name?",
+      "Tell me about .name"
+    ],
+    "answer": "`String`  The name of the [IntValue](https://create.playvortex.io/reference/classes/int-value/) , and label in the explorer.",
+    "topic": ".Name"
+  },
+  {
+    "questions": [
+      "What is .value?",
+      "Explain .value in Vortex",
+      "How do I use .value?",
+      "Tell me about .value"
+    ],
+    "answer": "`Integer` The `Integer` Stored inside [IntValue](https://create.playvortex.io/reference/classes/int-value/)",
+    "topic": ".Value"
+  },
+  {
+    "questions": [
+      "What is code snippet?",
+      "Explain code snippet in Vortex",
+      "How do I use code snippet?",
+      "Tell me about code snippet"
+    ],
+    "answer": "local newVal = Instance.new(\"IntValue\")     newVal.Parent = game.Workspace \tnewVal.Value = 9999 \tprint(newVal.Value)",
+    "topic": "Code Snippet"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "Models are a very simple way to group [`parts`](/content/reference/classes/part.md) together. Creating a model requires at least `2` parts selected, but otherwise the second part can be deleted. Parts in a model are not truly connected, but only grouped in the explorer. Models currently have no purpose other than organization. A model with no children is still shown in the explorer, but does not exist in the world and has no transform controls. The basic transform tools (Move, Rotate) work more ",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is name?",
+      "Explain name in Vortex",
+      "How do I use name?",
+      "Tell me about name"
+    ],
+    "answer": "> `String` \\ \\ The name of the `model`, and its label in the explorer. <br/>",
+    "topic": "Name"
+  },
+  {
+    "questions": [
+      "What is position?",
+      "Explain position in Vortex",
+      "How do I use position?",
+      "Tell me about position"
+    ],
+    "answer": "> [`Vector3`](/content/reference/datatypes/vector3.md) \\ \\ The position of the `model`, in World-space. A model's position is automatically set to the mathematical average of all its children's positions. (See [Images](#images)) <br/>",
+    "topic": "Position"
+  },
+  {
+    "questions": [
+      "What is images?",
+      "Explain images in Vortex",
+      "How do I use images?",
+      "Tell me about images"
+    ],
+    "answer": "<img src=\"../../../images/modelCenterExample1.png\" alt=\"Model w/ Move Tool\" width=\"400\"/>",
+    "topic": "Images"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Properties</b></summary> Properties of a Part, in the order they appear on Vortex Studio. <br><br> <ul> <details> <summary><b>Appearance</b></summary> - [Color](#color): [`Color3`](/content/reference/datatypes/color3.md) - [Transparency](#transparency): `Float` - [Material](#material): [`Enum.Material`](/content/reference/datatypes/enumitem.md) <!-- not sure if this should link to enumitem.md or enum.md --> - [Cast Shadow](#cast-shadow): `Boolean` </details> <details> <summ",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is anchored?",
+      "Explain anchored in Vortex",
+      "How do I use anchored?",
+      "Tell me about anchored"
+    ],
+    "answer": "> `Boolean` \\ \\ When `true`, the given part will be unable to move via interactions with the environment. \\ When `false`, the part will experience gravity and forces from other parts. <br/>",
+    "topic": "Anchored"
+  },
+  {
+    "questions": [
+      "What is cancollide?",
+      "Explain cancollide in Vortex",
+      "How do I use cancollide?",
+      "Tell me about cancollide"
+    ],
+    "answer": "> `Boolean` \\ \\ Determines whether the `part` is given physics collisions, or whether it can phase through other parts. \\ \\ **Note:** A `part` cannot be unanchored while collision is disabled. <br/>",
+    "topic": "CanCollide"
+  },
+  {
+    "questions": [
+      "What is cast shadow?",
+      "Explain cast shadow in Vortex",
+      "How do I use cast shadow?",
+      "Tell me about cast shadow"
+    ],
+    "answer": "> `Boolean` \\ \\ Controls whether or not the `part` will cast a shadow. This can be used to save performance with part's whose shadows cannot be seen, or for glass parts which realistically would not create a shadow. <br/>",
+    "topic": "Cast Shadow"
+  },
+  {
+    "questions": [
+      "What is color?",
+      "Explain color in Vortex",
+      "How do I use color?",
+      "Tell me about color"
+    ],
+    "answer": "> [`Color3`](/content/reference/datatypes/color3.md) \\ \\ Determines the visible color of the `part`. Will also affect the part's [`Material`]() color. <br/>",
+    "topic": "Color"
+  },
+  {
+    "questions": [
+      "What is material?",
+      "Explain material in Vortex",
+      "How do I use material?",
+      "Tell me about material"
+    ],
+    "answer": "> [`Enum.Material`](/content/reference/datatypes/enumitem.md) \\ \\ Determines which `Material` type to apply when rendering the `part`. Currently this has no effect other than visual. <br/>",
+    "topic": "Material"
+  },
+  {
+    "questions": [
+      "What is name?",
+      "Explain name in Vortex",
+      "How do I use name?",
+      "Tell me about name"
+    ],
+    "answer": "> `String` \\ \\ The name of the `part`, and its label in the explorer. <br/>",
+    "topic": "Name"
+  },
+  {
+    "questions": [
+      "What is position?",
+      "Explain position in Vortex",
+      "How do I use position?",
+      "Tell me about position"
+    ],
+    "answer": "> [`Vector3`](/content/reference/datatypes/vector3.md) \\ \\ The position of the `part`, in World-space. <br/>",
+    "topic": "Position"
+  },
+  {
+    "questions": [
+      "What is rotation?",
+      "Explain rotation in Vortex",
+      "How do I use rotation?",
+      "Tell me about rotation"
+    ],
+    "answer": "> [`Vector3`](/content/reference/datatypes/vector3.md) \\ \\ The rotation of the `part` along each axis. <br/>",
+    "topic": "Rotation"
+  },
+  {
+    "questions": [
+      "What is size?",
+      "Explain size in Vortex",
+      "How do I use size?",
+      "Tell me about size"
+    ],
+    "answer": "> [`Vector3`](/content/reference/datatypes/vector3.md) \\ \\ The size of the `part` in each dimension (width, height, depth). <br/>",
+    "topic": "Size"
+  },
+  {
+    "questions": [
+      "What is transparency?",
+      "Explain transparency in Vortex",
+      "How do I use transparency?",
+      "Tell me about transparency"
+    ],
+    "answer": "> `Float` \\ \\ Sets the `transparency` of the part from `0` (opaque) to `1` (invisible). When drawing shadows, all parts are treated as opaque regardless of their `transparency`. Unless it is set to `1`, where the part does not render at all. <br/>",
+    "topic": "Transparency"
+  },
+  {
+    "questions": [
+      "What is truss?",
+      "Explain truss in Vortex",
+      "How do I use truss?",
+      "Tell me about truss"
+    ],
+    "answer": "> `Boolean` \\ \\ If a `part` is a truss part, then the `Player` is able to climb the part by walking up to it. It is recommened to keep truss parts anchored, as they otherwise produce unpredictable effects. <br/>",
+    "topic": "Truss"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "A `pointlight` must be the child of a [`part`](/content/reference/classes/part.md), and takes the position of its parent as its own. There is currently no on/off switch for lights, but setting either the color, brightness, or range to 0 will have the desired effect. <details> <summary><b>Properties</b></summary> Properties of a Pointlight, in the order they appear on Vortex Studio. <br><br> <ul> <details> <summary><b>Appearance</b></summary> - [Color](#color): [`Color3`](/content/reference/datat",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is brightness?",
+      "Explain brightness in Vortex",
+      "How do I use brightness?",
+      "Tell me about brightness"
+    ],
+    "answer": "> `Float` \\ \\ The emission brightness of the light. Does not affect range. <br/>",
+    "topic": "Brightness"
+  },
+  {
+    "questions": [
+      "What is color?",
+      "Explain color in Vortex",
+      "How do I use color?",
+      "Tell me about color"
+    ],
+    "answer": "> [`Color3`](/content/reference/datatypes/color3.md) \\ \\ Determines the color of the emitted light. Darker colors have the same effect as turning off the light. <br/>",
+    "topic": "Color"
+  },
+  {
+    "questions": [
+      "What is name?",
+      "Explain name in Vortex",
+      "How do I use name?",
+      "Tell me about name"
+    ],
+    "answer": "> `String` \\ \\ The name of the `pointlight`, and its label in the explorer. <br/>",
+    "topic": "Name"
+  },
+  {
+    "questions": [
+      "What is range?",
+      "Explain range in Vortex",
+      "How do I use range?",
+      "Tell me about range"
+    ],
+    "answer": "> `Float` \\ \\ The maximum (spherical) range that the light can reach. This controls the drop-off of the brightness over time, but does not increase the brightness. <br/>",
+    "topic": "Range"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "> [!NOTE] > A `LocalScript` will not run in server-controlled locations such as `ServerScriptService` Stub",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Properties</b></summary> Properties of a `Instance`. <br><br> * [Name](#name): `String` * [Parent](#parent): `Instance` </details> <details> <summary><b>Methods</b></summary> Methods of a `Instance`. <br><br> * [Clone()](#clone): `Instance` * [Destroy()](#destroy): `nil` * [GetChildren()](#getchildren): `{ Instance }` </details>",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is name?",
+      "Explain name in Vortex",
+      "How do I use name?",
+      "Tell me about name"
+    ],
+    "answer": "> `String`  > > The name of the `Instance`. <br/>",
+    "topic": "Name"
+  },
+  {
+    "questions": [
+      "What is parent?",
+      "Explain parent in Vortex",
+      "How do I use parent?",
+      "Tell me about parent"
+    ],
+    "answer": "> `String`  > > The name of the `Instance`. <br/>",
+    "topic": "Parent"
+  },
+  {
+    "questions": [
+      "What is clone()?",
+      "Explain clone() in Vortex",
+      "How do I use clone()?",
+      "Tell me about clone()"
+    ],
+    "answer": "> `Instance`  > > Create a copy of the `Instance` and return copy. <br/>",
+    "topic": "Clone()"
+  },
+  {
+    "questions": [
+      "What is destroy()?",
+      "Explain destroy() in Vortex",
+      "How do I use destroy()?",
+      "Tell me about destroy()"
+    ],
+    "answer": "> `nil`  > > Destroy the `Instance` and children. <br/>",
+    "topic": "Destroy()"
+  },
+  {
+    "questions": [
+      "What is getchildren()?",
+      "Explain getchildren() in Vortex",
+      "How do I use getchildren()?",
+      "Tell me about getchildren()"
+    ],
+    "answer": "> `{ Instance }`  > > Return children of the `Instance`. <br/>",
+    "topic": "GetChildren()"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "> [!NOTE] > `Lighting` is a service and cannot be `created` or `destroyed`. There are two main controls under Lighting's properties: - `Ambient` is the general lighting that every object receives regardless of its position or rotation. - `Sun` is the light placed on object faces that are in direct view of the sun. If shadows are enabled, then parts of a face can be blocked from the sun. <br><br> <details> <summary><b>Properties</b></summary> Properties of Lighting, in the order they appear on Vo",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is ambient color?",
+      "Explain ambient color in Vortex",
+      "How do I use ambient color?",
+      "Tell me about ambient color"
+    ],
+    "answer": "> [`Color3`](/content/reference/datatypes/color3.md) \\ \\ Determines the visible color of the `part`. Will also affect the part's [`Material`]() color. <br/>",
+    "topic": "Ambient Color"
+  },
+  {
+    "questions": [
+      "What is brightness?",
+      "Explain brightness in Vortex",
+      "How do I use brightness?",
+      "Tell me about brightness"
+    ],
+    "answer": "> `Float` \\ \\ Determines how bright the `ambient` lighting is. <br/>",
+    "topic": "Brightness"
+  },
+  {
+    "questions": [
+      "What is position?",
+      "Explain position in Vortex",
+      "How do I use position?",
+      "Tell me about position"
+    ],
+    "answer": "> [`Vector3`](/content/reference/datatypes/vector3.md) \\ \\ This value has `no effect`. <br/>",
+    "topic": "Position"
+  },
+  {
+    "questions": [
+      "What is rotation?",
+      "Explain rotation in Vortex",
+      "How do I use rotation?",
+      "Tell me about rotation"
+    ],
+    "answer": "> [`Vector3`](/content/reference/datatypes/vector3.md) \\ \\ Determines the angle at which sunlight hits objects, and as such the dimensions of shadows. <br/>",
+    "topic": "Rotation"
+  },
+  {
+    "questions": [
+      "What is size?",
+      "Explain size in Vortex",
+      "How do I use size?",
+      "Tell me about size"
+    ],
+    "answer": "> [`Vector3`](/content/reference/datatypes/vector3.md) \\ \\ This value is `read-only` has `no effect`. <br/>",
+    "topic": "Size"
+  },
+  {
+    "questions": [
+      "What is sun brightness?",
+      "Explain sun brightness in Vortex",
+      "How do I use sun brightness?",
+      "Tell me about sun brightness"
+    ],
+    "answer": "> `Float` \\ \\ Determines how bright the `sun` lighting is. <br/>",
+    "topic": "Sun Brightness"
+  },
+  {
+    "questions": [
+      "What is sun color?",
+      "Explain sun color in Vortex",
+      "How do I use sun color?",
+      "Tell me about sun color"
+    ],
+    "answer": "> [`Color3`](/content/reference/datatypes/color3.md) \\ \\ Determines the color of sunlight that hits objects. Will blend with the ambient coloring. <br/>",
+    "topic": "Sun Color"
+  },
+  {
+    "questions": [
+      "What is sun shadows?",
+      "Explain sun shadows in Vortex",
+      "How do I use sun shadows?",
+      "Tell me about sun shadows"
+    ],
+    "answer": "> `Boolean` \\ \\ Toggles shadows globally (from the sun). Currently, there are no other types of lights that create shadows, so this is a toggle button for every shadow in your game. <br/>",
+    "topic": "Sun Shadows"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Syntax</b></summary> `Instance.new(className: string): Instance` </details>",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is overview?",
+      "Explain overview in Vortex",
+      "How do I use overview?",
+      "Tell me about overview"
+    ],
+    "answer": "`Instance.new` creates a new [`Instance`](/content/reference/classes/instance.md) of the class passed as `className`. local part = Instance.new(\"Part\") print(part)            --> Part print(part.ClassName)  --> Part print(part.Name)       --> Part",
+    "topic": "Overview"
+  },
+  {
+    "questions": [
+      "What is parenting?",
+      "Explain parenting in Vortex",
+      "How do I use parenting?",
+      "Tell me about parenting"
+    ],
+    "answer": "A new instance has no parent: it exists in memory, but it is not rendered, replicated, or saved until you assign its [`Parent`](/content/reference/classes/instance.md). Set the parent **last**, after configuring the instance, so scripts listening for new objects receive it fully configured: local part = Instance.new(\"Part\") part.Name = \"Platform\" part.Size = Vector3.new(8, 1, 8) part.Position = Vector3.new(0, 10, 0) part.Anchored = true part.Parent = workspace",
+    "topic": "Parenting"
+  },
+  {
+    "questions": [
+      "What is default state?",
+      "Explain default state in Vortex",
+      "How do I use default state?",
+      "Tell me about default state"
+    ],
+    "answer": "> A freshly created `Part` is unanchored, medium gray, and positioned at the world origin (`0, 0.5, 0`), with its [`Name`](#overview) defaulting to the class name. Any property you do not set yourself holds the class default.",
+    "topic": "Default state"
+  },
+  {
+    "questions": [
+      "What is notes?",
+      "Explain notes in Vortex",
+      "How do I use notes?",
+      "Tell me about notes"
+    ],
+    "answer": "- Common creatable classes include [`Part`](/content/reference/classes/part.md), [`Model`](/content/reference/classes/model.md), [`Folder`](/content/reference/classes/folder.md), [`SpawnLocation`](/content/reference/classes/spawnlocation.md), [`Script`](/content/reference/classes/script.md), [`LocalScript`](/content/reference/classes/localscript.md), [`ModuleScript`](/content/reference/classes/modulescript.md), [`IntValue`](/content/reference/classes/int-value.md), [`StringValue`](/content/refer",
+    "topic": "Notes"
+  },
+  {
+    "questions": [
+      "What is summary?",
+      "Explain summary in Vortex",
+      "How do I use summary?",
+      "Tell me about summary"
+    ],
+    "answer": "<details> <summary><b>Methods</b></summary> Methods of `game`. <br><br> * [GetService(serviceName: `String`)](#getservice): `Instance` </details> <details> <summary><b>Services</b></summary> Services of `game`. <br><br> * [Workspace](/content/reference/classes/workspace.md) * [Players](/content/reference/classes/players.md) * [ReplicatedStorage](/content/reference/classes/replicated-storage.md) * [StarterPlayerScripts](/content/reference/classes/starter-player-scripts.md) * [ServerScriptService]",
+    "topic": "Summary"
+  },
+  {
+    "questions": [
+      "What is getservice(servicename: `string`)?",
+      "Explain getservice(servicename: `string`) in Vortex",
+      "How do I use getservice(servicename: `string`)?",
+      "Tell me about getservice(servicename: `string`)"
+    ],
+    "answer": "> `Instance` > > Returns the service with specified name. <br/>",
+    "topic": "GetService(serviceName: `String`)"
+  },
+  {
+    "questions": [
+      "What is workspace?",
+      "Explain workspace in Vortex",
+      "How do I use workspace?",
+      "Tell me about workspace"
+    ],
+    "answer": "> `Instance` > The Workspace is the root object that holds anything that is currently in the world. [Workspace](/content/reference/classes/workspace.md) <br/>",
+    "topic": "Workspace"
+  },
+  {
+    "questions": [
+      "What is players?",
+      "Explain players in Vortex",
+      "How do I use players?",
+      "Tell me about players"
+    ],
+    "answer": "> `Instance` > > Stub. [Players](/content/reference/classes/players.md) <br/>",
+    "topic": "Players"
+  },
+  {
+    "questions": [
+      "What is replicatedstorage?",
+      "Explain replicatedstorage in Vortex",
+      "How do I use replicatedstorage?",
+      "Tell me about replicatedstorage"
+    ],
+    "answer": "> `Instance` > > Stub. [ReplicatedStorage](/content/reference/classes/replicated-storage.md) <br/>",
+    "topic": "ReplicatedStorage"
+  },
+  {
+    "questions": [
+      "What is starterplayerscripts?",
+      "Explain starterplayerscripts in Vortex",
+      "How do I use starterplayerscripts?",
+      "Tell me about starterplayerscripts"
+    ],
+    "answer": "> `Instance` > > Stub. [StarterPlayerScripts](/content/reference/classes/starter-player-scripts.md) <br/>",
+    "topic": "StarterPlayerScripts"
+  },
+  {
+    "questions": [
+      "What is serverscriptservice?",
+      "Explain serverscriptservice in Vortex",
+      "How do I use serverscriptservice?",
+      "Tell me about serverscriptservice"
+    ],
+    "answer": "> `Instance` > > Stub. [ServerScriptService](/content/reference/classes/server-script-service.md) <br/>",
+    "topic": "ServerScriptService"
+  },
+  {
+    "questions": [
+      "What is lighting?",
+      "Explain lighting in Vortex",
+      "How do I use lighting?",
+      "Tell me about lighting"
+    ],
+    "answer": "> `Instance` > > lighting is the game service that controls basic rendering and atmospherics. [Lighting](/content/reference/classes/lighting.md) <br/>",
+    "topic": "Lighting"
+  },
+  {
+    "questions": [
+      "What is iskeydown?",
+      "Explain iskeydown in Vortex",
+      "How do I use iskeydown?",
+      "Tell me about iskeydown"
+    ],
+    "answer": "Returns whether a certain is being held down. UserInputService:IsKeyDown(KeyCode: Enum.KeyCode): Boolean",
+    "topic": "IsKeyDown"
+  },
+  {
+    "questions": [
+      "What is parameters?",
+      "Explain parameters in Vortex",
+      "How do I use parameters?",
+      "Tell me about parameters"
+    ],
+    "answer": "KeyCode: Enum.KeyCode The Enum.KeyCode of the key",
+    "topic": "Parameters"
+  },
+  {
+    "questions": [
+      "What is returns?",
+      "Explain returns in Vortex",
+      "How do I use returns?",
+      "Tell me about returns"
+    ],
+    "answer": "Boolean Whether the specified key is being held down or not. This method returns true if they are holding down the specified key, otherwise it returns false.",
+    "topic": "Returns"
+  },
+  {
+    "questions": [
+      "What is examples?",
+      "Explain examples in Vortex",
+      "How do I use examples?",
+      "Tell me about examples"
+    ],
+    "answer": "local UserInputService = game:GetService(\"UserInputService\") UserInputService.InputBegan:Connect(function()    if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then   \t print(\"Left Shift\") \t end end)",
+    "topic": "Examples"
+  },
+  {
+    "questions": [
+      "What is inputbegan?",
+      "Explain inputbegan in Vortex",
+      "How do I use inputbegan?",
+      "Tell me about inputbegan"
+    ],
+    "answer": "Fires whenever the Player interacts with an input device. UserInputService.InputBegan(Input: InpitObject, GameProcessedEvent: Boolean)",
+    "topic": "InputBegan"
+  },
+  {
+    "questions": [
+      "What is parameters?",
+      "Explain parameters in Vortex",
+      "How do I use parameters?",
+      "Tell me about parameters"
+    ],
+    "answer": "Input: Input Object An Input object which contains information about the users input. GameProcessedEvent: Boolean Whether the Engine observed an action and acted on it. If a button was touched or clicked from this input, GameProcessedEvent will be true.",
+    "topic": "Parameters"
+  },
+  {
+    "questions": [
+      "What is examples?",
+      "Explain examples in Vortex",
+      "How do I use examples?",
+      "Tell me about examples"
+    ],
+    "answer": "local UserInputService = game:GetService(\"UserInputService\") UserInputService.InputBegan:Connect(function(Input, GameProccessedEvent)     if GameProccessedEvent then        print(\"Game Proccessed Event\")     end     if Input.KeyCode == Enum.KeyCode.R then         print(\"R\")     end end)",
+    "topic": "Examples"
+  }
+]

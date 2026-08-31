@@ -1,0 +1,122 @@
+[
+  {
+    "code": "Instance:SetAttribute(Attribute: String, Value: Variant)",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/attributes.md"
+  },
+  {
+    "code": "Attribute: string\nThe Name of the attribute being set.",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/attributes.md"
+  },
+  {
+    "code": "Value: Variant\nThe Value to set the specified Attribute to.",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/attributes.md"
+  },
+  {
+    "code": "local Part = workspace:WaitForChild(\"Part\")\nPart:SetAttribute(\"Id\", 1)",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/attributes.md"
+  },
+  {
+    "code": "Instance:GetAttribute(Attribute: String): Variant",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/attributes.md"
+  },
+  {
+    "code": "Attribute: string\nThe Name of the attribute being retrieved.",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/attributes.md"
+  },
+  {
+    "code": "Variant\nThe Value which has been given to the Attribute name. If no value is given to the Attribute name then nil is returned.",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/attributes.md"
+  },
+  {
+    "code": "local Part = workspace:WaitForChild(\"Part\")\nlocal Id = Part:GetAttribute(\"Id\")\nprint(Id)",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/attributes.md"
+  },
+  {
+    "code": "print(\"Hello, world!\")",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/first-script.md"
+  },
+  {
+    "code": "local workspace = game:GetService(\"Workspace\")",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/first-script.md"
+  },
+  {
+    "code": "local part = Instance.new(\"Part\")",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/first-script.md"
+  },
+  {
+    "code": "part.Parent = workspace",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/first-script.md"
+  },
+  {
+    "code": "part.Name = \"MyPart\"\npart.Size = Vector3.new(2, 2, 2)\npart.Position = Vector3.new(0, 10, 0)\npart.Color = Color3.fromRGB(192, 32, 12)\npart.Anchored = false",
+    "language": "luau",
+    "file": "vortex-docs/content/guides/first-script.md"
+  },
+  {
+    "code": "local Debris = game:GetService(\"Debris\")\n\nlocal part = Instance.new(\"Part\")\npart.Parent = workspace\n\nDebris:AddItem(part, 5)",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/classes/debris.md"
+  },
+  {
+    "code": "local part = Instance.new(\"Part\")\nprint(part)            --> Part\nprint(part.ClassName)  --> Part\nprint(part.Name)       --> Part",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/instance-new.md"
+  },
+  {
+    "code": "local part = Instance.new(\"Part\")\npart.Name = \"Platform\"\npart.Size = Vector3.new(8, 1, 8)\npart.Position = Vector3.new(0, 10, 0)\npart.Anchored = true\npart.Parent = workspace",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/instance-new.md"
+  },
+  {
+    "code": "UserInputService:IsKeyDown(KeyCode: Enum.KeyCode): Boolean",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/user-input-service.md"
+  },
+  {
+    "code": "KeyCode: Enum.KeyCode\nThe Enum.KeyCode of the key",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/user-input-service.md"
+  },
+  {
+    "code": "Boolean\nWhether the specified key is being held down or not.",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/user-input-service.md"
+  },
+  {
+    "code": "local UserInputService = game:GetService(\"UserInputService\")\n\nUserInputService.InputBegan:Connect(function()\n   if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then\n  \t print(\"Left Shift\")\n\t end\nend)",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/user-input-service.md"
+  },
+  {
+    "code": "UserInputService.InputBegan(Input: InpitObject, GameProcessedEvent: Boolean)",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/user-input-service.md"
+  },
+  {
+    "code": "Input: Input Object\nAn Input object which contains information about the users input.",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/user-input-service.md"
+  },
+  {
+    "code": "GameProcessedEvent: Boolean\nWhether the Engine observed an action and acted on it. If a button was touched or clicked from this input, GameProcessedEvent will be true.",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/user-input-service.md"
+  },
+  {
+    "code": "local UserInputService = game:GetService(\"UserInputService\")\n\nUserInputService.InputBegan:Connect(function(Input, GameProccessedEvent)\n    if GameProccessedEvent then\n       print(\"Game Proccessed Event\")\n    end\n    \n    if Input.KeyCode == Enum.KeyCode.R then\n        print(\"R\")\n    end\nend)",
+    "language": "luau",
+    "file": "vortex-docs/content/reference/globals/user-input-service.md"
+  }
+]

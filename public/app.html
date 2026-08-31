@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vorbe</title>
+    <link rel="icon" type="image/png" href="res/VorbeTabIcon.png">
+    <style>
+        :root[data-theme="light"] {
+            --bg: #ffffff;
+            --bg-panel: #f7f7f8;
+            --border: #e3e3e6;
+            --text: #0d0d0d;
+            --text-secondary: #6e6e77;
+            --accent-bg: #0d0d0d;
+            --accent-text: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #121212;
+            --bg-panel: #1c1c1e;
+            --border: #2e2e32;
+            --text: #f2f2f3;
+            --text-secondary: #9a9aa2;
+            --accent-bg: #f2f2f3;
+            --accent-text: #0d0d0d;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        html {
+            --brand: #a13dff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .layout {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-mark {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .brand-mark img {
+            height: 26px;
+            width: auto;
+            display: block;
+        }
+
+        /* Logo art is white shapes on a transparent background - invisible on
+           a light page unless inverted. Dark mode needs no change. */
+        :root[data-theme="light"] .brand-mark img {
+            filter: invert(1) brightness(0.1);
+        }
+
+        .brand-sub {
+            margin-top: 8px;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .chat-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-title {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+            transform: scale(1.08);
+        }
+
+        .theme-toggle img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Icon art is white shapes on a transparent background - invisible on
+           a light page unless inverted. Dark mode needs no change. */
+        :root[data-theme="light"] .theme-toggle img {
+            filter: invert(1) brightness(0.1);
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 760px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .message {
+            line-height: 1.55;
+            word-wrap: break-word;
+            animation: fadeIn 0.15s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .user-message {
+            align-self: flex-end;
+            max-width: 80%;
+            background: var(--accent-bg);
+            color: var(--accent-text);
+            padding: 10px 14px;
+            border-radius: 10px;
+        }
+
+        .assistant-message {
+            align-self: stretch;
+            color: var(--text);
+        }
+
+        .assistant-message.error {
+            border: 1px dashed var(--text-secondary);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--text-secondary);
+        }
+
+        code {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-top: 8px;
+        }
+
+        pre code {
+            border: none;
+            padding: 0;
+            background: none;
+        }
+
+        .input-area {
+            border-top: 1px solid var(--border);
+            padding: 16px 24px 20px;
+        }
+
+        .input-shell {
+            max-width: 760px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 8px 10px;
+            background: var(--bg);
+        }
+
+        .input-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        .attachment-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8em;
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+        }
+
+        .attachment-chip[hidden] {
+            display: none;
+        }
+
+        .attachment-chip button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .attachment-chip button:hover {
+            color: var(--text);
+        }
+
+        .icon-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1.1em;
+            line-height: 1;
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        .icon-btn:hover:not(:disabled) {
+            background: var(--border);
+            transform: scale(1.08);
+        }
+
+        .skill-btn {
+            height: 30px;
+            padding: 0 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 0.85em;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        .skill-btn:hover {
+            background: var(--border);
+            transform: scale(1.05);
+        }
+
+        .skill-icon-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .skill-icon-badge img {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Icon art is white shapes on a transparent background - invisible on
+           a light page unless inverted, now that there's no colored badge
+           behind them. Dark mode needs no change. */
+        :root[data-theme="light"] .skill-icon-badge img {
+            filter: invert(1) brightness(0.1);
+        }
+
+        .skill-menu {
+            position: absolute;
+            bottom: 38px;
+            left: 0;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 4px 16px var(--shadow);
+            min-width: 220px;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .skill-menu[hidden] {
+            display: none;
+        }
+
+        .skill-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            text-align: left;
+            padding: 10px 14px;
+            border: none;
+            background: none;
+            font-size: 0.9em;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .skill-option:hover {
+            background: var(--border);
+        }
+
+        .skill-option.active {
+            font-weight: 600;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .input-row input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            padding: 8px 6px;
+            font-family: inherit;
+            color: var(--text);
+            background: transparent;
+        }
+
+        .send-btn {
+            width: 34px;
+            height: 34px;
+            background: var(--accent-bg);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            opacity: 0.85;
+            transform: scale(1.08);
+        }
+
+        .send-btn img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Icon asset is white. In light mode the button background is black,
+           so the white icon already reads correctly. In dark mode the button
+           background flips to near-white, so the icon needs to invert to dark. */
+        :root[data-theme="dark"] .send-btn img {
+            filter: invert(1) brightness(0.1);
+        }
+
+        @media (max-width: 640px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark"><img src="res/VorbeBannerLogo.png" alt="Vorbe"></div>
+            </div>
+            <div class="brand-sub">AI coding assistant for Vortex</div>
+        </aside>
+
+        <div class="main">
+            <div class="chat-header">
+                <div class="chat-header-title">Vorbe</div>
+                <button class="theme-toggle" id="themeToggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+                    <img id="themeIcon" src="res/Moon.png" alt="">
+                </button>
+            </div>
+
+            <div class="messages" id="messages"></div>
+
+            <div class="input-area">
+                <div class="input-shell">
+                    <div class="attachment-chip" id="attachmentChip" hidden>
+                        <span id="attachmentChipName"></span>
+                        <button type="button" id="attachmentRemove" aria-label="Remove attachment" title="Remove attachment">&times;</button>
+                    </div>
+                    <div class="input-toolbar">
+                        <input type="file" id="fileInput" hidden accept="image/*,.lua,.luau">
+                        <button class="icon-btn" id="attachBtn" type="button" title="Attach a file" aria-label="Attach a file">+</button>
+                        <button class="skill-btn" id="skillBtn" type="button">
+                            <span class="skill-icon-badge" id="skillBtnIcon"></span>
+                            <span id="skillBtnLabel">Skill: Script generation</span>
+                        </button>
+                        <div class="skill-menu" id="skillMenu" hidden></div>
+                    </div>
+                    <div class="input-row">
+                        <input
+                            type="text"
+                            id="input"
+                            placeholder="Describe what you want to create or fix..."
+                            onkeypress="if(event.key==='Enter') send()"
+                        />
+                        <button class="send-btn" id="sendBtn" onclick="handleSendClick()" aria-label="Send" title="Send">
+                            <img id="sendBtnIcon" src="res/Send.png" alt="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Theme ---
+        function getPreferredTheme() {
+            const stored = localStorage.getItem("vorbe-theme");
+            if (stored === "light" || stored === "dark") return stored;
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute("data-theme", theme);
+            document.getElementById("themeIcon").src = theme === "dark" ? "res/Sun.png" : "res/Moon.png";
+            localStorage.setItem("vorbe-theme", theme);
+        }
+
+        applyTheme(getPreferredTheme());
+
+        document.getElementById("themeToggle").addEventListener("click", () => {
+            const current = document.documentElement.getAttribute("data-theme");
+            applyTheme(current === "dark" ? "light" : "dark");
+        });
+
+        // --- Backend ---
+        // Same Vercel deployment as this page, so relative paths just work -
+        // locally via `vercel dev`, in production automatically.
+        const API_URL = "";
+        const API_TOKEN = ""; // set to match API_AUTH_TOKEN if you configured one
+
+        const TASK_OPTIONS = [
+            ["script_generation", "Script generation", "res/Script.png"],
+            ["bug_fixing", "Bug fixing", "res/Bug.png"],
+            ["documentation", "Documentation", "res/Docs.png"],
+            // World generation disabled for now - re-enable this line once ready.
+            // ["world_generation", "World generation", "res/GenerateWorld.png"],
+            ["security_review", "Security review", "res/Lock.png"],
+        ];
+
+        let currentTask = "script_generation";
+        let isLoading = false;
+
+        const skillBtn = document.getElementById("skillBtn");
+        const skillBtnIcon = document.getElementById("skillBtnIcon");
+        const skillBtnLabel = document.getElementById("skillBtnLabel");
+        const skillMenu = document.getElementById("skillMenu");
+
+        function renderSkillMenu() {
+            skillMenu.innerHTML = "";
+            for (const [value, label, icon] of TASK_OPTIONS) {
+                const btn = document.createElement("button");
+                btn.className = "skill-option" + (value === currentTask ? " active" : "");
+                btn.innerHTML = `<span class="skill-icon-badge"><img src="${icon}" alt=""></span><span></span>`;
+                btn.querySelector("span:last-child").textContent = label;
+                btn.onclick = () => {
+                    currentTask = value;
+                    skillBtnIcon.innerHTML = `<img src="${icon}" alt="">`;
+                    skillBtnLabel.textContent = `Skill: ${label}`;
+                    skillMenu.hidden = true;
+                    renderSkillMenu();
+                };
+                skillMenu.appendChild(btn);
+            }
+        }
+        renderSkillMenu();
+        skillBtnIcon.innerHTML = `<img src="${TASK_OPTIONS[0][2]}" alt="">`;
+
+        skillBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            skillMenu.hidden = !skillMenu.hidden;
+        });
+
+        document.addEventListener("click", () => {
+            skillMenu.hidden = true;
+        });
+
+        // --- Attachment ---
+        const MAX_ATTACHMENT_CHARS = 20000;
+        // Groq's own cap for inline base64 images is 4MB; stay comfortably under it.
+        const MAX_IMAGE_DATA_URL_BYTES = 3 * 1024 * 1024;
+        let attachedFile = null; // { kind: 'text'|'image', name, content?, dataUrl? }
+
+        const fileInput = document.getElementById("fileInput");
+        const attachBtn = document.getElementById("attachBtn");
+        const attachmentChip = document.getElementById("attachmentChip");
+        const attachmentChipName = document.getElementById("attachmentChipName");
+
+        const CODE_EXTENSIONS = [".lua", ".luau"];
+        // .vrtx/.json are temporarily disabled while the format is still being
+        // reverse-engineered - re-enable by moving them into CODE_EXTENSIONS
+        // (or a dedicated handler) once that's stable.
+        const DISABLED_EXTENSIONS = [".vrtx", ".json"];
+
+        function extensionOf(filename) {
+            const i = filename.lastIndexOf(".");
+            return i === -1 ? "" : filename.slice(i).toLowerCase();
+        }
+
+        attachBtn.addEventListener("click", () => fileInput.click());
+
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files[0];
+            fileInput.value = ""; // allow re-selecting the same file later
+            if (!file) return;
+
+            const ext = extensionOf(file.name);
+
+            if (DISABLED_EXTENSIONS.includes(ext)) {
+                addMessage(`Attaching ${ext} files is temporarily disabled.`, "assistant", true);
+                return;
+            }
+
+            if (CODE_EXTENSIONS.includes(ext)) {
+                readCodeFile(file);
+            } else if (file.type.startsWith("image/") || /\.(png|jpe?g|gif|webp|bmp|svg|avif)$/i.test(file.name)) {
+                readImageFile(file);
+            } else {
+                addMessage(`That file type isn't supported. Attach an image or a ${CODE_EXTENSIONS.join("/")} file.`, "assistant", true);
+            }
+        });
+
+        function readCodeFile(file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                let content = String(reader.result);
+                let truncated = false;
+                if (content.length > MAX_ATTACHMENT_CHARS) {
+                    content = content.slice(0, MAX_ATTACHMENT_CHARS);
+                    truncated = true;
+                }
+                attachedFile = { kind: "text", name: file.name, content, truncated };
+                attachmentChipName.textContent = file.name + (truncated ? " (truncated)" : "");
+                attachmentChip.hidden = false;
+            };
+            reader.onerror = () => {
+                addMessage(`Couldn't read ${file.name} as text.`, "assistant", true);
+            };
+            reader.readAsText(file);
+        }
+
+        function readImageFile(file) {
+            compressImage(file)
+                .then((dataUrl) => {
+                    attachedFile = { kind: "image", name: file.name, dataUrl };
+                    attachmentChipName.textContent = file.name;
+                    attachmentChip.hidden = false;
+                })
+                .catch(() => {
+                    addMessage(`Couldn't process ${file.name} as an image.`, "assistant", true);
+                });
+        }
+
+        // Resizes to a reasonable max dimension and re-encodes as JPEG so
+        // uploaded images stay well under Groq's inline base64 size limit.
+        function compressImage(file, maxDim = 1280, startQuality = 0.75) {
+            return new Promise((resolve, reject) => {
+                const objectUrl = URL.createObjectURL(file);
+                const img = new Image();
+
+                img.onload = () => {
+                    URL.revokeObjectURL(objectUrl);
+
+                    let { width, height } = img;
+                    if (width > maxDim || height > maxDim) {
+                        const scale = maxDim / Math.max(width, height);
+                        width = Math.round(width * scale);
+                        height = Math.round(height * scale);
+                    }
+
+                    const canvas = document.createElement("canvas");
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    let quality = startQuality;
+                    let dataUrl = canvas.toDataURL("image/jpeg", quality);
+                    while (dataUrl.length > MAX_IMAGE_DATA_URL_BYTES && quality > 0.3) {
+                        quality -= 0.1;
+                        dataUrl = canvas.toDataURL("image/jpeg", quality);
+                    }
+
+                    if (dataUrl.length > MAX_IMAGE_DATA_URL_BYTES) {
+                        reject(new Error("Image too large even after compression"));
+                        return;
+                    }
+
+                    resolve(dataUrl);
+                };
+                img.onerror = () => {
+                    URL.revokeObjectURL(objectUrl);
+                    reject(new Error("Couldn't decode image"));
+                };
+                img.src = objectUrl;
+            });
+        }
+
+        function clearAttachment() {
+            attachedFile = null;
+            attachmentChip.hidden = true;
+        }
+
+        document.getElementById("attachmentRemove").addEventListener("click", clearAttachment);
+
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        let activeAbortController = null;
+
+        function setLoading(loading) {
+            isLoading = loading;
+            const sendBtnIcon = document.getElementById("sendBtnIcon");
+            const sendBtn = document.getElementById("sendBtn");
+            sendBtnIcon.src = loading ? "res/Stop.png" : "res/Send.png";
+            sendBtn.title = loading ? "Stop" : "Send";
+            sendBtn.setAttribute("aria-label", loading ? "Stop" : "Send");
+        }
+
+        function handleSendClick() {
+            if (isLoading) {
+                if (activeAbortController) activeAbortController.abort();
+            } else {
+                send();
+            }
+        }
+
+        async function send() {
+            const input = document.getElementById("input");
+            const message = input.value.trim();
+
+            if ((!message && !attachedFile) || isLoading) return;
+
+            const displayText = attachedFile
+                ? `${message}\n\n[Attached: ${attachedFile.name}]`.trim()
+                : message;
+            addMessage(displayText, "user");
+
+            let prompt = message;
+            let image = null;
+            if (attachedFile) {
+                if (attachedFile.kind === "text") {
+                    prompt = `Attached file: ${attachedFile.name}\n\`\`\`\n${attachedFile.content}\n\`\`\`\n\n${message}`;
+                } else if (attachedFile.kind === "image") {
+                    prompt = message || "Describe what's shown in this image.";
+                    image = attachedFile.dataUrl;
+                }
+            }
+            clearAttachment();
+
+            input.value = "";
+            setLoading(true);
+            activeAbortController = new AbortController();
+
+            try {
+                const response = await fetch(`${API_URL}/generate`, {
+                    method: "POST",
+                    signal: activeAbortController.signal,
+                    headers: {
+                        "Content-Type": "application/json",
+                        ...(API_TOKEN ? { "Authorization": `Bearer ${API_TOKEN}` } : {})
+                    },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        task_type: currentTask,
+                        max_tokens: 512,
+                        temperature: 0.7,
+                        ...(image ? { image } : {})
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                addMessage(data.response, "assistant");
+            } catch (error) {
+                if (error.name === "AbortError") {
+                    addMessage("Stopped.", "assistant");
+                } else {
+                    addMessage(`Error: ${error.message}. Is the API server running?`, "assistant", true);
+                }
+            } finally {
+                activeAbortController = null;
+                setLoading(false);
+            }
+        }
+
+        function addMessage(text, role, isError = false) {
+            const messagesDiv = document.getElementById("messages");
+            const messageEl = document.createElement("div");
+            messageEl.className = `message ${role}-message` + (isError ? " error" : "");
+
+            // Escape first, then apply the small set of intentional markdown
+            // transforms - keeps any HTML in the source text inert.
+            const escaped = escapeHtml(text);
+            const formattedText = escaped
+                .replace(/```(?:luau|lua)?\n([\s\S]*?)```/g, "<pre><code>$1</code></pre>")
+                .replace(/`([^`]+)`/g, "<code>$1</code>")
+                .replace(/\n/g, "<br>");
+
+            messageEl.innerHTML = formattedText;
+            messagesDiv.appendChild(messageEl);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            addMessage("Welcome to Vorbe. Pick a skill and describe what you need.", "assistant");
+            document.getElementById("input").focus();
+        });
+    </script>
+</body>
+</html>

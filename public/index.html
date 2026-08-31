@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vorbe</title>
+    <meta name="description" content="An AI coding assistant for Vortex developers. Free and open source.">
+    <link rel="icon" type="image/png" href="res/VorbeTabIcon.png">
+    <meta property="og:title" content="Vorbe">
+    <meta property="og:description" content="An AI coding assistant for Vortex developers. Free and open source.">
+    <meta property="og:image" content="res/GithubBannerVorbe.png">
+    <style>
+        :root[data-theme="light"] {
+            --bg: #ffffff;
+            --bg-panel: #f7f7f8;
+            --border: #e3e3e6;
+            --text: #0d0d0d;
+            --text-secondary: #6e6e77;
+            --accent-bg: #0d0d0d;
+            --accent-text: #ffffff;
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #121212;
+            --bg-panel: #1c1c1e;
+            --border: #2e2e32;
+            --text: #f2f2f3;
+            --text-secondary: #9a9aa2;
+            --accent-bg: #f2f2f3;
+            --accent-text: #0d0d0d;
+        }
+
+        html {
+            --brand: #a13dff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-mark {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .brand-mark img {
+            height: 26px;
+            width: auto;
+            display: block;
+        }
+
+        /* Logo art is white shapes on a transparent background - invisible on
+           a light page unless inverted. Dark mode needs no change. */
+        :root[data-theme="light"] .brand-mark img {
+            filter: invert(1) brightness(0.1);
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .header-links a:hover {
+            color: var(--text);
+        }
+
+        .theme-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+            transform: scale(1.08);
+        }
+
+        .theme-toggle img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Icon art is white shapes on a transparent background - invisible on
+           a light page unless inverted. Dark mode needs no change. */
+        :root[data-theme="light"] .theme-toggle img {
+            filter: invert(1) brightness(0.1);
+        }
+
+        .btn-primary {
+            padding: 9px 18px;
+            background: var(--accent-bg);
+            color: var(--accent-text);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.85;
+            transform: scale(1.05);
+        }
+
+        .hero {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 90px 24px 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.4em;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 1.1em;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-secondary {
+            padding: 9px 18px;
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+            transform: scale(1.05);
+        }
+
+        .features {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 24px 100px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .feature {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--brand);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        .feature-icon img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .feature h3 {
+            font-size: 1em;
+            margin-bottom: 6px;
+        }
+
+        .feature p {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 32px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+        }
+
+        footer a {
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <div class="brand-mark"><img src="res/VorbeBannerLogo.png" alt="Vorbe"></div>
+        </div>
+        <div class="header-links">
+            <a href="https://github.com/abutauskas/Vorbe">GitHub</a>
+            <button class="theme-toggle" id="themeToggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+                <img id="themeIcon" src="res/Moon.png" alt="">
+            </button>
+            <a class="btn-primary" href="/app">Open Vorbe</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>An AI assistant built for Vortex developers</h1>
+        <p>It helps you write code faster. Describe what you want and get working code, paste a bug and get it fixed, or ask how a Vortex API works. Free and open source.</p>
+        <div class="hero-actions">
+            <a class="btn-primary" href="/app">Start chatting</a>
+            <a class="btn-secondary" href="https://github.com/abutauskas/Vorbe">View on GitHub</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <div class="feature-icon"><img src="res/Script.png" alt=""></div>
+            <h3>Generate scripts</h3>
+            <p>"Create a script that spawns a red part at position (0, 10, 0)" becomes working code.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon"><img src="res/Bug.png" alt=""></div>
+            <h3>Fix bugs</h3>
+            <p>Paste broken code and get an explanation of what's wrong along with a fix.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon"><img src="res/Docs.png" alt=""></div>
+            <h3>Learn APIs</h3>
+            <p>Ask about RemoteEvents, TweenService, or anything else and get explanations with examples.</p>
+        </div>
+        <!-- World generation disabled for now - re-enable this card once ready.
+        <div class="feature">
+            <div class="feature-icon"><img src="res/GenerateWorld.png" alt=""></div>
+            <h3>Generate worlds</h3>
+            <p>"Create a procedural dungeon" turns into a generation script.</p>
+        </div>
+        -->
+        <div class="feature">
+            <div class="feature-icon"><img src="res/Lock.png" alt=""></div>
+            <h3>Review code</h3>
+            <p>Check your scripts for security issues before they ship.</p>
+        </div>
+    </section>
+
+    <footer>
+        MIT License. Built by vorbe contributors. <a href="https://github.com/abutauskas/Vorbe">Contribute on GitHub</a>.
+    </footer>
+
+    <script>
+        function getPreferredTheme() {
+            const stored = localStorage.getItem("vorbe-theme");
+            if (stored === "light" || stored === "dark") return stored;
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute("data-theme", theme);
+            document.getElementById("themeIcon").src = theme === "dark" ? "res/Sun.png" : "res/Moon.png";
+            localStorage.setItem("vorbe-theme", theme);
+        }
+
+        applyTheme(getPreferredTheme());
+
+        document.getElementById("themeToggle").addEventListener("click", () => {
+            const current = document.documentElement.getAttribute("data-theme");
+            applyTheme(current === "dark" ? "light" : "dark");
+        });
+    </script>
+</body>
+</html>
