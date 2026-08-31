@@ -52,7 +52,11 @@ class GenerateRequest(BaseModel):
     """What the user is asking for"""
     prompt: str
     task_type: str = "script_generation"
-    max_tokens: int = 8000
+    # Groq's free tier caps openai/gpt-oss-120b at 8,000 tokens/minute total
+    # (prompt + completion, across all requests). Keeping this well under
+    # that leaves room for more than one request per minute instead of one
+    # long reply eating the whole budget and 429ing the next call.
+    max_tokens: int = 1500
     temperature: float = 0.7
     image: Optional[str] = None  # data:image/...;base64,... - never a remote URL
 
