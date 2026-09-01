@@ -110,7 +110,10 @@ PLATFORM_CONTEXT = (
     "that this isn't a documented Vortex feature yet rather than generating "
     "Roblox-style ScreenGui code, which does not carry over. "
     "If you're not certain about a specific class, method, or property, say "
-    "so plainly rather than inventing plausible-sounding details."
+    "so plainly rather than inventing plausible-sounding details. "
+    "Keep any internal reasoning brief and get to the actual answer quickly - "
+    "don't re-derive the same constraints repeatedly or second-guess a "
+    "settled decision at length before writing the response."
 )
 
 
@@ -121,12 +124,15 @@ class GenerateRequest(BaseModel):
     # Text generation runs on OpenRouter now, which has no token-rate limit
     # (only a request-count cap - see OPENROUTER_CODING_MODEL's comment) so
     # this no longer needs to be squeezed the way it did under Groq's old
-    # 8K-tokens/minute cap. Sized generously because reasoning models
-    # (Poolside included) can spend a lot of their budget on internal
-    # deliberation before producing real content - 1500 and then 4000 both
-    # still got routed into ReasoningExhausted on genuinely non-trivial
-    # prompts (a bug-fixing request with a large pasted script + traceback).
-    max_tokens: int = 6000
+    # 8K-tokens/minute cap. Sized generously because reasoning models can
+    # spend a lot of their budget on internal deliberation before producing
+    # real content - and how much varies run to run (temperature=0.7), so
+    # this is risk reduction, not a hard fix. A live A/B on the identical
+    # prompt/system-prompt showed reasoning alone using ~1740 tokens on one
+    # run; 1500 and then 4000 both still got routed into ReasoningExhausted
+    # on real prompts. See call_openrouter_with_fallback's retry pass for
+    # the other half of the mitigation.
+    max_tokens: int = 8000
     temperature: float = 0.7
     image: Optional[str] = None  # data:image/...;base64,... - never a remote URL
 
@@ -382,27 +388,27 @@ async def call_openrouter(model: str, system: str, user_content, max_tokens: int
     return text, tokens_used
 
 
-async def call_openrouter_with_fallback(models: list, system: str, user_content, max_tokens: int, temperature: float):
-    """Tries each model in order, falling back to the next on a rate limit
-    (429), a provider-side error (5xx), or the model exhausting its budget
-    on reasoning without producing content - those are the cases where a
-    different free model actually has a real shot at succeeding. Anything
-    else (a 400 from a malformed request, a 401 from a bad key) will fail on
-    every model identically, so it's raised immediately instead of wasting
-    the fallback models on a request that was never going to work.
+async def _try_models_once(models: list, system: str, user_content, max_tokens: int, temperature: float):
+    """One pass through the model list, falling back to the next model on a
+    rate limit (429), a provider-side error (5xx), or the model exhausting
+    its budget on reasoning without producing content - those are the cases
+    where a different free model actually has a real shot at succeeding.
+    Anything else (a 400 from a malformed request, a 401 from a bad key)
+    will fail on every model identically, so it's raised immediately
+    instead of wasting the fallback models on a request that was never
+    going to work.
 
-    If every model in the chain hits the reasoning-exhausted case, returns a
-    plain apology rather than raising - there's nothing further upstream
-    that would handle it better, and showing the raw reasoning trace to the
-    user (a wall of "We need to..." internal monologue) is worse than
-    admitting it didn't work.
+    If the pass ends because every model hit the reasoning-exhausted case,
+    raises ReasoningExhausted itself (distinct from an HTTP failure) so the
+    caller can decide whether a full retry pass is worth it - see
+    call_openrouter_with_fallback, which is the only caller.
     """
     last_error = None
-    # Reflects only the LAST model tried, not "did any model in the chain
-    # ever hit this" - a run where model 1 exhausts its reasoning budget
+    # Reflects only the LAST model tried, not "did any model in this pass
+    # ever hit this" - a pass where model 1 exhausts its reasoning budget
     # but model 2 then 429s should surface as a rate-limit error (accurate,
-    # and the outer handler already has good messaging for it), not as a
-    # "ran out of room thinking" apology that isn't what actually happened.
+    # and the outer handler already has good messaging for it), not as
+    # reasoning-exhaustion, which isn't what actually happened last.
     hit_reasoning_wall = False
     for i, model in enumerate(models):
         try:
@@ -412,7 +418,7 @@ async def call_openrouter_with_fallback(models: list, system: str, user_content,
             if i < len(models) - 1:
                 logger.warning(f"{model} burned its whole budget on reasoning, trying {models[i + 1]}")
                 continue
-            logger.warning(f"{model} burned its whole budget on reasoning, no more fallback models")
+            logger.warning(f"{model} burned its whole budget on reasoning, no more fallback models this pass")
             break
         except httpx.HTTPStatusError as e:
             status = e.response.status_code
@@ -422,16 +428,42 @@ async def call_openrouter_with_fallback(models: list, system: str, user_content,
                 if i < len(models) - 1:
                     logger.warning(f"{model} failed ({status}), falling back to {models[i + 1]}")
                     continue
-                logger.warning(f"{model} failed ({status}), no more fallback models")
+                logger.warning(f"{model} failed ({status}), no more fallback models this pass")
                 break
             raise
     if hit_reasoning_wall:
-        return (
-            "Sorry, I ran out of room thinking this one through and didn't "
-            "reach a real answer. Try again, or ask for something more specific.",
-            0,
-        )
+        raise ReasoningExhausted()
     raise last_error
+
+
+async def call_openrouter_with_fallback(models: list, system: str, user_content, max_tokens: int, temperature: float):
+    """Runs _try_models_once, and if every model in that pass hit the
+    reasoning wall, tries the whole chain again once before giving up.
+
+    That retry is specifically for the reasoning-exhausted case, not for
+    HTTP failures (those propagate immediately, no retry) - confirmed live
+    that how much of the budget reasoning eats is genuinely stochastic
+    (temperature=0.7): the identical prompt against the identical system
+    prompt failed once and then succeeded cleanly on a second try with real
+    output, so a second full pass has a real shot where an HTTP failure
+    retried immediately mostly wouldn't. Only if BOTH passes exhaust every
+    model does this return a plain apology - there's nothing further
+    upstream that would handle it better, and showing the raw reasoning
+    trace to the user (a wall of "We need to..." internal monologue) is
+    worse than admitting it didn't work.
+    """
+    try:
+        return await _try_models_once(models, system, user_content, max_tokens, temperature)
+    except ReasoningExhausted:
+        logger.warning("Every model hit the reasoning wall - retrying the whole chain once")
+        try:
+            return await _try_models_once(models, system, user_content, max_tokens, temperature)
+        except ReasoningExhausted:
+            return (
+                "Sorry, I ran out of room thinking this one through and didn't "
+                "reach a real answer. Try again, or ask for something more specific.",
+                0,
+            )
 
 
 async def call_cloudflare_worker(system: str, user_content, max_tokens: int):
