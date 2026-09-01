@@ -16,7 +16,9 @@ Vorbe runs entirely on Vercel: the landing page (`public/index.html`) and the ch
    - `GROQ_API_KEY` = your Groq key, if you added one (image attachments won't work without it, everything else still will)
    - Optional: `API_AUTH_TOKEN` = a random string of your choosing, if you want to gate `/generate` against random bots hitting the endpoint directly
    - Optional: `OPENROUTER_CODING_MODEL` = a different model for script generation/bug fixing/security review (default `poolside/laguna-s-2.1:free`)
+   - Optional: `OPENROUTER_CODING_MODEL_BACKUP` = falls back to this if the coding model hits a rate limit or errors (default `cohere/north-mini-code:free`)
    - Optional: `OPENROUTER_DOC_MODEL` = a different model for documentation questions (default `minimax/minimax-m3:free`)
+   - Optional: `OPENROUTER_DOC_MODEL_BACKUP` = falls back to this if the doc model hits a rate limit or errors (default `minimax/minimax-m2.7:free`)
    - Optional: `GROQ_VISION_MODEL` = a different vision-capable model, used only for requests with an attached image (default `qwen/qwen3.8-27b`)
 4. Deploy.
 
@@ -67,7 +69,7 @@ vercel dev
 
 **`/health` shows `"configured": false`** - `OPENROUTER_API_KEY` isn't set (breaks all text generation) or `GROQ_API_KEY` isn't set (breaks image attachments only). Add whichever's missing under Vercel's Project Settings → Environment Variables, then redeploy.
 
-**`/generate` returns a model-related error** - free-tier model availability on OpenRouter/Groq changes over time; a model may have been renamed, deprecated, or hit its free-tier rate limit (OpenRouter's free models are capped at 20 requests/minute, 50/day per account unless you've purchased credits, which raises the daily cap to 1000). Set `OPENROUTER_CODING_MODEL` / `OPENROUTER_DOC_MODEL` / `GROQ_VISION_MODEL` to a current model name if the default was retired.
+**`/generate` returns a model-related error** - free-tier model availability on OpenRouter/Groq changes over time; a model may have been renamed, deprecated, or hit its free-tier rate limit (OpenRouter's free models are capped at 20 requests/minute, 50/day per account unless you've purchased credits, which raises the daily cap to 1000). Each text model already has a backup it falls back to on a 429 or 5xx, so a single retired/rate-limited model shouldn't take the whole thing down - but if you're seeing this often, set `OPENROUTER_CODING_MODEL` / `OPENROUTER_CODING_MODEL_BACKUP` / `OPENROUTER_DOC_MODEL` / `OPENROUTER_DOC_MODEL_BACKUP` / `GROQ_VISION_MODEL` to current model names.
 
 **Frontend loads but chat doesn't respond** - check the browser console. A failed request to `/generate` on the same origin usually means the function errored (check Vercel's function logs) rather than a networking/CORS issue.
 

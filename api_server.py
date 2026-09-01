@@ -41,13 +41,20 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_VISION_MODEL = os.environ.get("GROQ_VISION_MODEL", "qwen/qwen3.8-27b")
 groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
-# Text generation runs on two free OpenRouter models, routed by task type:
-# a coding-focused model for script generation/bug fixing/security review,
-# and a documentation-focused model for API/concept explanations. Both are
-# free-tier ($0/request, confirmed via usage.cost) and OpenAI-compatible.
+# Text generation runs on free OpenRouter models, routed by task type: a
+# coding-focused model for script generation/bug fixing/security review, and
+# a documentation-focused model for API/concept explanations. Each has a
+# backup - OpenRouter's free tier is capped at 20 requests/minute and
+# 50/day per account (1000/day once any credits are purchased), shared
+# across every free model, so the primary model alone can and does 429
+# under real use. Falls back only on 429/5xx (see call_openrouter_with_
+# fallback) - a different model has a real shot at those, not at a 400/401.
+# All confirmed free ($0/request) and working via real test calls.
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 OPENROUTER_CODING_MODEL = os.environ.get("OPENROUTER_CODING_MODEL", "poolside/laguna-s-2.1:free")
+OPENROUTER_CODING_MODEL_BACKUP = os.environ.get("OPENROUTER_CODING_MODEL_BACKUP", "cohere/north-mini-code:free")
 OPENROUTER_DOC_MODEL = os.environ.get("OPENROUTER_DOC_MODEL", "minimax/minimax-m3:free")
+OPENROUTER_DOC_MODEL_BACKUP = os.environ.get("OPENROUTER_DOC_MODEL_BACKUP", "minimax/minimax-m2.7:free")
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 DOCUMENTATION_TASK_TYPES = {"documentation"}
 
@@ -291,6 +298,31 @@ async def call_openrouter(model: str, system: str, user_content, max_tokens: int
     return text, tokens_used
 
 
+async def call_openrouter_with_fallback(models: list, system: str, user_content, max_tokens: int, temperature: float):
+    """Tries each model in order, falling back to the next only on a rate
+    limit (429) or a provider-side error (5xx) - those are the cases where a
+    different free model actually has a shot at succeeding. Anything else
+    (a 400 from a malformed request, a 401 from a bad key) will fail on
+    every model identically, so it's raised immediately instead of wasting
+    the fallback models on a request that was never going to work.
+    """
+    last_error = None
+    for i, model in enumerate(models):
+        try:
+            return await call_openrouter(model, system, user_content, max_tokens, temperature)
+        except httpx.HTTPStatusError as e:
+            status = e.response.status_code
+            last_error = e
+            if status == 429 or status >= 500:
+                if i < len(models) - 1:
+                    logger.warning(f"{model} failed ({status}), falling back to {models[i + 1]}")
+                    continue
+                logger.warning(f"{model} failed ({status}), no more fallback models")
+                break
+            raise
+    raise last_error
+
+
 @app.post("/generate", response_model=GenerateResponse)
 async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_token)):
     """Generate a response for the user's prompt - OpenRouter for text, Groq for vision."""
@@ -339,13 +371,13 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
             if not OPENROUTER_API_KEY:
                 raise HTTPException(status_code=503, detail="OPENROUTER_API_KEY isn't configured")
 
-            model = (
-                OPENROUTER_DOC_MODEL
+            models = (
+                [OPENROUTER_DOC_MODEL, OPENROUTER_DOC_MODEL_BACKUP]
                 if request.task_type in DOCUMENTATION_TASK_TYPES
-                else OPENROUTER_CODING_MODEL
+                else [OPENROUTER_CODING_MODEL, OPENROUTER_CODING_MODEL_BACKUP]
             )
-            response_text, tokens_used = await call_openrouter(
-                model, system, request.prompt, request.max_tokens, request.temperature
+            response_text, tokens_used = await call_openrouter_with_fallback(
+                models, system, request.prompt, request.max_tokens, request.temperature
             )
 
         return GenerateResponse(
@@ -356,6 +388,14 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
 
     except HTTPException:
         raise
+    except httpx.HTTPStatusError as e:
+        status = e.response.status_code
+        logger.error(f"Upstream AI provider error: {e}")
+        if status == 429:
+            # Real 429, not collapsed to 500 - the frontend has specific
+            # rate-limit messaging for this exact status.
+            raise HTTPException(status_code=429, detail="All available models are currently rate-limited - try again in a moment.")
+        raise HTTPException(status_code=502, detail=f"The AI provider returned an error ({status}).")
     except Exception as e:
         logger.error(f"Something went wrong: {e}")
         raise HTTPException(status_code=500, detail=str(e))
