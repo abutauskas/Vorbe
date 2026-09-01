@@ -1468,5 +1468,15 @@
     ],
     "answer": "Vortex has no documented GUI/UI system as of the current public docs - there is no ScreenGui, Frame, TextLabel, TextButton, ImageLabel, or any other GuiObject-style class in the class reference (27 documented classes, none UI-related). Vortex's engine source is closed, so this could change, but right now there is no confirmed way to build on-screen menus, shops, or HUDs the way Roblox's ScreenGui system works - do not assume that API carries over. Source: inferred from the absence of any GUI-related class in https://github.com/TheHaloDeveloper/vortex-docs (content/reference/classes/), checked 2026-08-31.",
     "topic": "GUI"
+  },
+  {
+    "questions": [
+      "What is ModuleScript?",
+      "Explain ModuleScript in Vortex",
+      "How do I use ModuleScript?",
+      "Tell me about ModuleScript"
+    ],
+    "answer": "ModuleScript exists as a constructible class in Vortex Studio (as of 0.3.4) but is NOT functional as an actual module system - do not use it for shared/reusable code. Its Source, Disabled, and RunContext properties read as nil, and assigning Source is rejected. The global require() function is unavailable, so a ModuleScript cannot provide executable code to other scripts. Parenting it to ReplicatedStorage does not even establish an observable child relationship. For sharing logic between scripts, use RemoteEvent/RemoteFunction/BindableEvent instead - ModuleScript should be treated as not usable, not as a working feature. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/modulescript.md",
+    "topic": "ModuleScript"
   }
 ]

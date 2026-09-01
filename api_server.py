@@ -194,14 +194,21 @@ async def load_system_prompts():
 
     if confirmed_classes:
         CONFIRMED_CLASSES_CONTEXT = (
-            "The ONLY Vortex classes confirmed in the current documentation "
-            "are: " + ", ".join(confirmed_classes) + ". If a script would "
-            "need a class not on this list - this includes any GUI, "
-            "ScreenGui, Frame, TextButton, or other on-screen UI class - say "
-            "plainly that it isn't confirmed to exist in Vortex rather than "
-            "assuming it works like the Roblox equivalent. Only go beyond "
-            "this list if the user's own prompt or the reference "
-            "documentation below explicitly confirms something else."
+            "The ONLY Vortex classes confirmed to EXIST in the current "
+            "documentation are: " + ", ".join(confirmed_classes) + ". If a "
+            "script would need a class not on this list - this includes any "
+            "GUI, ScreenGui, Frame, TextButton, or other on-screen UI class "
+            "- say plainly that it isn't confirmed to exist in Vortex rather "
+            "than assuming it works like the Roblox equivalent. Only go "
+            "beyond this list if the user's own prompt or the reference "
+            "documentation below explicitly confirms something else. "
+            "IMPORTANT: being on this list means the class can be "
+            "instantiated, NOT that it's fully functional - some documented "
+            "classes exist but don't actually work as expected (ModuleScript "
+            "can be created but require() is unavailable and its Source "
+            "can't be set, for example). Check the reference documentation "
+            "below for known limitations before assuming a class works the "
+            "way its name suggests."
         )
         logger.info(f"Confirmed-classes allowlist: {len(confirmed_classes)} classes")
 
