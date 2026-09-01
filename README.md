@@ -66,7 +66,7 @@ Want the assistant running on an actual fine-tuned model instead of a system pro
 
 ## Keeping the docs fresh automatically
 
-A scheduled GitHub Action (`.github/workflows/update-docs.yml`) runs `update_docs.py` weekly: it checks [TheHaloDeveloper/vortex-docs](https://github.com/TheHaloDeveloper/vortex-docs) for changed pages, asks an LLM to extract paraphrased, attributed QA entries from anything new, and commits the result straight to `vortex_training_data/vortex_qa_pairs.json` - which Vercel then redeploys automatically. No one has to do this by hand. It needs an `OPENROUTER_API_KEY` repo secret (Settings → Secrets and variables → Actions) to run; it's a no-op commit-free run if nothing in the source docs changed.
+A scheduled GitHub Action (`.github/workflows/update-docs.yml`) runs `update_docs.py` daily: it checks [TheHaloDeveloper/vortex-docs](https://github.com/TheHaloDeveloper/vortex-docs) for changed pages, asks an LLM to extract paraphrased, attributed QA entries from anything new, and commits the result straight to `vortex_training_data/vortex_qa_pairs.json` - which Vercel then redeploys automatically. No one has to do this by hand. It needs an `OPENROUTER_API_KEY` repo secret (Settings → Secrets and variables → Actions) to run; it's a no-op commit-free run if nothing in the source docs changed.
 
 ## Contributing
 

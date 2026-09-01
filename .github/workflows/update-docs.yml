@@ -7,7 +7,7 @@ name: Update docs grounding data
 
 on:
   schedule:
-    - cron: "0 6 * * 1" # every Monday at 06:00 UTC
+    - cron: "0 6 * * *" # every day at 06:00 UTC
   workflow_dispatch: {} # lets you trigger a run manually from the Actions tab
 
 permissions:
