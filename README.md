@@ -90,6 +90,8 @@ Have questions? Open a GitHub issue or start a discussion. Something not working
 
 Each one has a guide. Pick whatever fits your needs.
 
+**Optional: a third AI provider as a last resort** - if you want Vorbe to keep working even during a simultaneous OpenRouter + Groq outage, `./scripts/setup-cloudflare-fallback.sh` walks you through deploying a small Cloudflare Worker (free tier, no card needed) that `/generate` falls back to only when every other model has failed.
+
 ## License
 
 MIT License. That means you can use it however you want - commercially, personally, whatever. Just keep the license in your code.

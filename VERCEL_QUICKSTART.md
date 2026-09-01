@@ -20,6 +20,7 @@ Vorbe runs entirely on Vercel: the landing page (`public/index.html`) and the ch
    - Optional: `OPENROUTER_DOC_MODEL` = a different model for documentation questions (default `minimax/minimax-m3:free`)
    - Optional: `OPENROUTER_DOC_MODEL_BACKUP` = falls back to this if the doc model hits a rate limit or errors (default `minimax/minimax-m2.7:free`)
    - Optional: `GROQ_VISION_MODEL` = a different vision-capable model, used only for requests with an attached image (default `qwen/qwen3.8-27b`)
+   - Optional: `CLOUDFLARE_WORKER_URL` / `CLOUDFLARE_WORKER_TOKEN` = an absolute last-resort fallback, only reached if every OpenRouter model above has failed. Runs on Cloudflare's own infrastructure (independent of OpenRouter/Groq) via its free Workers AI tier. Set both up with `./scripts/setup-cloudflare-fallback.sh` - see that script rather than configuring this by hand.
 4. Deploy.
 
 Manual deploy from the terminal works too:

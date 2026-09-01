@@ -56,6 +56,15 @@ OPENROUTER_CODING_MODEL_BACKUP = os.environ.get("OPENROUTER_CODING_MODEL_BACKUP"
 OPENROUTER_DOC_MODEL = os.environ.get("OPENROUTER_DOC_MODEL", "minimax/minimax-m3:free")
 OPENROUTER_DOC_MODEL_BACKUP = os.environ.get("OPENROUTER_DOC_MODEL_BACKUP", "minimax/minimax-m2.7:free")
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+# Absolute last resort - a self-hosted Cloudflare Worker (see
+# scripts/setup-cloudflare-fallback.sh), only reached if every OpenRouter
+# model above has failed. Running on entirely separate infrastructure from
+# OpenRouter/Groq is the point - it's meant to survive an outage that takes
+# both of those down at once. Unset by default, so this is a no-op until
+# someone actually runs the setup script.
+CLOUDFLARE_WORKER_URL = os.environ.get("CLOUDFLARE_WORKER_URL")
+CLOUDFLARE_WORKER_TOKEN = os.environ.get("CLOUDFLARE_WORKER_TOKEN")
 DOCUMENTATION_TASK_TYPES = {"documentation"}
 
 # Groq's own cap for inline base64 images. The frontend compresses images
@@ -323,6 +332,25 @@ async def call_openrouter_with_fallback(models: list, system: str, user_content,
     raise last_error
 
 
+async def call_cloudflare_worker(system: str, user_content, max_tokens: int):
+    """Absolute last resort - a self-hosted Cloudflare Worker running
+    Workers AI, on completely separate infrastructure from OpenRouter and
+    Groq. Only called when both of those have already failed."""
+    async with httpx.AsyncClient(timeout=60) as client:
+        resp = await client.post(
+            CLOUDFLARE_WORKER_URL,
+            headers={
+                "Authorization": f"Bearer {CLOUDFLARE_WORKER_TOKEN}",
+                "Content-Type": "application/json",
+            },
+            json={"system": system, "prompt": user_content, "max_tokens": max_tokens},
+        )
+    resp.raise_for_status()
+    data = resp.json()
+    text = data["choices"][0]["message"]["content"]
+    return text, 0  # Workers AI doesn't return a token count in this response shape
+
+
 @app.post("/generate", response_model=GenerateResponse)
 async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_token)):
     """Generate a response for the user's prompt - OpenRouter for text, Groq for vision."""
@@ -368,17 +396,27 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
             response_text = completion.choices[0].message.content
             tokens_used = completion.usage.total_tokens if completion.usage else 0
         else:
-            if not OPENROUTER_API_KEY:
-                raise HTTPException(status_code=503, detail="OPENROUTER_API_KEY isn't configured")
-
             models = (
                 [OPENROUTER_DOC_MODEL, OPENROUTER_DOC_MODEL_BACKUP]
                 if request.task_type in DOCUMENTATION_TASK_TYPES
                 else [OPENROUTER_CODING_MODEL, OPENROUTER_CODING_MODEL_BACKUP]
             )
-            response_text, tokens_used = await call_openrouter_with_fallback(
-                models, system, request.prompt, request.max_tokens, request.temperature
-            )
+
+            if OPENROUTER_API_KEY:
+                try:
+                    response_text, tokens_used = await call_openrouter_with_fallback(
+                        models, system, request.prompt, request.max_tokens, request.temperature
+                    )
+                except httpx.HTTPStatusError:
+                    if not CLOUDFLARE_WORKER_URL:
+                        raise
+                    logger.warning("All OpenRouter models failed, trying the Cloudflare Worker fallback")
+                    response_text, tokens_used = await call_cloudflare_worker(system, request.prompt, request.max_tokens)
+            elif CLOUDFLARE_WORKER_URL:
+                logger.warning("OPENROUTER_API_KEY isn't set, going straight to the Cloudflare Worker fallback")
+                response_text, tokens_used = await call_cloudflare_worker(system, request.prompt, request.max_tokens)
+            else:
+                raise HTTPException(status_code=503, detail="Neither OPENROUTER_API_KEY nor CLOUDFLARE_WORKER_URL is configured")
 
         return GenerateResponse(
             response=response_text,
