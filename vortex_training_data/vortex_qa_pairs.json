@@ -1478,5 +1478,25 @@
     ],
     "answer": "ModuleScript exists as a constructible class in Vortex Studio (as of 0.3.4) but is NOT functional as an actual module system - do not use it for shared/reusable code. Its Source, Disabled, and RunContext properties read as nil, and assigning Source is rejected. The global require() function is unavailable, so a ModuleScript cannot provide executable code to other scripts. Parenting it to ReplicatedStorage does not even establish an observable child relationship. For sharing logic between scripts, use RemoteEvent/RemoteFunction/BindableEvent instead - ModuleScript should be treated as not usable, not as a working feature. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/modulescript.md",
     "topic": "ModuleScript"
+  },
+  {
+    "questions": [
+      "What is TweenService?",
+      "Explain TweenService in Vortex",
+      "How do I use TweenService?",
+      "Tell me about TweenService"
+    ],
+    "answer": "TweenService smoothly interpolates supported properties of an instance over time. Access it via game:GetService(\"TweenService\"). Call TweenService:Create(instance, tweenInfo, goals) to get a Tween - tweenInfo is optional (TweenInfo?), and goals is a table mapping property names to their target values, e.g. {Position = Vector3.new(0,5,0), Color = Color3.fromRGB(137,111,255)}. Call Tween:Play() on the result to start it. Not every property supports interpolation - only tween properties that are documented as interpolatable. NOTE: as of writing, the repo's main branch currently has no real content for this class (a placeholder page only) - the details above come from two independent, still-open/unmerged pull requests (github.com/TheHaloDeveloper/vortex-docs/pull/63 and /pull/42) that happen to agree with each other on the method signature and usage, which is why they're included despite not being merged yet. Treat with slightly less certainty than merged documentation.",
+    "topic": "TweenService"
+  },
+  {
+    "questions": [
+      "What is BoolValue?",
+      "Explain BoolValue in Vortex",
+      "How do I use BoolValue?",
+      "Tell me about BoolValue"
+    ],
+    "answer": "BoolValue is an Instance that stores a single boolean (true/false) outside of a script. Read/write it via BoolValue.Value. Create one with Instance.new(\"BoolValue\"), set .Value, and parent it wherever needed (e.g. workspace or ReplicatedStorage) so other scripts can read it. Source: open, not-yet-merged pull request github.com/TheHaloDeveloper/vortex-docs/pull/61 - treat with slightly less certainty than merged documentation.",
+    "topic": "BoolValue"
   }
 ]
