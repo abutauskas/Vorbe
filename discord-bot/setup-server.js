@@ -43,8 +43,10 @@ const STRUCTURE = [
 ];
 
 const ROLES = [
-  { name: "Contributor", color: 0x9b59b6, hoist: true },  // purple, shown separately in the member list
-  { name: "Verified", color: 0x2ecc71, hoist: false },    // green
+  // `colors`, not the deprecated singular `color` - confirmed against this
+  // project's installed discord.js source (RoleManager.js) directly.
+  { name: "Contributor", colors: { primaryColor: 0x9b59b6 }, hoist: true },  // purple, shown separately in the member list
+  { name: "Verified", colors: { primaryColor: 0x2ecc71 }, hoist: false },    // green
 ];
 
 async function main() {
