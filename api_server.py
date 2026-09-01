@@ -111,11 +111,14 @@ class GenerateRequest(BaseModel):
     """What the user is asking for"""
     prompt: str
     task_type: str = "script_generation"
-    # Groq's free tier caps openai/gpt-oss-120b at 8,000 tokens/minute total
-    # (prompt + completion, across all requests). Keeping this well under
-    # that leaves room for more than one request per minute instead of one
-    # long reply eating the whole budget and 429ing the next call.
-    max_tokens: int = 1500
+    # Text generation runs on OpenRouter now, which has no token-rate limit
+    # (only a request-count cap - see OPENROUTER_CODING_MODEL's comment) so
+    # this no longer needs to be squeezed the way it did under Groq's old
+    # 8K-tokens/minute cap. Sized generously because reasoning models
+    # (Poolside included) can spend a lot of their budget on internal
+    # deliberation before producing real content - too tight a cap here
+    # was routing genuinely non-trivial prompts into ReasoningExhausted.
+    max_tokens: int = 4000
     temperature: float = 0.7
     image: Optional[str] = None  # data:image/...;base64,... - never a remote URL
 
@@ -277,9 +280,21 @@ async def info():
     }
 
 
+class ReasoningExhausted(Exception):
+    """Raised when a reasoning model (Poolside included) burns its entire
+    token budget on internal deliberation and never produces real `content`
+    - a different failure mode from an HTTP error (this is a normal 200),
+    but one a *different*, non-reasoning model in the fallback chain has a
+    real shot at avoiding entirely, rather than just retrying the same
+    model that just proved it wants more room than it's getting."""
+    pass
+
+
 async def call_openrouter(model: str, system: str, user_content, max_tokens: int, temperature: float):
-    """Call an OpenRouter chat completion and return (text, tokens_used)."""
-    async with httpx.AsyncClient(timeout=60) as client:
+    """Call an OpenRouter chat completion and return (text, tokens_used).
+    Raises ReasoningExhausted instead of returning raw internal monologue as
+    if it were the answer - see that class's docstring."""
+    async with httpx.AsyncClient(timeout=90) as client:
         resp = await client.post(
             OPENROUTER_URL,
             headers={
@@ -299,26 +314,44 @@ async def call_openrouter(model: str, system: str, user_content, max_tokens: int
     resp.raise_for_status()
     data = resp.json()
     message = data["choices"][0]["message"]
-    # Reasoning models (Poolside included) can burn the whole token budget on
-    # an internal `reasoning` field and leave `content` null if max_tokens is
-    # too tight - fall back to that rather than returning nothing.
-    text = message.get("content") or message.get("reasoning")
+    text = message.get("content")
     tokens_used = (data.get("usage") or {}).get("total_tokens", 0)
+
+    if not text:
+        if message.get("reasoning"):
+            raise ReasoningExhausted()
+        text = ""  # genuinely empty response, not a reasoning-budget issue
+
     return text, tokens_used
 
 
 async def call_openrouter_with_fallback(models: list, system: str, user_content, max_tokens: int, temperature: float):
-    """Tries each model in order, falling back to the next only on a rate
-    limit (429) or a provider-side error (5xx) - those are the cases where a
-    different free model actually has a shot at succeeding. Anything else
-    (a 400 from a malformed request, a 401 from a bad key) will fail on
+    """Tries each model in order, falling back to the next on a rate limit
+    (429), a provider-side error (5xx), or the model exhausting its budget
+    on reasoning without producing content - those are the cases where a
+    different free model actually has a real shot at succeeding. Anything
+    else (a 400 from a malformed request, a 401 from a bad key) will fail on
     every model identically, so it's raised immediately instead of wasting
     the fallback models on a request that was never going to work.
+
+    If every model in the chain hits the reasoning-exhausted case, returns a
+    plain apology rather than raising - there's nothing further upstream
+    that would handle it better, and showing the raw reasoning trace to the
+    user (a wall of "We need to..." internal monologue) is worse than
+    admitting it didn't work.
     """
     last_error = None
+    hit_reasoning_wall = False
     for i, model in enumerate(models):
         try:
             return await call_openrouter(model, system, user_content, max_tokens, temperature)
+        except ReasoningExhausted:
+            hit_reasoning_wall = True
+            if i < len(models) - 1:
+                logger.warning(f"{model} burned its whole budget on reasoning, trying {models[i + 1]}")
+                continue
+            logger.warning(f"{model} burned its whole budget on reasoning, no more fallback models")
+            break
         except httpx.HTTPStatusError as e:
             status = e.response.status_code
             last_error = e
@@ -329,6 +362,12 @@ async def call_openrouter_with_fallback(models: list, system: str, user_content,
                 logger.warning(f"{model} failed ({status}), no more fallback models")
                 break
             raise
+    if hit_reasoning_wall:
+        return (
+            "Sorry, I ran out of room thinking this one through and didn't "
+            "reach a real answer. Try again, or ask for something more specific.",
+            0,
+        )
     raise last_error
 
 
