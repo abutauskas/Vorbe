@@ -76,9 +76,44 @@ const STRUCTURE = [
   ]],
 ];
 
+// `colors`, not the deprecated singular `color` - confirmed against this
+// project's installed discord.js source (RoleManager.js) directly.
+//
+// Listed highest-privilege first since Discord tends to place newly created
+// roles just below the bot's own role in that order - but role hierarchy is
+// ultimately a drag-to-reorder thing in Discord's own UI, so double check
+// Server Settings -> Roles looks right after running this.
 const ROLES = [
-  // `colors`, not the deprecated singular `color` - confirmed against this
-  // project's installed discord.js source (RoleManager.js) directly.
+  {
+    // No permissions on the role itself, deliberately - it's assigned only
+    // to the real Discord server owner (guild.ownerId, below), who already
+    // has full control regardless of any role. This is a visual tag, not a
+    // grant of power, which also sidesteps a real restriction: the bot
+    // can't grant a role Administrator unless the bot itself has
+    // Administrator, and there's no reason to give the bot that.
+    name: "Owner",
+    colors: { primaryColor: 0xf1c40f }, // gold
+    hoist: true,
+  },
+  {
+    // Unlike Owner, this DOES need real permissions - it's meant for other
+    // people who aren't the server owner. The bot needs these same
+    // permissions itself to grant them (Discord won't let it hand out a
+    // permission it doesn't hold), which is why the bot's invite gets
+    // expanded below rather than just creating this role with the bot's
+    // current (narrower) permission set.
+    name: "Moderator",
+    colors: { primaryColor: 0x3498db }, // blue
+    hoist: true,
+    permissions: [
+      PermissionsBitField.Flags.KickMembers,
+      PermissionsBitField.Flags.BanMembers,
+      PermissionsBitField.Flags.ManageMessages,
+      PermissionsBitField.Flags.ModerateMembers, // timeout
+      PermissionsBitField.Flags.ManageNicknames,
+      PermissionsBitField.Flags.ViewAuditLog,
+    ],
+  },
   { name: "Contributor", colors: { primaryColor: 0x9b59b6 }, hoist: true },  // purple, shown separately in the member list
   { name: "Verified", colors: { primaryColor: 0x2ecc71 }, hoist: false },    // green
 ];
@@ -103,6 +138,20 @@ async function main() {
     }
     await guild.roles.create(roleDef);
     console.log(`role  "${roleDef.name}" created`);
+  }
+
+  // Assign Owner to whoever Discord itself considers the real owner
+  // (guild.ownerId) - not a hardcoded/asked-for user ID, so this is always
+  // correct even if the script is handed to someone else's server later.
+  const ownerRole = guild.roles.cache.find((r) => r.name === "Owner");
+  if (ownerRole) {
+    const ownerMember = await guild.members.fetch(guild.ownerId);
+    if (ownerMember.roles.cache.has(ownerRole.id)) {
+      console.log(`role  "Owner" already assigned to ${ownerMember.user.tag}`);
+    } else {
+      await ownerMember.roles.add(ownerRole);
+      console.log(`role  "Owner" assigned to ${ownerMember.user.tag}`);
+    }
   }
 
   console.log("");
