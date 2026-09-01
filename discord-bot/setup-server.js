@@ -20,11 +20,45 @@ if (!BOT_TOKEN || !GUILD_ID) {
 
 // Read-only channels (below) deny @everyone the ability to post - for
 // announcements/rules/welcome, where only admins should write.
+//
+// seedMessage, where present, gets posted by the bot once - only when the
+// channel is genuinely empty (checked via lastMessageId), so re-running
+// this script never double-posts or overwrites something you've since
+// edited by hand in Discord.
 const STRUCTURE = [
   ["INFORMATION", [
-    ["welcome", { readOnly: true, topic: "Start here - what Vorbe is and how this server works." }],
-    ["announcements", { readOnly: true, topic: "Releases and project updates." }],
-    ["rules", { readOnly: true, topic: "Server rules." }],
+    ["welcome", {
+      readOnly: true,
+      topic: "Start here - what Vorbe is and how this server works.",
+      seedMessage: [
+        "**Welcome to the Vorbe server.**",
+        "",
+        "Vorbe is a free, open-source AI coding assistant for Vortex developers - describe what you want, get working Luau code. Not affiliated with Vortex itself, just a community tool built for it.",
+        "",
+        "**Get started:** https://vorber.vercel.app  |  **Source:** https://github.com/abutauskas/Vorbe",
+        "",
+        "Questions go in #help. Found a bug? #bug-reports (or open a GitHub issue). Built something with Vorbe? Show it off in #showcase.",
+      ].join("\n"),
+    }],
+    ["announcements", {
+      readOnly: true,
+      topic: "Releases and project updates.",
+      seedMessage: "Server's live. This is where Vorbe releases and project updates get posted - everything else has its own channel, check the categories on the left.",
+    }],
+    ["rules", {
+      readOnly: true,
+      topic: "Server rules.",
+      seedMessage: [
+        "**Rules**",
+        "1. Be respectful - disagree without being a jerk.",
+        "2. Keep it on-topic for the channel you're in.",
+        "3. No spam, self-promo dumps, or unrelated advertising.",
+        "4. No harassment, hate speech, or NSFW content.",
+        "5. Follow Discord's own Terms of Service and Community Guidelines.",
+        "",
+        "Breaking these gets you a warning, then a kick or ban depending on severity.",
+      ].join("\n"),
+    }],
   ]],
   ["COMMUNITY", [
     ["general", { topic: "General chat." }],
@@ -85,26 +119,52 @@ async function main() {
     }
 
     for (const [channelName, opts] of channels) {
-      const existing = guild.channels.cache.find(
+      let channel = guild.channels.cache.find(
         (c) => c.type === ChannelType.GuildText && c.name === channelName && c.parentId === category.id
       );
-      if (existing) {
-        console.log(`  #${channelName} already exists, skipping`);
-        continue;
+
+      if (channel) {
+        console.log(`  #${channelName} already exists`);
+      } else {
+        // The @everyone deny below also blocks the bot itself (it only has
+        // Manage Channels/Manage Roles, not Administrator) - the explicit
+        // allow for the bot's own ID is what lets it post the seed message
+        // below into a channel nobody else can write to.
+        const permissionOverwrites = opts.readOnly
+          ? [
+              { id: guild.roles.everyone.id, deny: [PermissionsBitField.Flags.SendMessages] },
+              { id: client.user.id, allow: [PermissionsBitField.Flags.SendMessages] },
+            ]
+          : [];
+
+        channel = await guild.channels.create({
+          name: channelName,
+          type: ChannelType.GuildText,
+          parent: category.id,
+          topic: opts.topic,
+          permissionOverwrites,
+        });
+        console.log(`  #${channelName} created${opts.readOnly ? " (read-only)" : ""}`);
       }
 
-      const permissionOverwrites = opts.readOnly
-        ? [{ id: guild.roles.everyone.id, deny: [PermissionsBitField.Flags.SendMessages] }]
-        : [];
+      // Applied every run, not just at creation - fixes channels that
+      // already existed before this bot-allow overwrite was added (exactly
+      // what happened on this project's own server: the channels were
+      // created first, this fix came after).
+      if (opts.readOnly) {
+        const botOverwrite = channel.permissionOverwrites.cache.get(client.user.id);
+        if (!botOverwrite || !botOverwrite.allow.has(PermissionsBitField.Flags.SendMessages)) {
+          await channel.permissionOverwrites.edit(client.user.id, { SendMessages: true });
+          console.log(`    fixed bot's own send-permission in #${channelName}`);
+        }
+      }
 
-      await guild.channels.create({
-        name: channelName,
-        type: ChannelType.GuildText,
-        parent: category.id,
-        topic: opts.topic,
-        permissionOverwrites,
-      });
-      console.log(`  #${channelName} created${opts.readOnly ? " (read-only)" : ""}`);
+      // Only seed if the channel is genuinely empty - never overwrites or
+      // duplicates something already posted, by the bot or by a human.
+      if (opts.seedMessage && !channel.lastMessageId) {
+        await channel.send(opts.seedMessage);
+        console.log(`    seed message posted in #${channelName}`);
+      }
     }
   }
 
