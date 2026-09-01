@@ -26,8 +26,8 @@ if (!BOT_TOKEN || !GUILD_ID) {
 // this script never double-posts or overwrites something you've since
 // edited by hand in Discord.
 const STRUCTURE = [
-  ["INFORMATION", [
-    ["welcome", {
+  ["📌 INFORMATION", [
+    ["👋│welcome", {
       readOnly: true,
       topic: "Start here - what Vorbe is and how this server works.",
       seedMessage: [
@@ -40,12 +40,12 @@ const STRUCTURE = [
         "Questions go in #help. Found a bug? #bug-reports (or open a GitHub issue). Built something with Vorbe? Show it off in #showcase.",
       ].join("\n"),
     }],
-    ["announcements", {
+    ["📢│announcements", {
       readOnly: true,
       topic: "Releases and project updates.",
       seedMessage: "Server's live. This is where Vorbe releases and project updates get posted - everything else has its own channel, check the categories on the left.",
     }],
-    ["rules", {
+    ["📜│rules", {
       readOnly: true,
       topic: "Server rules.",
       seedMessage: [
@@ -60,19 +60,19 @@ const STRUCTURE = [
       ].join("\n"),
     }],
   ]],
-  ["COMMUNITY", [
-    ["general", { topic: "General chat." }],
-    ["showcase", { topic: "Share what you built with Vorbe." }],
-    ["off-topic", { topic: "Anything not Vorbe/Vortex related." }],
+  ["👥 COMMUNITY", [
+    ["💬│general", { topic: "General chat." }],
+    ["🎨│showcase", { topic: "Share what you built with Vorbe." }],
+    ["🎲│off-topic", { topic: "Anything not Vorbe/Vortex related." }],
   ]],
-  ["SUPPORT", [
-    ["help", { topic: "Ask questions about using Vorbe." }],
-    ["bug-reports", { topic: "Found a bug? Also welcome as a GitHub issue: github.com/abutauskas/Vorbe/issues" }],
-    ["feature-requests", { topic: "Ideas for what Vorbe should do next." }],
+  ["🛠️ SUPPORT", [
+    ["🆘│help", { topic: "Ask questions about using Vorbe." }],
+    ["🐛│bug-reports", { topic: "Found a bug? Also welcome as a GitHub issue: github.com/abutauskas/Vorbe/issues" }],
+    ["💡│feature-requests", { topic: "Ideas for what Vorbe should do next." }],
   ]],
-  ["DEVELOPMENT", [
-    ["contributing", { topic: "Want to help build Vorbe? Start here - see CONTRIBUTING.md." }],
-    ["dev-chat", { topic: "Technical discussion for contributors." }],
+  ["💻 DEVELOPMENT", [
+    ["🤝│contributing", { topic: "Want to help build Vorbe? Start here - see CONTRIBUTING.md." }],
+    ["👨‍💻│dev-chat", { topic: "Technical discussion for contributors." }],
   ]],
 ];
 
