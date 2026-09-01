@@ -1,0 +1,14 @@
+{
+  "name": "vorbe-discord-setup",
+  "private": true,
+  "version": "1.0.0",
+  "description": "One-time Discord server provisioning script for the Vorbe community server. Lives on its own branch (discord-bot-setup), not main - see scripts/setup-discord-server.sh at the repo root.",
+  "main": "setup-server.js",
+  "scripts": {
+    "setup": "node setup-server.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.27.0",
+    "dotenv": "^17.4.2"
+  }
+}
