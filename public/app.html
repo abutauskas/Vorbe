@@ -571,7 +571,7 @@
                         <button class="icon-btn" id="attachBtn" type="button" title="Attach a file" aria-label="Attach a file">+</button>
                         <button class="skill-btn" id="skillBtn" type="button">
                             <span class="skill-icon-badge" id="skillBtnIcon"></span>
-                            <span id="skillBtnLabel">Skill: Script generation</span>
+                            <span id="skillBtnLabel">Skill: Auto</span>
                         </button>
                         <div class="skill-menu" id="skillMenu" hidden></div>
                     </div>
@@ -619,6 +619,7 @@
         const API_TOKEN = ""; // set to match API_AUTH_TOKEN if you configured one
 
         const TASK_OPTIONS = [
+            ["auto", "Auto", "res/Bot.png"],
             ["script_generation", "Script generation", "res/Script.png"],
             ["bug_fixing", "Bug fixing", "res/Bug.png"],
             ["documentation", "Documentation", "res/Docs.png"],
@@ -627,7 +628,10 @@
             ["security_review", "Security review", "res/Lock.png"],
         ];
 
-        let currentTask = "script_generation";
+        // Default to Auto - the backend classifies the prompt itself, so
+        // most people never need to touch the skill picker at all. It's
+        // still there for anyone who wants to force a specific mode.
+        let currentTask = "auto";
         let isLoading = false;
 
         const skillBtn = document.getElementById("skillBtn");
