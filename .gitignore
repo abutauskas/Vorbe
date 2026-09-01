@@ -187,3 +187,4 @@ test_results/
 .cache/
 models/
 *.mp4
+cloudflare-fallback/.wrangler/
