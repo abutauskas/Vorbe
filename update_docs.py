@@ -17,12 +17,14 @@ What it does, per run:
 4. Replaces only the entries this script previously generated from that
    file (tracked per-file in the manifest), so hand-curated entries are
    never touched and edits to a doc don't leave stale duplicates behind.
-5. Rebuilds vortex_training_data/confirmed_classes.json from every class
-   page's exact frontmatter `title:` field - this is the allowlist
-   api_server.py uses to stop the model from assuming Vortex has a class
-   (like Roblox's GUI system) that isn't actually documented. Cheap: a
-   raw-file fetch per class page, no LLM call, so it's rebuilt in full
-   every run regardless of what changed.
+5. Rebuilds vortex_training_data/confirmed_classes.json and
+   confirmed_datatypes.json from every class/datatype page's exact
+   frontmatter `title:` field - these are the allowlists api_server.py
+   uses to stop the model from assuming Vortex has something (Roblox's
+   GUI system; BrickColor, which Vortex doesn't have - only Color3)
+   that isn't actually documented. Cheap: a raw-file fetch per page, no
+   LLM call, so both are rebuilt in full every run regardless of what
+   changed.
 6. Writes the updated QA pairs and manifest back to disk. The GitHub
    Action wrapping this script commits the result if anything changed,
    which triggers Vercel to redeploy - fully hands-off.
@@ -54,6 +56,8 @@ QA_PAIRS_PATH = "vortex_training_data/vortex_qa_pairs.json"
 MANIFEST_PATH = "vortex_training_data/docs_manifest.json"
 CONFIRMED_CLASSES_PATH = "vortex_training_data/confirmed_classes.json"
 CLASSES_PREFIX = "content/reference/classes/"
+CONFIRMED_DATATYPES_PATH = "vortex_training_data/confirmed_datatypes.json"
+DATATYPES_PREFIX = "content/reference/datatypes/"
 
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 OPENROUTER_MODEL = os.environ.get("OPENROUTER_DOC_MODEL", "minimax/minimax-m3:free")
@@ -119,38 +123,56 @@ def extract_title(content):
     return title_match.group(1).strip() if title_match else None
 
 
-def rebuild_confirmed_classes(doc_files):
-    """Full rebuild, every run, from every class page currently in the docs
-    repo - not just the ones that changed. Cheap (raw fetch, no LLM call)."""
-    class_files = [f for f in doc_files if f["path"].startswith(CLASSES_PREFIX)]
-    classes = []
-    for f in class_files:
+def rebuild_titles_list(doc_files, prefix, out_path, label):
+    """Full rebuild, every run, from every page under `prefix` currently in
+    the docs repo - not just the ones that changed. Cheap (raw fetch, no LLM
+    call). Shared by confirmed_classes.json and confirmed_datatypes.json -
+    same reliability requirement either way: this becomes an allowlist
+    api_server.py leans on to tell the model what's real, so a bad write
+    here would make it wrongly refuse things that actually exist."""
+    matching_files = [f for f in doc_files if f["path"].startswith(prefix)]
+    titles = []
+    fetch_failures = 0
+    for f in matching_files:
         try:
             content = fetch_raw(f["path"])
         except httpx.HTTPError as e:
-            logger.warning(f"  couldn't fetch {f['path']} for the class list: {e}")
+            logger.warning(f"  couldn't fetch {f['path']} for the {label} list: {e}")
+            fetch_failures += 1
             continue
         title = extract_title(content)
         if title:
-            classes.append(title)
+            titles.append(title)
         else:
-            logger.warning(f"  no title frontmatter in {f['path']}, skipping")
-    # If most fetches failed (e.g. GitHub having a bad moment mid-run),
-    # don't overwrite a good file with a mostly-empty one - api_server.py
-    # treats this list as an allowlist, so a bad write here would make the
-    # model wrongly refuse classes that actually exist.
-    if class_files and len(classes) < 0.8 * len(class_files):
+            # Expected and permanent for a method-level sub-page (e.g.
+            # cframe.lookat.md) - not a top-level type, so no title to grab.
+            # Not a failure worth counting toward the guard below.
+            logger.info(f"  no title frontmatter in {f['path']} (likely a method sub-page), skipping")
+
+    # Guard against actual fetch failures (e.g. GitHub having a bad moment
+    # mid-run) corrupting a good file - NOT against pages that fetched fine
+    # but structurally have no title (that's permanent, not transient, so
+    # it shouldn't block a write).
+    if matching_files and fetch_failures > 0.2 * len(matching_files):
         logger.error(
-            f"Only got {len(classes)}/{len(class_files)} class titles - "
-            "leaving the existing confirmed_classes.json untouched"
+            f"{fetch_failures}/{len(matching_files)} {label} pages failed to fetch - "
+            f"leaving the existing {out_path} untouched"
         )
         return None
 
-    classes = sorted(set(classes))
-    with open(CONFIRMED_CLASSES_PATH, "w", encoding="utf-8") as out:
-        json.dump(classes, out, indent=2)
-    logger.info(f"confirmed_classes.json: {len(classes)} classes")
-    return classes
+    titles = sorted(set(titles))
+    with open(out_path, "w", encoding="utf-8") as out:
+        json.dump(titles, out, indent=2)
+    logger.info(f"{out_path}: {len(titles)} {label}(s)")
+    return titles
+
+
+def rebuild_confirmed_classes(doc_files):
+    return rebuild_titles_list(doc_files, CLASSES_PREFIX, CONFIRMED_CLASSES_PATH, "class")
+
+
+def rebuild_confirmed_datatypes(doc_files):
+    return rebuild_titles_list(doc_files, DATATYPES_PREFIX, CONFIRMED_DATATYPES_PATH, "datatype")
 
 
 def list_doc_files():
@@ -258,9 +280,12 @@ def main():
 
     # Always rebuilt in full, regardless of what's "changed" below - it's
     # cheap (no LLM calls) and it's the allowlist api_server.py leans on to
-    # stop the model from assuming an undocumented class exists, so it
-    # shouldn't silently go stale just because no QA pairs needed updating.
+    # stop the model from assuming an undocumented class or datatype exists
+    # (BrickColor, which real Vortex doesn't have - only Color3 - was a
+    # real hallucination caught this way), so it shouldn't silently go
+    # stale just because no QA pairs needed updating.
     rebuild_confirmed_classes(doc_files)
+    rebuild_confirmed_datatypes(doc_files)
 
     changed = [
         f for f in doc_files

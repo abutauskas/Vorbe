@@ -74,12 +74,19 @@ MAX_IMAGE_DATA_URL_BYTES = 4 * 1024 * 1024
 
 system_prompts = {}
 qa_pairs = []
-# Built at startup from qa_pairs (see derive_confirmed_classes) - a concrete
-# allowlist of classes the docs actually confirm exist, so the model has a
+# Loaded at startup from vortex_training_data/confirmed_classes.json and
+# confirmed_datatypes.json (kept fresh by update_docs.py) - concrete
+# allowlists of what the docs actually confirm exists, so the model has a
 # hard boundary to check against instead of a vague "if unsure" instruction,
-# which doesn't help when it's confidently *wrong* (e.g. assuming Vortex has
-# Roblox's GUI system) rather than actually uncertain.
+# which doesn't help when it's confidently *wrong* (assuming Vortex has
+# Roblox's GUI system, or its BrickColor - Vortex only has Color3 - rather
+# than actually being uncertain). CONFIRMED_CLASSES/_DATATYPES (sets) back
+# find_unconfirmed_apis()'s output scan; the _CONTEXT strings are what get
+# injected into the system prompt.
+CONFIRMED_CLASSES = set()
+CONFIRMED_DATATYPES = set()
 CONFIRMED_CLASSES_CONTEXT = ""
+CONFIRMED_DATATYPES_CONTEXT = ""
 
 # There's a real, unrelated product also called "Vortex Studio" (CM Labs'
 # robotics/vehicle physics simulator, C++/Lua-based). Without this, the
@@ -116,9 +123,10 @@ class GenerateRequest(BaseModel):
     # this no longer needs to be squeezed the way it did under Groq's old
     # 8K-tokens/minute cap. Sized generously because reasoning models
     # (Poolside included) can spend a lot of their budget on internal
-    # deliberation before producing real content - too tight a cap here
-    # was routing genuinely non-trivial prompts into ReasoningExhausted.
-    max_tokens: int = 4000
+    # deliberation before producing real content - 1500 and then 4000 both
+    # still got routed into ReasoningExhausted on genuinely non-trivial
+    # prompts (a bug-fixing request with a large pasted script + traceback).
+    max_tokens: int = 6000
     temperature: float = 0.7
     image: Optional[str] = None  # data:image/...;base64,... - never a remote URL
 
@@ -141,10 +149,20 @@ def check_auth_token(authorization: str = Header(default=None)) -> None:
         raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")
 
 
+def _load_json_list(path: str, label: str) -> list:
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        logger.warning(f"Couldn't load {label}: {e}")
+        return []
+
+
 @app.on_event("startup")
 async def load_system_prompts():
     """Load the per-task system prompts and reference docs built from Vortex training data"""
-    global system_prompts, qa_pairs, CONFIRMED_CLASSES_CONTEXT
+    global system_prompts, qa_pairs, CONFIRMED_CLASSES, CONFIRMED_DATATYPES
+    global CONFIRMED_CLASSES_CONTEXT, CONFIRMED_DATATYPES_CONTEXT
 
     try:
         with open("vortex_training_data/system_prompts.json", 'r') as f:
@@ -163,12 +181,10 @@ async def load_system_prompts():
         logger.warning(f"Couldn't load reference QA pairs: {e}")
         qa_pairs = []
 
-    try:
-        with open("vortex_training_data/confirmed_classes.json", 'r', encoding='utf-8') as f:
-            confirmed_classes = json.load(f)
-    except Exception as e:
-        logger.warning(f"Couldn't load confirmed_classes.json: {e}")
-        confirmed_classes = []
+    confirmed_classes = _load_json_list("vortex_training_data/confirmed_classes.json", "confirmed_classes.json")
+    confirmed_datatypes = _load_json_list("vortex_training_data/confirmed_datatypes.json", "confirmed_datatypes.json")
+    CONFIRMED_CLASSES = set(confirmed_classes)
+    CONFIRMED_DATATYPES = set(confirmed_datatypes)
 
     if confirmed_classes:
         CONFIRMED_CLASSES_CONTEXT = (
@@ -182,6 +198,18 @@ async def load_system_prompts():
             "documentation below explicitly confirms something else."
         )
         logger.info(f"Confirmed-classes allowlist: {len(confirmed_classes)} classes")
+
+    if confirmed_datatypes:
+        CONFIRMED_DATATYPES_CONTEXT = (
+            "The ONLY Vortex datatypes confirmed in the current documentation "
+            "are: " + ", ".join(confirmed_datatypes) + " (each constructed via "
+            "its own .new(...) or documented factory method, e.g. "
+            "Color3.fromRGB(...)). Vortex does NOT have Roblox's BrickColor - "
+            "use Color3 instead. Don't use a datatype not on this list unless "
+            "the user's own prompt or the reference documentation below "
+            "explicitly confirms it."
+        )
+        logger.info(f"Confirmed-datatypes allowlist: {len(confirmed_datatypes)} datatypes")
 
     if groq_client is None:
         logger.warning("GROQ_API_KEY isn't set - image attachments will fail until it is")
@@ -257,6 +285,35 @@ def find_relevant_docs(prompt: str, max_entries: int = 8, max_chars: int = 2500)
         total_chars += len(line)
 
     return "\n".join(lines)
+
+
+def find_unconfirmed_apis(code_text: str) -> list:
+    """Scans generated text for Instance.new("X") and X.new(...) calls
+    referencing a class/datatype that isn't in the confirmed allowlists -
+    a safety net for when the model ignores the system prompt's warning.
+    Confirmed to happen in practice, not just in theory: a real response
+    used TextLabel (Instance.new("TextLabel")) despite CONFIRMED_CLASSES_
+    CONTEXT explicitly listing the confirmed classes and calling out GUI
+    classes by name as unconfirmed.
+    """
+    if not CONFIRMED_CLASSES and not CONFIRMED_DATATYPES:
+        return []  # allowlists not loaded - nothing to check against
+
+    found = set()
+
+    for cls in re.findall(r'Instance\.new\(\s*["\']([A-Za-z0-9_]+)["\']', code_text):
+        if CONFIRMED_CLASSES and cls not in CONFIRMED_CLASSES:
+            found.add(cls)
+
+    # X.new(...) - covers datatype construction (Color3.new, CFrame.new,
+    # etc.) and, notably, catches things like BrickColor.new(...) that
+    # aren't created via Instance.new at all. "Instance" itself is the
+    # pattern above, not this one.
+    for dtype in re.findall(r'\b([A-Z][A-Za-z0-9]*)\.new\(', code_text):
+        if dtype != "Instance" and CONFIRMED_DATATYPES and dtype not in CONFIRMED_DATATYPES and dtype not in CONFIRMED_CLASSES:
+            found.add(dtype)
+
+    return sorted(found)
 
 
 @app.get("/health")
@@ -341,6 +398,11 @@ async def call_openrouter_with_fallback(models: list, system: str, user_content,
     admitting it didn't work.
     """
     last_error = None
+    # Reflects only the LAST model tried, not "did any model in the chain
+    # ever hit this" - a run where model 1 exhausts its reasoning budget
+    # but model 2 then 429s should surface as a rate-limit error (accurate,
+    # and the outer handler already has good messaging for it), not as a
+    # "ran out of room thinking" apology that isn't what actually happened.
     hit_reasoning_wall = False
     for i, model in enumerate(models):
         try:
@@ -355,6 +417,7 @@ async def call_openrouter_with_fallback(models: list, system: str, user_content,
         except httpx.HTTPStatusError as e:
             status = e.response.status_code
             last_error = e
+            hit_reasoning_wall = False
             if status == 429 or status >= 500:
                 if i < len(models) - 1:
                     logger.warning(f"{model} failed ({status}), falling back to {models[i + 1]}")
@@ -402,6 +465,8 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
         system = f"{system}\n\n{PLATFORM_CONTEXT}"
         if CONFIRMED_CLASSES_CONTEXT:
             system += f"\n\n{CONFIRMED_CLASSES_CONTEXT}"
+        if CONFIRMED_DATATYPES_CONTEXT:
+            system += f"\n\n{CONFIRMED_DATATYPES_CONTEXT}"
 
         relevant_docs = find_relevant_docs(request.prompt)
         if relevant_docs:
@@ -456,6 +521,21 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
                 response_text, tokens_used = await call_cloudflare_worker(system, request.prompt, request.max_tokens)
             else:
                 raise HTTPException(status_code=503, detail="Neither OPENROUTER_API_KEY nor CLOUDFLARE_WORKER_URL is configured")
+
+            # Safety net for when the model ignores CONFIRMED_CLASSES_CONTEXT/
+            # CONFIRMED_DATATYPES_CONTEXT above - confirmed to happen in
+            # practice (TextLabel got generated despite the warning). This
+            # can't fix the code, but it stops a silent runtime crash from
+            # being the user's first sign anything was wrong.
+            unconfirmed = find_unconfirmed_apis(response_text) if response_text else []
+            if unconfirmed:
+                names = ", ".join(f"`{n}`" for n in unconfirmed)
+                plural = "s aren't" if len(unconfirmed) > 1 else " isn't"
+                response_text = (
+                    f"⚠️ **Heads up:** this uses {names}, which{plural} in Vortex's "
+                    f"confirmed class/datatype list and may not actually exist. "
+                    f"Test before relying on it.\n\n---\n\n{response_text}"
+                )
 
         return GenerateResponse(
             response=response_text,

@@ -1,9 +1,11 @@
 [
   "BindableEvent",
   "BoolValue",
+  "Character",
   "Debris",
   "Folder",
   "Humanoid",
+  "HumanoidRootPart",
   "Instance",
   "IntValue",
   "Lighting",
