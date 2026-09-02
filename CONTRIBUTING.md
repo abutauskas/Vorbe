@@ -1,6 +1,6 @@
 # Contributing to Vorbe
 
-Thanks for thinking about contributing. Seriously - this project only gets better when people like you help out.
+Thanks for thinking about contributing. This project only gets better when people like you help out.
 
 ## Ways to help
 
@@ -197,11 +197,7 @@ vorbe/
 
 ## Questions?
 
-- **Setup issues?** → Check README.md
-- **How to contribute?** → This file
-- **Want to discuss?** → Start a discussion
-- **Found a bug?** → Open an issue
-- **Need help?** → Ask in discussions
+Setup issues are covered in README.md, and this file covers how to contribute. Otherwise: open an issue for a bug, or start a discussion for anything else, including if you're just stuck.
 
 ---
 
@@ -211,7 +207,7 @@ vorbe/
 
 **Be helpful.** If you see someone confused, help them. If you're giving feedback, make it constructive. "Hey, could we do this differently?" not "This is wrong."
 
-**Welcome everyone.** New contributors, fresh ideas, different perspectives - that's what makes projects better.
+**Welcome everyone.** New contributors bring ideas and perspectives a project wouldn't get otherwise.
 
 **Share knowledge.** Explain your thinking. Ask questions if something's unclear. Help others learn.
 
@@ -219,21 +215,13 @@ vorbe/
 
 ## Recognition
 
-We'll credit your contributions - in the README, release notes, and we'll mention you when we talk about Vorbe. Your work matters and we want people to know it was you.
+We'll credit your contributions in the README and release notes, and mention you when we talk about Vorbe.
 
 ---
 
 ## License
 
 By contributing, you agree your code will be licensed under MIT License.
-
----
-
-## Thank you!
-
-Thank you for helping make Vorbe better for the entire Vortex community!
-
-Every contribution matters, no matter how small.
 
 ---
 
@@ -246,4 +234,4 @@ Every contribution matters, no matter how small.
 
 ---
 
-That's it. We're glad you're here. Let's build something cool together.
+Thanks for helping make Vorbe better - even a small fix counts.

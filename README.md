@@ -74,13 +74,11 @@ Found a bug? Have an idea? Want to improve something?
 
 Read [CONTRIBUTING.md](./CONTRIBUTING.md) - it's actually pretty short and explains how to help.
 
-We'd genuinely love contributions. Whether it's fixing docs, improving the code, adding examples, or sharing Vorbe with others - it all helps.
+Fixing docs, improving the code, adding examples, sharing it with others - it all helps.
 
 ## Community
 
 This is for the Vortex community. We built it open source because tools should be free and everyone should be able to help make them better.
-
-Have questions? Open a GitHub issue or start a discussion. Something not working? Let us know.
 
 ## Deployment options
 
@@ -102,14 +100,6 @@ Built on [OpenRouter](https://openrouter.ai/), [Groq](https://groq.com/), [FastA
 
 For Vortex - https://playvortex.io
 
-## Let's build something
-
-If you find Vorbe useful, star this repo. If you have ideas, open an issue. If you want to contribute, check out CONTRIBUTING.md.
-
-And if you build something cool with Vorbe, let us know. We'd love to hear about it.
-
 ---
 
-Questions? Open an issue. Want to chat? Start a discussion. Have a bug to report? You know where to go.
-
-Let's make Vortex game dev faster and more fun.
+If you find Vorbe useful, star the repo. Questions, bugs, and ideas all go through GitHub issues or discussions - see [CONTRIBUTING.md](./CONTRIBUTING.md) for how to help.
