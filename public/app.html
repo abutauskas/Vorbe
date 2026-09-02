@@ -632,6 +632,15 @@
         // most people never need to touch the skill picker at all. It's
         // still there for anyone who wants to force a specific mode.
         let currentTask = "auto";
+
+        // Conversation memory - without this, every message is generated
+        // with zero awareness of anything said before it (confirmed live:
+        // "make it open when touched" sent right after "add a door"
+        // produced an unrelated second door from scratch). Capped so a
+        // long session doesn't grow the request payload without bound;
+        // the backend caps independently too as a safety net.
+        const MAX_HISTORY_MESSAGES = 20;
+        let conversationHistory = [];
         let isLoading = false;
 
         const skillBtn = document.getElementById("skillBtn");
@@ -886,6 +895,7 @@
                         task_type: currentTask,
                         max_tokens: 8000,
                         temperature: 0.7,
+                        history: conversationHistory.slice(-MAX_HISTORY_MESSAGES),
                         ...(image ? { image } : {})
                     })
                 });
@@ -908,6 +918,20 @@
 
                 const data = await response.json();
                 addMessage(data.response, "assistant");
+
+                // Record this exchange for future turns. Uses displayText
+                // (short, human-readable) rather than the full `prompt` sent
+                // to the model - an attached file's full content isn't
+                // replayed into every later turn's history, which keeps a
+                // long conversation's payload from ballooning. That means a
+                // later turn won't remember exactly what was IN an attached
+                // file, only that one was mentioned - an accepted tradeoff,
+                // not an oversight.
+                if (data.response) {
+                    conversationHistory.push({ role: "user", content: displayText });
+                    conversationHistory.push({ role: "assistant", content: data.response });
+                    conversationHistory = conversationHistory.slice(-MAX_HISTORY_MESSAGES);
+                }
             } catch (error) {
                 typingEl.remove();
                 if (error.name === "AbortError") {

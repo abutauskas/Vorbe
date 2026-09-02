@@ -121,10 +121,24 @@ PLATFORM_CONTEXT = (
 )
 
 
+class HistoryMessage(BaseModel):
+    """One prior turn in the conversation, OpenAI-shaped so it drops
+    straight into the messages array sent to the model."""
+    role: str  # "user" or "assistant"
+    content: str
+
+
 class GenerateRequest(BaseModel):
     """What the user is asking for"""
     prompt: str
     task_type: str = "script_generation"
+    # Prior turns, oldest first - without this, every message is generated
+    # with zero awareness of anything said before it. Confirmed live: asking
+    # to "add a door" then, in a separate stateless request, "make it open
+    # when touched" produced a second script with no connection to the
+    # first door at all. Capped server-side (see /generate) regardless of
+    # what the frontend sends, as a safety net against unbounded growth.
+    history: list[HistoryMessage] = []
     # Text generation runs on OpenRouter now, which has no token-rate limit
     # (only a request-count cap - see OPENROUTER_CODING_MODEL's comment) so
     # this no longer needs to be squeezed the way it did under Groq's old
@@ -423,10 +437,16 @@ class ReasoningExhausted(Exception):
     pass
 
 
-async def call_openrouter(model: str, system: str, user_content, max_tokens: int, temperature: float):
+async def call_openrouter(model: str, system: str, user_content, max_tokens: int, temperature: float, history: list = None):
     """Call an OpenRouter chat completion and return (text, tokens_used).
     Raises ReasoningExhausted instead of returning raw internal monologue as
-    if it were the answer - see that class's docstring."""
+    if it were the answer - see that class's docstring.
+
+    `history` (prior {role, content} turns, oldest first) is inserted
+    between the system prompt and the current user turn - without it, every
+    message is generated with zero awareness of anything said before it
+    (confirmed live: "make it open when touched" sent right after "add a
+    door" produced a second, unrelated door from scratch)."""
     async with httpx.AsyncClient(timeout=90) as client:
         resp = await client.post(
             OPENROUTER_URL,
@@ -438,6 +458,7 @@ async def call_openrouter(model: str, system: str, user_content, max_tokens: int
                 "model": model,
                 "messages": [
                     {"role": "system", "content": system},
+                    *(history or []),
                     {"role": "user", "content": user_content},
                 ],
                 "max_tokens": max_tokens,
@@ -458,7 +479,7 @@ async def call_openrouter(model: str, system: str, user_content, max_tokens: int
     return text, tokens_used
 
 
-async def _try_models_once(models: list, system: str, user_content, max_tokens: int, temperature: float):
+async def _try_models_once(models: list, system: str, user_content, max_tokens: int, temperature: float, history: list = None):
     """One pass through the model list, falling back to the next model on a
     rate limit (429), a provider-side error (5xx), or the model exhausting
     its budget on reasoning without producing content - those are the cases
@@ -482,7 +503,7 @@ async def _try_models_once(models: list, system: str, user_content, max_tokens: 
     hit_reasoning_wall = False
     for i, model in enumerate(models):
         try:
-            return await call_openrouter(model, system, user_content, max_tokens, temperature)
+            return await call_openrouter(model, system, user_content, max_tokens, temperature, history)
         except ReasoningExhausted:
             hit_reasoning_wall = True
             if i < len(models) - 1:
@@ -506,7 +527,7 @@ async def _try_models_once(models: list, system: str, user_content, max_tokens: 
     raise last_error
 
 
-async def call_openrouter_with_fallback(models: list, system: str, user_content, max_tokens: int, temperature: float):
+async def call_openrouter_with_fallback(models: list, system: str, user_content, max_tokens: int, temperature: float, history: list = None):
     """Runs _try_models_once, and if every model in that pass hit the
     reasoning wall, tries the whole chain again once before giving up.
 
@@ -523,11 +544,11 @@ async def call_openrouter_with_fallback(models: list, system: str, user_content,
     worse than admitting it didn't work.
     """
     try:
-        return await _try_models_once(models, system, user_content, max_tokens, temperature)
+        return await _try_models_once(models, system, user_content, max_tokens, temperature, history)
     except ReasoningExhausted:
         logger.warning("Every model hit the reasoning wall - retrying the whole chain once")
         try:
-            return await _try_models_once(models, system, user_content, max_tokens, temperature)
+            return await _try_models_once(models, system, user_content, max_tokens, temperature, history)
         except ReasoningExhausted:
             return (
                 "Sorry, I ran out of room thinking this one through and didn't "
@@ -594,6 +615,14 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
                 + relevant_docs
             )
 
+        # Capped here too, regardless of what the frontend already trims to -
+        # a safety net against unbounded growth, and against a client that
+        # doesn't cap at all (a direct API caller, for instance).
+        MAX_HISTORY_MESSAGES = 20
+        history_messages = [
+            {"role": m.role, "content": m.content} for m in request.history[-MAX_HISTORY_MESSAGES:]
+        ]
+
         if request.image:
             if groq_client is None:
                 raise HTTPException(status_code=503, detail="GROQ_API_KEY isn't configured")
@@ -610,6 +639,7 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
                 model=GROQ_VISION_MODEL,
                 messages=[
                     {"role": "system", "content": system},
+                    *history_messages,
                     {"role": "user", "content": user_content},
                 ],
                 max_tokens=request.max_tokens,
@@ -627,7 +657,7 @@ async def generate(request: GenerateRequest, _auth: None = Depends(check_auth_to
             if OPENROUTER_API_KEY:
                 try:
                     response_text, tokens_used = await call_openrouter_with_fallback(
-                        models, system, request.prompt, request.max_tokens, request.temperature
+                        models, system, request.prompt, request.max_tokens, request.temperature, history_messages
                     )
                 except httpx.HTTPStatusError:
                     if not CLOUDFLARE_WORKER_URL:
