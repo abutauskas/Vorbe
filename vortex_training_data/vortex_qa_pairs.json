@@ -1498,5 +1498,2065 @@
     ],
     "answer": "BoolValue is an Instance that stores a single boolean (true/false) outside of a script. Read/write it via BoolValue.Value. Create one with Instance.new(\"BoolValue\"), set .Value, and parent it wherever needed (e.g. workspace or ReplicatedStorage) so other scripts can read it. Source: open, not-yet-merged pull request github.com/TheHaloDeveloper/vortex-docs/pull/61 - treat with slightly less certainty than merged documentation.",
     "topic": "BoolValue"
+  },
+  {
+    "topic": "Attributes",
+    "questions": [
+      "What is Attributes?",
+      "Explain Attributes in Vortex",
+      "How do I use Attributes?",
+      "Tell me about Attributes"
+    ],
+    "answer": "Attributes in Vortex are custom, user-defined properties that can be attached to any Instance. They can hold any value of a supported Variant data type, which essentially means any Luau type. Attributes provide a flexible way to tag or annotate Instances with extra data beyond their built-in properties. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/attributes.md"
+  },
+  {
+    "topic": "SetAttribute",
+    "questions": [
+      "What is SetAttribute?",
+      "Explain SetAttribute in Vortex",
+      "How do I use SetAttribute?",
+      "Tell me about SetAttribute"
+    ],
+    "answer": "SetAttribute is an Instance method that creates, updates, or removes an attribute. Its signature is `Instance:SetAttribute(Attribute: string, Value: Variant)` and it returns nothing. Passing a value creates or updates the named attribute, while passing nil removes it entirely. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/attributes.md"
+  },
+  {
+    "topic": "GetAttribute",
+    "questions": [
+      "What is GetAttribute?",
+      "Explain GetAttribute in Vortex",
+      "How do I use GetAttribute?",
+      "Tell me about GetAttribute"
+    ],
+    "answer": "GetAttribute is an Instance method that retrieves the value previously assigned to an attribute by name. Its signature is `Instance:GetAttribute(Attribute: string): Variant`. If no value has been set for that attribute name, it returns nil. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/attributes.md"
+  },
+  {
+    "topic": "GetAttributes",
+    "questions": [
+      "What is GetAttributes?",
+      "Explain GetAttributes in Vortex",
+      "How do I use GetAttributes?",
+      "Tell me about GetAttributes"
+    ],
+    "answer": "GetAttributes is an Instance method that returns a dictionary (table) of all attributes currently set on the Instance, keyed by attribute name. It is useful when several current attribute values are needed at once rather than retrieving each individually. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/attributes.md"
+  },
+  {
+    "topic": "GetAttributeChangedSignal",
+    "questions": [
+      "What is GetAttributeChangedSignal?",
+      "Explain GetAttributeChangedSignal in Vortex",
+      "How do I use GetAttributeChangedSignal?",
+      "Tell me about GetAttributeChangedSignal"
+    ],
+    "answer": "GetAttributeChangedSignal is an Instance method that returns a ScriptSignal firing whenever the specified attribute changes. Its signature is `Instance:GetAttributeChangedSignal(Attribute: string)` and the parameter is the name of the attribute to watch. In Vortex Studio 0.3.4, this signal can be obtained but its callback delivery has not been confirmed, so polling is recommended instead. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/attributes.md"
+  },
+  {
+    "topic": "Vortex Studio 0.3.4 Attribute Compatibility",
+    "questions": [
+      "What is Vortex Studio 0.3.4 Attribute Compatibility?",
+      "Explain Vortex Studio 0.3.4 Attribute Compatibility in Vortex",
+      "How do I use Vortex Studio 0.3.4 Attribute Compatibility?",
+      "Tell me about Vortex Studio 0.3.4 Attribute Compatibility"
+    ],
+    "answer": "In Vortex Studio 0.3.4, attribute methods are confirmed to work on Part instances, while Player instances are not attribute-capable and all attribute methods return nil on them. Server-to-client and client-to-server Character attribute replication are both confirmed through the current player's Character Model, so a LocalScript can observe server-set Character attributes and a server Script can observe client-set ones. Attribute values written by clients should not be trusted as authoritative input since the server accepts what the client sends. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/attributes.md"
+  },
+  {
+    "topic": "BindableEvent",
+    "questions": [
+      "What is BindableEvent?",
+      "Explain BindableEvent in Vortex",
+      "How do I use BindableEvent?",
+      "Tell me about BindableEvent"
+    ],
+    "answer": "BindableEvent is a type that can be created in Vortex Studio. It exposes an `Event` table that is accessible from both Script and LocalScript contexts. However, the `BindableEvent:Fire(...)` method needed to actually fire the event is not available in Vortex Studio 0.3.4. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/bindable-events.md"
+  },
+  {
+    "topic": "BindableEvent:Fire",
+    "questions": [
+      "What is BindableEvent:Fire?",
+      "Explain BindableEvent:Fire in Vortex",
+      "How do I use BindableEvent:Fire?",
+      "Tell me about BindableEvent:Fire"
+    ],
+    "answer": "`BindableEvent:Fire(...)` is the method that would normally be used to emit or trigger a BindableEvent. In Vortex Studio 0.3.4, this method is unavailable, so events cannot actually be invoked through it on that version. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/bindable-events.md"
+  },
+  {
+    "topic": "BindableEvent script-to-script messaging",
+    "questions": [
+      "What is script-to-script messaging with BindableEvent?",
+      "Explain BindableEvent script-to-script messaging in Vortex",
+      "How do I send messages between scripts using BindableEvent?",
+      "Tell me about BindableEvent script-to-script messaging"
+    ],
+    "answer": "Because `BindableEvent:Fire(...)` is missing in Vortex Studio 0.3.4, BindableEvents cannot currently be used to pass messages between scripts. Developers are advised to use a shared state mechanism instead, or an authored RemoteEvent when the communication needs to cross client/server boundaries. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/bindable-events.md"
+  },
+  {
+    "topic": "Client-Server Model",
+    "questions": [
+      "What is the client-server model in Vortex?",
+      "Explain the client-server model in Vortex",
+      "How do I use the client-server model?",
+      "Tell me about the client-server model"
+    ],
+    "answer": "Vortex games run on a client-server architecture where the server acts as the authoritative source of game state and clients are local copies running on each player's device. The server manages trusted data such as player data, damage, money, and game rules, while the client handles visuals, UI, animations, and input. Server code runs in Scripts, and client code runs in LocalScripts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/client-server.md"
+  },
+  {
+    "topic": "Server",
+    "questions": [
+      "What is the Server in Vortex?",
+      "Explain the Server in Vortex",
+      "How do I use the Server?",
+      "Tell me about the Server"
+    ],
+    "answer": "The Server is the authoritative side of a Vortex game. It runs separately from the player's device and is responsible for managing the actual state of the game, including player data, game rules, damage, and money. Server-side code is executed from Script instances, which the server runs to keep trusted state synchronized between players. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/client-server.md"
+  },
+  {
+    "topic": "Client",
+    "questions": [
+      "What is the Client in Vortex?",
+      "Explain the Client in Vortex",
+      "How do I use the Client?",
+      "Tell me about the Client"
+    ],
+    "answer": "The Client is the player's side of a Vortex game. It runs on the player's local device and handles what the player directly sees and interacts with, such as rendering the world, displaying UI, playing animations, and receiving input. Client-side code is executed from LocalScript instances. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/client-server.md"
+  },
+  {
+    "topic": "Client to Server Remote Validation",
+    "questions": [
+      "What is Client to Server remote validation in Vortex?",
+      "Explain Client to Server remote validation in Vortex",
+      "How do I use Client to Server remote validation?",
+      "Tell me about Client to Server remote validation"
+    ],
+    "answer": "When handling client-to-server remote communication, the server must validate any data sent by the client because the client cannot be trusted to make authoritative decisions. The recommended pattern is to let the client signal intent only, while the server performs the actual state changes. For example, a buy button should send a purchase request to the server, which then checks if the player has enough money and grants the item, rather than the client modifying its own money and inventory before notifying the server. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/client-server.md"
+  },
+  {
+    "topic": "Studio 0.3.4 Remote Sender Limitations",
+    "questions": [
+      "What are the Studio 0.3.4 remote sender limitations in Vortex?",
+      "Explain the Studio 0.3.4 remote sender limitations in Vortex",
+      "How do I work with the Studio 0.3.4 remote sender limitations?",
+      "Tell me about the Studio 0.3.4 remote sender limitations"
+    ],
+    "answer": "In Vortex Studio 0.3.4, client-to-server is the only confirmed remote direction, and the server receives a numeric connection identifier rather than a Player object from the sender. A server Script can call Players:GetPlayers() to enumerate active players and access their Characters, but there is no public way to map the sender id back to a specific Player. As a result, server logic can validate and process a request, but it cannot reliably use the typical Roblox pattern of targeting the calling player's Character. Additionally, server visibility is not equivalent to authority, so writing a Humanoid's Health property on the visible character from a server Script is still rejected. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/client-server.md"
+  },
+  {
+    "topic": "Signal",
+    "questions": [
+      "What is Signal?",
+      "Explain Signal in Vortex",
+      "How do I use Signal?",
+      "Tell me about Signal"
+    ],
+    "answer": "In Vortex, a Signal is a runtime event representation used to broadcast and consume notifications. Signals can be connected with the `:Connect` method, which accepts a callback function and returns a Connection that should be held onto. The `:Once` and `:Wait` helpers are also exposed, while `:ConnectParallel` is intentionally not available. When manually triggering an event with `:Fire(...)`, delivery works reliably for standalone and supported signals. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/events.md"
+  },
+  {
+    "topic": "Signal:Connect",
+    "questions": [
+      "What is Signal:Connect?",
+      "Explain Signal:Connect in Vortex",
+      "How do I use Signal:Connect?",
+      "Tell me about Signal:Connect"
+    ],
+    "answer": "Signal:Connect attaches a listener callback to a signal so it runs every time the signal fires. It returns a Connection object that the caller must store in order to manage the subscription. The callback receives whatever values the producer passes to `:Fire(...)`, such as deltaTime from RunService.Heartbeat. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/events.md"
+  },
+  {
+    "topic": "Signal:Once",
+    "questions": [
+      "What is Signal:Once?",
+      "Explain Signal:Once in Vortex",
+      "How do I use Signal:Once?",
+      "Tell me about Signal:Once"
+    ],
+    "answer": "Signal:Once is an available variant of connection that fires the listener only a single time, after which it automatically disconnects. It is useful for one-shot handlers where retaining and manually disconnecting a Connection would be unnecessary. It is exposed alongside Connect and Wait on supported signal types. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/events.md"
+  },
+  {
+    "topic": "Signal:Wait",
+    "questions": [
+      "What is Signal:Wait?",
+      "Explain Signal:Wait in Vortex",
+      "How do I use Signal:Wait?",
+      "Tell me about Signal:Wait"
+    ],
+    "answer": "Signal:Wait yields the current coroutine until the signal fires, then returns the arguments passed to `:Fire(...)`. It is the preferred way to pause execution at a synchronization point without writing a manual Connect/Disconnect pair. Wait is exposed as part of the supported signal API. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/events.md"
+  },
+  {
+    "topic": "Signal:Fire",
+    "questions": [
+      "What is Signal:Fire?",
+      "Explain Signal:Fire in Vortex",
+      "How do I use Signal:Fire?",
+      "Tell me about Signal:Fire"
+    ],
+    "answer": "Signal:Fire manually triggers delivery of the signal and forwards its arguments to every connected listener. Manual firing is fully supported on standalone signals and on signals Vortex explicitly implements, while a small set of instance change signals are connectable but do not actually fire when their backing property or attribute is written. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/events.md"
+  },
+  {
+    "topic": "Connection",
+    "questions": [
+      "What is Connection?",
+      "Explain Connection in Vortex",
+      "How do I use Connection?",
+      "Tell me about Connection"
+    ],
+    "answer": "A Connection is the object returned by Signal:Connect (and similar methods) that represents an active subscription to a signal. It exists so listeners can later detach their callback via `:Disconnect`. Holding the reference is the standard way to manage signal lifetime in Vortex code. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/events.md"
+  },
+  {
+    "topic": "Connection:Disconnect",
+    "questions": [
+      "What is Connection:Disconnect?",
+      "Explain Connection:Disconnect in Vortex",
+      "How do I use Connection:Disconnect?",
+      "Tell me about Connection:Disconnect"
+    ],
+    "answer": "Connection:Disconnect removes the listener associated with that Connection from its Signal, stopping future deliveries. It is the cleanup step that pairs with Signal:Connect once the listener is no longer needed. Calling Disconnect more than once is safe, since the connection is no longer subscribed after the first call. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/events.md"
+  },
+  {
+    "topic": "Event delivery limitations",
+    "questions": [
+      "What are Event delivery limitations?",
+      "Explain Event delivery limitations in Vortex",
+      "How do I use Event delivery limitations?",
+      "Tell me about Event delivery limitations"
+    ],
+    "answer": "Vortex does not implement every Roblox-style event uniformly: manual Signal:Fire(...) delivery works for standalone and supported signals, but some instance change signals can be connected yet never fire when their underlying property or attribute is written. Specific cases like Part.Changed, user input, Humanoid health signals, and RemoteEvent signals must be handled according to their individually documented runtime behavior rather than assumed to be live. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/events.md"
+  },
+  {
+    "topic": "Connectable signals as producer proof",
+    "questions": [
+      "What is the rule about Connectable signals as producer proof?",
+      "Explain Connectable signals as producer proof in Vortex",
+      "How do I use Connectable signals as producer proof?",
+      "Tell me about Connectable signals as producer proof"
+    ],
+    "answer": "In Vortex, being able to call :Connect on a signal does not prove that anything will ever fire it, since some instance change signals are wired up for connection only and do not actually dispatch. The documented guidance is to verify that the specific event delivers in the context where your code runs before relying on it as a real-time producer. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/events.md"
+  },
+  {
+    "topic": "Hello World Script in Vortex",
+    "questions": [
+      "What is Hello World Script in Vortex?",
+      "Explain Hello World Script in Vortex",
+      "How do I use Hello World Script in Vortex?",
+      "Tell me about Hello World Script in Vortex"
+    ],
+    "answer": "The Hello World script is the introductory script in Vortex, placed inside ServerScriptService. When the game is playtested, running this script causes the text 'Hello, world!' to appear in the output window. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/first-script.md"
+  },
+  {
+    "topic": "Spawning a Part in Workspace",
+    "questions": [
+      "What is Spawning a Part in Workspace?",
+      "Explain Spawning a Part in Workspace in Vortex",
+      "How do I use Spawning a Part in Workspace in Vortex?",
+      "Tell me about Spawning a Part in Workspace"
+    ],
+    "answer": "Spawning a part in Workspace is a common introductory technique in Vortex where a script obtains the Workspace service using game:GetService(\"Workspace\"), creates a new Part via Instance.new(\"Part\"), and assigns the created part as a child of Workspace by setting part.Parent = workspace. Once parented, the part becomes visible in the game world during playtesting. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/first-script.md"
+  },
+  {
+    "topic": "Configuring Part Properties",
+    "questions": [
+      "What is Configuring Part Properties?",
+      "Explain Configuring Part Properties in Vortex",
+      "How do I use Configuring Part Properties in Vortex?",
+      "Tell me about Configuring Part Properties"
+    ],
+    "answer": "After creating a part, its appearance and behavior can be customized by assigning values to its properties. In Vortex you can set part.Name = \"MyPart\", part.Size = Vector3.new(2, 2, 2), part.Position = Vector3.new(0, 10, 0), part.Color = Color3.fromRGB(192, 32, 12), and part.Anchored = false. Anchoring a part false allows physics to act on it, while setting position, size, name, and color control its location, scale, identifier, and visual appearance. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/first-script.md"
+  },
+  {
+    "topic": "Instance",
+    "questions": [
+      "What is an Instance?",
+      "Explain Instance in Vortex",
+      "How do I use Instance?",
+      "Tell me about Instance"
+    ],
+    "answer": "An Instance is the fundamental building block for every object in a Vortex game, similar to Roblox's Instance model. There are many types of Instances, and each one has its own set of Properties along with unique behaviors. Instances form the basis of the entire game object hierarchy in Vortex Studio. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/instances.md"
+  },
+  {
+    "topic": "Instance.new",
+    "questions": [
+      "What is Instance.new?",
+      "Explain Instance.new in Vortex",
+      "How do I use Instance.new?",
+      "Tell me about Instance.new"
+    ],
+    "answer": "Instance.new is a global method used to create a new Instance in a script. It takes the ClassName of the desired Instance type as its first argument. This is the primary way developers instantiate objects programmatically in Vortex. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/instances.md"
+  },
+  {
+    "topic": "Vortex",
+    "questions": [
+      "What is Vortex?",
+      "Explain Vortex in Vortex",
+      "How do I use Vortex?",
+      "Tell me about Vortex"
+    ],
+    "answer": "Vortex is a game development platform inspired by Roblox that enables creators to build projects ranging from simple games to large, complex experiences using the Luau scripting language. It provides a development environment for designing game worlds and the logic that drives them. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/intro.md"
+  },
+  {
+    "topic": "Vortex Engine",
+    "questions": [
+      "What is Vortex Engine?",
+      "Explain Vortex Engine in Vortex",
+      "How do I use Vortex Engine?",
+      "Tell me about Vortex Engine"
+    ],
+    "answer": "Vortex Engine is the API layer provided by the Vortex platform. It exposes functionality for constructing games, spawning parts, writing scripts, responding to events, and other core development tasks. The scripting documentation describes how to use this engine within your projects. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/intro.md"
+  },
+  {
+    "topic": "Your First Script guide",
+    "questions": [
+      "What is Your First Script guide?",
+      "Explain Your First Script guide in Vortex",
+      "How do I use Your First Script guide?",
+      "Tell me about Your First Script guide"
+    ],
+    "answer": "Your First Script is a beginner guide intended for new users of Vortex Studio. It walks through creating an initial script and serves as the recommended starting point before exploring the broader scripting API. It is referenced from the documentation's introduction page. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/intro.md"
+  },
+  {
+    "topic": "Properties",
+    "questions": [
+      "What is Properties?",
+      "Explain Properties in Vortex",
+      "How do I use Properties?",
+      "Tell me about Properties"
+    ],
+    "answer": "In Vortex, instance properties are accessed using dot syntax for reading and assignment for writing. The set of properties an instance exposes depends on its class, and certain runtime authority rules apply to character state. Temporary Parts in Vortex Studio 0.3.4 allow writable access to appearance, transform, collision, anchoring, and name properties, while live character properties such as Humanoid health and root-part transform cannot be written even from a server Script. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/properties.md"
+  },
+  {
+    "topic": "Reading optional properties safely",
+    "questions": [
+      "What is Reading optional properties safely?",
+      "Explain Reading optional properties safely in Vortex",
+      "How do I use Reading optional properties safely?",
+      "Tell me about Reading optional properties safely"
+    ],
+    "answer": "When a property may not be accessible, Vortex commonly returns nil on the read instead of raising an error. To distinguish between an unavailable member and a failed read, wrap the access in pcall. A typical pattern captures both the success flag and the returned value, then checks that the call succeeded and the value is not nil before using it. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/properties.md"
+  },
+  {
+    "topic": "Change signals",
+    "questions": [
+      "What is Change signals?",
+      "Explain Change signals in Vortex",
+      "How do I use Change signals?",
+      "Tell me about Change signals"
+    ],
+    "answer": "Changed, GetPropertyChangedSignal, and attribute-change signals may exist and be connectable on an instance but still fail to fire after a property is written. For situations where correctness requires observing an actual change, the recommended approach is to poll the property rather than rely on signal delivery. Further details are available in the Signals and Attributes documentation pages. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/properties.md"
+  },
+  {
+    "topic": "RemoteEvent",
+    "questions": [
+      "What is RemoteEvent?",
+      "Explain RemoteEvent in Vortex",
+      "How do I use RemoteEvent?",
+      "Tell me about RemoteEvent"
+    ],
+    "answer": "A RemoteEvent is a one-way communication object used to send messages between the server and clients in Vortex. Unlike RemoteFunctions, it does not wait for a response and produces no return value, making it suitable for notifying the other side that something happened rather than requesting a result. RemoteEvents are typically parented under ReplicatedStorage so that both server scripts and client scripts can access them. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteEvent:FireServer",
+    "questions": [
+      "What is FireServer?",
+      "Explain FireServer in Vortex",
+      "How do I use FireServer?",
+      "Tell me about FireServer"
+    ],
+    "answer": "FireServer is a method on RemoteEvent that is called from a client to send arguments to the server. It returns void and triggers the OnServerEvent handler on the server. The page warns that arguments from clients must never be trusted without re-validation on the server, since a modified client could send anything. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteEvent:FireClient",
+    "questions": [
+      "What is FireClient?",
+      "Explain FireClient in Vortex",
+      "How do I use FireClient?",
+      "Tell me about FireClient"
+    ],
+    "answer": "FireClient is a method on RemoteEvent called from the server to send arguments to a specific chosen client. It returns void. As of Vortex Studio 0.3.4, this method is exposed but its delivery is noted as unconfirmed. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteEvent:FireAllClients",
+    "questions": [
+      "What is FireAllClients?",
+      "Explain FireAllClients in Vortex",
+      "How do I use FireAllClients?",
+      "Tell me about FireAllClients"
+    ],
+    "answer": "FireAllClients is a method on RemoteEvent called from the server to broadcast arguments to every connected client. It returns void. According to the Vortex Studio 0.3.4 notes, this method is exposed but its delivery behavior is unconfirmed. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteEvent:OnServerEvent",
+    "questions": [
+      "What is OnServerEvent?",
+      "Explain OnServerEvent in Vortex",
+      "How do I use OnServerEvent?",
+      "Tell me about OnServerEvent"
+    ],
+    "answer": "OnServerEvent is an event on RemoteEvent that fires on the server when a client invokes FireServer. Its first parameter is described in the 0.3.4 notes as a numeric connection id rather than a Player instance, so the server must use GetPlayers() to look up player information. It also accepts any additional arguments forwarded from the client's FireServer call. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteEvent:OnClientEvent",
+    "questions": [
+      "What is OnClientEvent?",
+      "Explain OnClientEvent in Vortex",
+      "How do I use OnClientEvent?",
+      "Tell me about OnClientEvent"
+    ],
+    "answer": "OnClientEvent is an event on RemoteEvent that fires on the client when the server invokes FireClient or FireAllClients. It accepts the arguments forwarded from the server call. As of Vortex Studio 0.3.4, this event is exposed but its delivery remains unconfirmed. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteEvent Security Considerations",
+    "questions": [
+      "What are RemoteEvent security considerations?",
+      "Explain RemoteEvent security in Vortex",
+      "How do I secure RemoteEvent calls?",
+      "Tell me about RemoteEvent security considerations"
+    ],
+    "answer": "RemoteEvents are inherently insecure because a modified client can call FireServer with arbitrary arguments. Any data received from a client via OnServerEvent should be re-validated on the server before being acted upon, and the page explicitly warns against trusting client arguments at face value. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteEvent in ReplicatedStorage",
+    "questions": [
+      "What is the RemoteEvent placement guideline in ReplicatedStorage?",
+      "Explain RemoteEvent storage in Vortex",
+      "How do I place RemoteEvents in ReplicatedStorage?",
+      "Tell me about RemoteEvent in ReplicatedStorage"
+    ],
+    "answer": "ReplicatedStorage is the recommended parent container for RemoteEvents because it is visible and accessible to both server scripts and client scripts. The 0.3.4 notes add that editor-authored remotes in ReplicatedStorage correctly dispatch from FireServer to OnServerEvent, while script-created remotes were visible to clients but did not dispatch in the tested runtime. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteEvent Argument Limitations",
+    "questions": [
+      "What are RemoteEvent argument limitations?",
+      "Explain RemoteEvent argument restrictions in Vortex",
+      "How do I pass arguments to RemoteEvent?",
+      "Tell me about RemoteEvent argument limitations"
+    ],
+    "answer": "As of Vortex Studio 0.3.4, RemoteEvent arguments cannot contain Instances, which means objects like LocalPlayer or a Character cannot be passed through FireServer or FireClient. Servers and clients must instead pass primitive data such as numbers, strings, booleans, or Color3 values. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteEvent Example: ChangeColor",
+    "questions": [
+      "What is the ChangeColor RemoteEvent example?",
+      "Explain the ChangeColor example in Vortex",
+      "How do I build a color-changing RemoteEvent?",
+      "Tell me about the ChangeColor example"
+    ],
+    "answer": "The ChangeColor example demonstrates a RemoteEvent that changes a part named ColorBlock to a random color when a player presses E. A LocalScript in StarterPlayerScripts listens for the E key via UserInputService.InputBegan and calls changeColor:FireServer() with no arguments, while a server script in ServerScriptService connects to changeColor.OnServerEvent and sets colorBlock.Color to a random Color3.fromRGB value. This pattern is needed because key presses can only be observed on the client but the color change must occur on the server so every player sees the same result. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-events.md"
+  },
+  {
+    "topic": "RemoteFunction",
+    "questions": [
+      "What is RemoteFunction?",
+      "Explain RemoteFunction in Vortex",
+      "How do I use RemoteFunction?",
+      "Tell me about RemoteFunction"
+    ],
+    "answer": "RemoteFunction is a class that allows two-way remote invocation between client and server in Vortex. An editor-authored RemoteFunction placed in ReplicatedStorage exposes InvokeServer to LocalScripts, and a server Script can assign a function to OnServerInvoke to handle incoming requests. However, RemoteFunctions are currently limited in Vortex Studio 0.3.4 and are not recommended for required gameplay paths. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-functions.md"
+  },
+  {
+    "topic": "RemoteFunction InvokeServer",
+    "questions": [
+      "What is InvokeServer?",
+      "Explain InvokeServer in Vortex",
+      "How do I use InvokeServer?",
+      "Tell me about InvokeServer"
+    ],
+    "answer": "InvokeServer is the client-side method on a RemoteFunction that a LocalScript uses to send a request to the server and wait for a response. It is exposed when a RemoteFunction is placed in ReplicatedStorage. Currently, passing instance arguments such as LocalPlayer to InvokeServer fails before delivery with an \"Instances cannot be sent\" runtime error, and a successful primitive request/response round trip has not yet been established in Vortex Studio 0.3.4. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-functions.md"
+  },
+  {
+    "topic": "RemoteFunction OnServerInvoke",
+    "questions": [
+      "What is OnServerInvoke?",
+      "Explain OnServerInvoke in Vortex",
+      "How do I use OnServerInvoke?",
+      "Tell me about OnServerInvoke"
+    ],
+    "answer": "OnServerInvoke is the callback property on a RemoteFunction that a server Script assigns to a function in order to process requests received from clients via InvokeServer. When invoked, the assigned function is expected to return a value that is sent back to the requesting client. In Vortex Studio 0.3.4 this round-trip path has not been confirmed as fully working with primitive payloads. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-functions.md"
+  },
+  {
+    "topic": "RemoteFunction instance argument limitation",
+    "questions": [
+      "What is the RemoteFunction instance argument limitation?",
+      "Explain RemoteFunction instance argument limitation in Vortex",
+      "How do I handle RemoteFunction instance argument limitation?",
+      "Tell me about RemoteFunction instance argument limitation"
+    ],
+    "answer": "RemoteFunction calls in Vortex do not support instance arguments. If a client invokes a RemoteFunction while passing a Roblox-style Instance such as LocalPlayer, the call fails before it reaches the server with a runtime error reading \"Instances cannot be sent\". Only primitive values can be passed as arguments, and even then the full primitive round trip is not yet confirmed in Vortex Studio 0.3.4. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-functions.md"
+  },
+  {
+    "topic": "RemoteEvent alternative",
+    "questions": [
+      "What is the RemoteEvent alternative?",
+      "Explain RemoteEvent alternative in Vortex",
+      "How do I use RemoteEvent as an alternative?",
+      "Tell me about RemoteEvent alternative"
+    ],
+    "answer": "When one-way client-to-server communication is sufficient, Vortex developers are advised to use an editor-authored RemoteEvent in ReplicatedStorage with primitive payloads instead of a RemoteFunction. RemoteEvent delivery has been observed working in Vortex Studio 0.3.4. One quirk is that the server-sender value on a received RemoteEvent is exposed as a numeric identifier rather than a full Player object. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/remote-functions.md"
+  },
+  {
+    "topic": "Script and LocalScript Globals in Vortex Studio 0.3.4",
+    "questions": [
+      "What is the globals restriction for Script and LocalScript in Vortex?",
+      "Explain Script globals in Vortex",
+      "How do I use Script globals in Vortex?",
+      "Tell me about Script globals in Vortex"
+    ],
+    "answer": "In Vortex Studio version 0.3.4, both Script and LocalScript instances lack a number of standard Lua globals. These include `require`, `load`, `loadstring`, `loadfile`, `dofile`, `io`, `os`, `package`, `debug`, `bit32`, `buffer`, `vector`, and `shared`. As a result, scripts cannot dynamically load code, interact with the operating system, or manipulate buffers and vectors directly. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/sandbox-limits.md"
+  },
+  {
+    "topic": "Filesystem and Hook Globals Restriction",
+    "questions": [
+      "What filesystem and hook globals are unavailable in Vortex?",
+      "Explain executor-style globals in Vortex",
+      "How do I use filesystem globals in Vortex?",
+      "Tell me about hook globals in Vortex"
+    ],
+    "answer": "Executor-style helpers for reading, writing, listing, or deleting files are not exposed in Vortex Studio. Globals such as `readfile`, `writefile`, `appendfile`, `listfiles`, `isfile`, `isfolder`, `makefolder`, `delfile`, `getgenv`, `getrenv`, `getgc`, and `hookfunction` all evaluate to `nil`, so any attempt to call them will error. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/sandbox-limits.md"
+  },
+  {
+    "topic": "Unavailable Game Entry Points",
+    "questions": [
+      "What game entry points are restricted in Vortex?",
+      "Explain privileged game globals in Vortex",
+      "How do I use game entry points in Vortex?",
+      "Tell me about game entry points in Vortex"
+    ],
+    "answer": "Several methods on the `game` object that would normally grant elevated capabilities are blocked. Specifically, `game.HttpGet`, `game.HttpPost`, `game.GetObjects`, `game.Loaded`, and `Instance.fromExisting` are unavailable, preventing external HTTP requests, asset insertion, and construction of instances from external sources. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/sandbox-limits.md"
+  },
+  {
+    "topic": "Blocked Services in Vortex",
+    "questions": [
+      "What services are not available in Vortex?",
+      "Explain blocked Roblox services in Vortex",
+      "How do I use services in Vortex?",
+      "Tell me about unavailable services in Vortex"
+    ],
+    "answer": "Common Roblox services that interact with the network, persistence, or marketplace are not valid services in either the server or client execution context. These include `HttpService`, `DataStoreService`, `TeleportService`, `MarketplaceService`, and `InsertService`, all of which cannot be obtained via `game:GetService`. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/sandbox-limits.md"
+  },
+  {
+    "topic": "Available Reflection Helpers",
+    "questions": [
+      "What reflection helpers are exposed in Vortex?",
+      "Explain Lua reflection helpers in Vortex",
+      "How do I use reflection helpers in Vortex?",
+      "Tell me about reflection helpers in Vortex"
+    ],
+    "answer": "Vortex Studio exposes a set of standard Lua reflection helpers that operate on tables, metatables, and proxies. These are `getfenv`, `setfenv`, `getmetatable`, `setmetatable`, `rawget`, `rawset`, `rawequal`, `newproxy`, `collectgarbage`, and the global `_G` table. Their availability does not grant scripts any path to escape the sandbox. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/sandbox-limits.md"
+  },
+  {
+    "topic": "Sandbox Isolation Guarantees",
+    "questions": [
+      "What isolation does the sandbox provide in Vortex?",
+      "Explain sandbox guarantees in Vortex",
+      "How do I use the sandbox in Vortex?",
+      "Tell me about sandbox isolation in Vortex"
+    ],
+    "answer": "Scripts in Vortex Studio are treated as isolated from the host filesystem, from arbitrary code loading, from external networking, and from privileged Roblox services. The combination of removed globals, blocked game methods, and missing services enforces these boundaries, and reflection helpers like `_G` or `getfenv` do not provide a workaround. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/sandbox-limits.md"
+  },
+  {
+    "topic": "Script",
+    "questions": [
+      "What is Script?",
+      "Explain Script in Vortex",
+      "How do I use Script?",
+      "Tell me about Script"
+    ],
+    "answer": "A Script is a container object that holds Luau source code and is used to define gameplay logic and interact with the Vortex engine. Its source code is not executed directly by the container itself; instead, the engine passes the source to the Luau runtime where the Luau VM compiles and runs it. Scripts can implement complex gameplay systems beyond simple tasks like creating instances, and the two currently supported script types are LocalScript and Script. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/scripts-and-vms.md"
+  },
+  {
+    "topic": "LocalScript",
+    "questions": [
+      "What is LocalScript?",
+      "Explain LocalScript in Vortex",
+      "How do I use LocalScript?",
+      "Tell me about LocalScript"
+    ],
+    "answer": "LocalScript is one of the two script container types currently supported in Vortex. Like the Script type, it holds Luau source code that is compiled and executed by the Luau VM, but it is intended for client-side execution contexts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/scripts-and-vms.md"
+  },
+  {
+    "topic": "Luau Virtual Machine",
+    "questions": [
+      "What is the Luau Virtual Machine?",
+      "Explain the Luau Virtual Machine in Vortex",
+      "How do I use the Luau Virtual Machine?",
+      "Tell me about the Luau Virtual Machine"
+    ],
+    "answer": "The Luau Virtual Machine (VM) is the runtime component that executes compiled Luau bytecode. When a script runs, the engine retrieves its source code, the Luau compiler converts it into bytecode, and the Luau VM then carries out execution. The VM manages execution state including values, function calls, control flow, and other runtime operations. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/scripts-and-vms.md"
+  },
+  {
+    "topic": "Execution Pipeline",
+    "questions": [
+      "What is the execution pipeline?",
+      "Explain the execution pipeline in Vortex",
+      "How do I use the execution pipeline?",
+      "Tell me about the execution pipeline"
+    ],
+    "answer": "The execution pipeline in Vortex describes how Luau code travels from storage to running on the game: Script stores the source code, the Luau compiler converts that source code into bytecode, the Luau VM executes the resulting bytecode, and engine APIs provide the functionality needed for that code to interact with the game and engine systems. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/scripts-and-vms.md"
+  },
+  {
+    "topic": "Vortex Engine Integration",
+    "questions": [
+      "What is Vortex engine integration?",
+      "Explain Vortex engine integration",
+      "How do I use Vortex engine integration?",
+      "Tell me about Vortex engine integration"
+    ],
+    "answer": "Vortex is built on top of Bevy, which serves as its underlying engine layer. Engine functionality is exposed to Luau through Vortex's scripting APIs, which allow scripts to interact with game objects and engine systems at runtime. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/scripts-and-vms.md"
+  },
+  {
+    "topic": "Studio Keybindings",
+    "questions": [
+      "What is Studio Keybindings?",
+      "Explain Studio Keybindings in Vortex",
+      "How do I use Studio Keybindings?",
+      "Tell me about Studio Keybindings"
+    ],
+    "answer": "Studio Keybindings is a reference for the keyboard shortcuts and mouse controls available in Vortex Studio's editor. It covers shortcuts grouped into categories such as File, Editing, Text, Tools, Camera, Selection, and Window. These bindings let users save, undo, copy, paste, group, transform, navigate the viewport, select objects, and adjust the UI. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/studio/keybindings.md"
+  },
+  {
+    "topic": "File Shortcuts",
+    "questions": [
+      "What is File Shortcuts?",
+      "Explain File Shortcuts in Vortex",
+      "How do I use File Shortcuts?",
+      "Tell me about File Shortcuts"
+    ],
+    "answer": "The File shortcut category in Vortex Studio includes pressing Ctrl + S to save the current work. It is the only shortcut listed under the File section of the editor's keybinding reference. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/studio/keybindings.md"
+  },
+  {
+    "topic": "Editing Shortcuts",
+    "questions": [
+      "What is Editing Shortcuts?",
+      "Explain Editing Shortcuts in Vortex",
+      "How do I use Editing Shortcuts?",
+      "Tell me about Editing Shortcuts"
+    ],
+    "answer": "Editing shortcuts in Vortex Studio provide quick access to common manipulation commands. Ctrl + Z undoes, Ctrl + C copies the selection, and Ctrl + V pastes copied parts. Ctrl + D duplicates selected nodes or parts, Ctrl + G groups selected parts into a model, and Shift + Ctrl + G ungroups a model. F focuses the view on the selected parts, and Backspace or Delete removes the selected parts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/studio/keybindings.md"
+  },
+  {
+    "topic": "Text Shortcuts",
+    "questions": [
+      "What is Text Shortcuts?",
+      "Explain Text Shortcuts in Vortex",
+      "How do I use Text Shortcuts?",
+      "Tell me about Text Shortcuts"
+    ],
+    "answer": "Text shortcuts in Vortex Studio mirror standard text editing controls. Ctrl + A selects all text, Ctrl + C copies, Ctrl + V pastes, and Ctrl + X cuts the highlighted text. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/studio/keybindings.md"
+  },
+  {
+    "topic": "Tools Shortcuts",
+    "questions": [
+      "What is Tools Shortcuts?",
+      "Explain Tools Shortcuts in Vortex",
+      "How do I use Tools Shortcuts?",
+      "Tell me about Tools Shortcuts"
+    ],
+    "answer": "Tool shortcuts in Vortex Studio let users switch modes by pressing number keys. Press 1 for Select mode, 2 for Move mode, 3 for Rotate mode, and 4 for Scale mode. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/studio/keybindings.md"
+  },
+  {
+    "topic": "Camera Shortcuts",
+    "questions": [
+      "What is Camera Shortcuts?",
+      "Explain Camera Shortcuts in Vortex",
+      "How do I use Camera Shortcuts?",
+      "Tell me about Camera Shortcuts"
+    ],
+    "answer": "Camera shortcuts in Vortex Studio allow navigation of the viewport using the keyboard and mouse. W, A, S, and D move the camera forward, left, backward, and right, with Shift slowing the movement. Q and E move the camera down and up respectively. The scroll wheel moves the camera toward or away from the cursor, middle mouse drag pans the view, and holding right-click while dragging moves the view. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/studio/keybindings.md"
+  },
+  {
+    "topic": "Selection Shortcuts",
+    "questions": [
+      "What is Selection Shortcuts?",
+      "Explain Selection Shortcuts in Vortex",
+      "How do I use Selection Shortcuts?",
+      "Tell me about Selection Shortcuts"
+    ],
+    "answer": "Selection shortcuts in Vortex Studio control how items are chosen in the editor. Left-click selects an item, Ctrl + click toggles individual nodes, and Shift + click selects multiple in the viewport or all items between two points in the Explorer. Left-click and drag creates a selection area for parts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/studio/keybindings.md"
+  },
+  {
+    "topic": "Window Shortcuts",
+    "questions": [
+      "What is Window Shortcuts?",
+      "Explain Window Shortcuts in Vortex",
+      "How do I use Window Shortcuts?",
+      "Tell me about Window Shortcuts"
+    ],
+    "answer": "Window shortcuts in Vortex Studio manage the editor's display. F11 toggles fullscreen mode, and Ctrl combined with the minus or plus key decreases or increases the Studio UI size. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/studio/keybindings.md"
+  },
+  {
+    "topic": "task.spawn",
+    "questions": [
+      "What is task.spawn?",
+      "Explain task.spawn in Vortex",
+      "How do I use task.spawn?",
+      "Tell me about task.spawn"
+    ],
+    "answer": "task.spawn is a scheduling helper available in both Script and LocalScript contexts in Vortex Studio. It takes a callback function and runs it immediately within the current scheduling call. In the tested runtime, a callback passed to task.spawn completes before the scheduler yields control back. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/tasks.md"
+  },
+  {
+    "topic": "task.defer",
+    "questions": [
+      "What is task.defer?",
+      "Explain task.defer in Vortex",
+      "How do I use task.defer?",
+      "Tell me about task.defer"
+    ],
+    "answer": "task.defer is a scheduling helper available in Script and LocalScript that queues its callback to run on a later scheduler cycle rather than immediately. In the tested runtime, the deferred callback remained pending after the first task.wait() call and ran during the subsequent scheduler cycle. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/tasks.md"
+  },
+  {
+    "topic": "task.delay",
+    "questions": [
+      "What is task.delay?",
+      "Explain task.delay in Vortex",
+      "How do I use task.delay?",
+      "Tell me about task.delay"
+    ],
+    "answer": "task.delay is a scheduling helper that takes a duration and a callback, running the callback after approximately the specified time has elapsed. When called with a duration of 0, it behaves like task.defer, remaining pending through the first scheduler cycle and running on the next one. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/tasks.md"
+  },
+  {
+    "topic": "task.wait",
+    "questions": [
+      "What is task.wait?",
+      "Explain task.wait in Vortex",
+      "How do I use task.wait?",
+      "Tell me about task.wait"
+    ],
+    "answer": "task.wait is a scheduling helper that yields the current scheduler cycle and resumes on a later one, returning a numeric value representing elapsed time. It is available in both Script and LocalScript contexts and serves as the primary way to observe scheduler progression in Vortex. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/tasks.md"
+  },
+  {
+    "topic": "Task scheduling behavior",
+    "questions": [
+      "What is Task scheduling behavior?",
+      "Explain Task scheduling behavior in Vortex",
+      "How do I use Task scheduling behavior?",
+      "Tell me about Task scheduling behavior"
+    ],
+    "answer": "Vortex Studio 0.3.4 scheduling follows a discrete cycle model: callbacks passed to task.spawn complete within the current scheduling call, while callbacks queued via task.defer or task.delay(0, callback) remain pending through the first task.wait() and complete during the second scheduler cycle. The helpers task.cancel, task.desynchronize, and task.synchronize are not available in this version. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/tasks.md"
+  },
+  {
+    "topic": "IntValue",
+    "questions": [
+      "What is IntValue?",
+      "Explain IntValue in Vortex",
+      "How do I use IntValue?",
+      "Tell me about IntValue"
+    ],
+    "answer": "IntValue is a detached instance container in Vortex that holds a numeric value. It starts at 0 and exposes a Value property that is readable and writable from both Script and LocalScript contexts. You create one with Instance.new(\"IntValue\") and assign to its Value property. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/values.md"
+  },
+  {
+    "topic": "StringValue",
+    "questions": [
+      "What is StringValue?",
+      "Explain StringValue in Vortex",
+      "How do I use StringValue?",
+      "Tell me about StringValue"
+    ],
+    "answer": "StringValue is a detached instance container in Vortex that holds a string value. It starts as an empty string (\"\") and exposes a Value property that is accessible from both Script and LocalScript. It is constructed via Instance.new(\"StringValue\") and assigned through the Value property. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/values.md"
+  },
+  {
+    "topic": "BoolValue",
+    "questions": [
+      "What is BoolValue?",
+      "Explain BoolValue in Vortex",
+      "How do I use BoolValue?",
+      "Tell me about BoolValue"
+    ],
+    "answer": "BoolValue is not constructable in Vortex Studio 0.3.4. When you need instance-backed state, the recommended approach is to use a plain Lua boolean for local state or an IntValue with a 0/1 convention. There is no constructor exposed for BoolValue at this time. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/values.md"
+  },
+  {
+    "topic": "Value containers",
+    "questions": [
+      "What are value containers?",
+      "Explain value containers in Vortex",
+      "How do I use value containers?",
+      "Tell me about value containers"
+    ],
+    "answer": "Vortex Studio 0.3.4 supports two simple script-visible value containers: IntValue and StringValue. Both are detached instances created via Instance.new() with default starting values of 0 and \"\" respectively, and both expose a Value property that can be read and written from Script and LocalScript. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/values.md"
+  },
+  {
+    "topic": "Changed signal",
+    "questions": [
+      "What is the Changed signal?",
+      "Explain the Changed signal in Vortex",
+      "How do I use the Changed signal?",
+      "Tell me about the Changed signal"
+    ],
+    "answer": "Value instances in Vortex expose a Changed signal, but in the tested runtime it did not fire after a Value assignment. As a result, relying on Changed for game logic is unreliable. Developers should read or poll the Value property directly instead of subscribing to this signal. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/values.md"
+  },
+  {
+    "topic": "GetPropertyChangedSignal",
+    "questions": [
+      "What is GetPropertyChangedSignal?",
+      "Explain GetPropertyChangedSignal in Vortex",
+      "How do I use GetPropertyChangedSignal?",
+      "Tell me about GetPropertyChangedSignal"
+    ],
+    "answer": "GetPropertyChangedSignal(\"Value\") is available on IntValue and StringValue instances, but in the tested Vortex runtime it did not deliver callbacks when Value was reassigned. The signal is therefore not dependable for reactive game logic. Polling the Value property is recommended instead. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/values.md"
+  },
+  {
+    "topic": "BindableEvent",
+    "questions": [
+      "What is BindableEvent?",
+      "Explain BindableEvent in Vortex",
+      "How do I use BindableEvent?",
+      "Tell me about BindableEvent"
+    ],
+    "answer": "BindableEvent in Vortex is a constructable instance representing a partially exposed local-event object. It became available in Vortex Studio version 0.3.4 and can be created in both Script and LocalScript contexts using Instance.new(\"BindableEvent\"). The instance exposes an Event property which returns a signal table, but it does not expose a Fire method, meaning scripts are not able to manually trigger the signal. Because triggering is unavailable, its practical role as an in-process event bus is currently limited in the runtime. The instance still has a Destroy method for cleanup. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/bindable-event.md"
+  },
+  {
+    "topic": "BindableEvent.Event",
+    "questions": [
+      "What is BindableEvent.Event?",
+      "Explain BindableEvent.Event in Vortex",
+      "How do I use BindableEvent.Event?",
+      "Tell me about BindableEvent.Event"
+    ],
+    "answer": "Event is a property of the BindableEvent instance in Vortex that returns a signal table. This signal can be connected to in the usual way, but since BindableEvent lacks a Fire method, there is no way for scripts to emit the event. The returned signal table is the only exposed means of interacting with the event through BindableEvent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/bindable-event.md"
+  },
+  {
+    "topic": "BindableEvent.Fire",
+    "questions": [
+      "What is BindableEvent.Fire?",
+      "Explain BindableEvent.Fire in Vortex",
+      "How do I use BindableEvent.Fire?",
+      "Tell me about BindableEvent.Fire"
+    ],
+    "answer": "Fire is not implemented on BindableEvent in Vortex. Accessing instance.Fire yields nil, so scripts cannot trigger the BindableEvent's signal. This absence is what makes BindableEvent unsuitable as an in-process event bus in the current Vortex runtime. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/bindable-event.md"
+  },
+  {
+    "topic": "BoolValue",
+    "questions": [
+      "What is BoolValue?",
+      "Explain BoolValue in Vortex",
+      "How do I use BoolValue?",
+      "Tell me about BoolValue"
+    ],
+    "answer": "BoolValue is a Roblox-compatible boolean value container class that is not supported in Vortex Studio 0.3.4. Calling Instance.new(\"BoolValue\") fails with an unable-to-create-instance error in both Script and LocalScript contexts. As a workaround, developers should use a native Lua boolean value, or alternatively use an IntValue instance that follows a documented convention of representing false as 0 and true as 1. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/bool-value.md"
+  },
+  {
+    "topic": "Character",
+    "questions": [
+      "What is Character?",
+      "Explain Character in Vortex",
+      "How do I use Character?",
+      "Tell me about Character"
+    ],
+    "answer": "In Vortex, a Character is the runtime Model instance associated with a Player, exposed through the Player.Character field. It is not a separately constructible class; you obtain it from Players.LocalPlayer in a LocalScript or from Players:GetPlayers() in a server Script. In Vortex Studio 0.3.4 it reports ClassName == \"Model\" and is a live, queryable projection rather than a full Instance with all APIs. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/character.md"
+  },
+  {
+    "topic": "Character public fields",
+    "questions": [
+      "What is Character public fields?",
+      "Explain Character public fields in Vortex",
+      "How do I use Character public fields?",
+      "Tell me about Character public fields"
+    ],
+    "answer": "The Character's confirmed public projection exposes the fields ClassName, Name, Position, Humanoid, and HumanoidRootPart. Parent reads as nil on the projection. Standard R6/R15 limb names are absent from this public surface, although FindFirstChild(\"Humanoid\") and FindFirstChild(\"HumanoidRootPart\") resolve the same values as the public fields. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/character.md"
+  },
+  {
+    "topic": "Character generic Instance methods",
+    "questions": [
+      "What is Character generic Instance methods?",
+      "Explain Character generic Instance methods in Vortex",
+      "How do I use Character generic Instance methods?",
+      "Tell me about Character generic Instance methods"
+    ],
+    "answer": "The Character supports tested generic Instance methods including GetChildren, GetDescendants, FindFirstChild, FindFirstChildOfClass, WaitForChild, and IsA, plus attribute and property-signal methods. Its hierarchy and lifecycle signals are unavailable, but the Changed signal is connectable. Model pivot and primary-part APIs are also unavailable on the projection. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/character.md"
+  },
+  {
+    "topic": "Character.Orientation",
+    "questions": [
+      "What is Character.Orientation?",
+      "Explain Character.Orientation in Vortex",
+      "How do I use Character.Orientation?",
+      "Tell me about Character.Orientation"
+    ],
+    "answer": "Character.Orientation is a write-only visual rotation channel in Vortex: assigning Vector3.new(0, 90, 0) visibly quarter-turns the character, yet reading it returns nil before and after the write. It differs from Player.Orientation, which retains an assigned value with no visible turn, and from HumanoidRootPart, which rejects the write. After a turn, Orientation, Rotation, and CFrame all remain nil on Player, Character, Humanoid, Scene, armature, limbs, and Head, so the resulting yaw cannot be read back. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/character.md"
+  },
+  {
+    "topic": "Character visual Scene projection",
+    "questions": [
+      "What is Character visual Scene projection?",
+      "Explain Character visual Scene projection in Vortex",
+      "How do I use Character visual Scene projection?",
+      "Tell me about Character visual Scene projection"
+    ],
+    "answer": "Character:GetChildren() returns an unnamed generic Instance that, after a short loading delay, exposes a Scene property containing the rendered armature, body meshes, limbs, and avatar-specific attachments. Access it via character:GetChildren()[1].Scene, then bracket-syntax for dotted or spaced names such as armature[\"Armature.001\"], visualRoot.HumanoidRootPart, torso[\"Right Leg\"], and so on. This visual HumanoidRootPart is not the restricted public character.HumanoidRootPart Part projection, and the visual HumanoidRootPart and Torso discard Orientation writes without error. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/character.md"
+  },
+  {
+    "topic": "Character visual Scene replacement",
+    "questions": [
+      "What is Character visual Scene replacement?",
+      "Explain Character visual Scene replacement in Vortex",
+      "How do I use Character visual Scene replacement?",
+      "Tell me about Character visual Scene replacement"
+    ],
+    "answer": "The visual Scene can be replaced while the Character itself remains available, and replacement destroys the old visual instances. Stored references to limbs or accessories from a previous Scene cannot be reparented into the new one, so you must resolve the current visual Scene again each time you need it. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/character.md"
+  },
+  {
+    "topic": "Character lifecycle limitation",
+    "questions": [
+      "What is Character lifecycle limitation?",
+      "Explain Character lifecycle limitation in Vortex",
+      "How do I use Character lifecycle limitation?",
+      "Tell me about Character lifecycle limitation"
+    ],
+    "answer": "The standard Player.CharacterAdded signal is not exposed in the tested Vortex runtime; it remained nil in both Script and LocalScript over a 15-second observation window. Instead of waiting on that signal, you should poll Player.Character and the visual Scene route to detect when a Character or its visuals are ready. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/character.md"
+  },
+  {
+    "topic": "Debris",
+    "questions": [
+      "What is Debris?",
+      "Explain Debris in Vortex",
+      "How do I use Debris?",
+      "Tell me about Debris"
+    ],
+    "answer": "Debris is a Vortex service accessed via game:GetService(\"Debris\") that lets you schedule instances for automatic removal after a delay without yielding the current thread. It is useful for objects like temporary parts or effects that lose their purpose after some time. Typical usage involves calling Debris:AddItem(instance, seconds) on an instance after it has been parented into the game hierarchy. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/debris.md"
+  },
+  {
+    "topic": "AddItem",
+    "questions": [
+      "What is AddItem?",
+      "Explain AddItem in Vortex",
+      "How do I use AddItem?",
+      "Tell me about AddItem"
+    ],
+    "answer": "AddItem is a method on the Debris service with the signature Debris:AddItem(instance: Instance, lifetime: Number). It schedules the given instance to be removed (its Parent set to nil) after lifetime seconds, without yielding the calling thread. It is exposed in both Script and LocalScript contexts, and testing notes indicate that calling it with a lifetime of 0 on an unparented temporary Part removed it within two scheduler ticks. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/debris.md"
+  },
+  {
+    "topic": "SetMaxItems",
+    "questions": [
+      "What is SetMaxItems?",
+      "Explain SetMaxItems in Vortex",
+      "How do I use SetMaxItems?",
+      "Tell me about SetMaxItems"
+    ],
+    "answer": "SetMaxItems is a method on the Debris service with the signature Debris:SetMaxItems(maxItems: Number). It sets the maximum number of instances that the Debris service will track at one time. This provides a configurable cap on how many pending-removal items the service manages simultaneously. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/debris.md"
+  },
+  {
+    "topic": "Debris testing notes",
+    "questions": [
+      "What is Debris testing notes?",
+      "Explain Debris testing notes in Vortex",
+      "How do I use Debris testing notes?",
+      "Tell me about Debris testing notes"
+    ],
+    "answer": "The Debris service was revalidated in Vortex Studio 0.3.4, with the caveat that detailed behavior may differ in later releases. Both AddItem and SetMaxItems are available in Script and LocalScript contexts. In one test, calling Debris:AddItem(part, 0) on an unparented temporary Part caused it to be removed within two scheduler ticks, after which the held Lua reference returned ClassName as Instance and Name as an empty string. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/debris.md"
+  },
+  {
+    "topic": "Folder",
+    "questions": [
+      "What is Folder?",
+      "Explain Folder in Vortex",
+      "How do I use Folder?",
+      "Tell me about Folder"
+    ],
+    "answer": "Folder is a general-purpose container for instances in Vortex, available as a constructable type in both Script and LocalScript starting from Vortex Studio 0.3.4. It supports standard instance and hierarchy operations such as FindFirstChild, GetChildren, GetDescendants, and WaitForChild. However, Folders created at runtime have a significant limitation: they cannot form an observable hierarchy, meaning setting a Part's Parent to such a Folder does not make the child visible via Parent equality or hierarchy queries, and parenting the Folder itself to Workspace similarly fails to register it. The recommended practice is to author Folders in the editor for organization rather than trying to build folder hierarchies dynamically at runtime. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/folder.md"
+  },
+  {
+    "topic": "Folder runtime hierarchy limitation",
+    "questions": [
+      "What is Folder runtime hierarchy limitation?",
+      "Explain Folder runtime hierarchy limitation in Vortex",
+      "How do I use Folder runtime hierarchy limitation?",
+      "Tell me about Folder runtime hierarchy limitation"
+    ],
+    "answer": "In Vortex, a Folder instantiated by a script cannot establish a working runtime hierarchy. Reparenting objects under such a Folder causes child.Parent to still evaluate to nil, while FindFirstChild, GetChildren, GetDescendants, and WaitForChild all fail to surface those children. Similarly, parenting the runtime Folder to Workspace does not make it discoverable through Workspace lookups or GetChildren. To avoid these issues, developers should create Folders in the editor when organizing instances and avoid relying on script-created Folders for hierarchy purposes. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/folder.md"
+  },
+  {
+    "topic": "HumanoidRootPart",
+    "questions": [
+      "What is HumanoidRootPart?",
+      "Explain HumanoidRootPart in Vortex",
+      "How do I use HumanoidRootPart?",
+      "Tell me about HumanoidRootPart"
+    ],
+    "answer": "HumanoidRootPart is the root Part exposed by a visible player's Character Model in Vortex. Although its ClassName reports as \"Part\", it functions as a narrow character-state projection rather than a full Part instance and is not separately constructible. You access it through the Character of a Player, such as via Players.LocalPlayer.Character.HumanoidRootPart in a LocalScript, or via a server Script using Players:GetPlayers()[1].Character.HumanoidRootPart. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid-root-part.md"
+  },
+  {
+    "topic": "HumanoidRootPart Confirmed Surface",
+    "questions": [
+      "What is HumanoidRootPart Confirmed Surface?",
+      "Explain HumanoidRootPart Confirmed Surface in Vortex",
+      "How do I use HumanoidRootPart Confirmed Surface?",
+      "Tell me about HumanoidRootPart Confirmed Surface"
+    ],
+    "answer": "The confirmed surface lists properties and methods readable from HumanoidRootPart in Vortex Studio 0.3.4 from both LocalScript and server Script contexts. Readable fields include ClassName (value \"Part\"), Name (value \"HumanoidRootPart\"), Parent (the Character Model), Position (Vector3), and Size (Vector3). IsA is the only exposed method and returns true for \"Part\", \"BasePart\", and \"Instance\". Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid-root-part.md"
+  },
+  {
+    "topic": "HumanoidRootPart Unavailable Fields",
+    "questions": [
+      "What is HumanoidRootPart Unavailable Fields?",
+      "Explain HumanoidRootPart Unavailable Fields in Vortex",
+      "How do I use HumanoidRootPart Unavailable Fields?",
+      "Tell me about HumanoidRootPart Unavailable Fields"
+    ],
+    "answer": "Many standard Part and Instance fields and methods are unavailable on HumanoidRootPart and read as nil. Tested unavailable Part fields include Anchored, CanCollide, CastShadow, CFrame, Color, Material, Orientation, Rotation, Transparency, and various velocity, mass, collision-query, touch, and root-priority properties. Tested unavailable methods include hierarchy, clone, destroy, attributes, property signals, joints, impulses, mass, and network ownership methods, along with the Changed, Touched, and TouchEnded signals which are not connectable. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid-root-part.md"
+  },
+  {
+    "topic": "HumanoidRootPart Character-State Authority",
+    "questions": [
+      "What is HumanoidRootPart Character-State Authority?",
+      "Explain HumanoidRootPart Character-State Authority in Vortex",
+      "How do I use HumanoidRootPart Character-State Authority?",
+      "Tell me about HumanoidRootPart Character-State Authority"
+    ],
+    "answer": "Writing to HumanoidRootPart transform fields is rejected in both LocalScript and server Script contexts. Attempting to set Position, Size, or Orientation produces an error that calls the property read-only in a LocalScript and states character state is server-authoritative even when RunService:IsServer() returns true. As a result, the visible character root part should not be used as a server-side teleport, resize, or movement-control target, although ordinary script-created Parts remain writable. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid-root-part.md"
+  },
+  {
+    "topic": "Humanoid",
+    "questions": [
+      "What is Humanoid?",
+      "Explain Humanoid in Vortex",
+      "How do I use Humanoid?",
+      "Tell me about Humanoid"
+    ],
+    "answer": "Humanoid represents the humanoid controller attached to a Player Character in Vortex. In a LocalScript, the local player's Humanoid can be accessed via `game:GetService(\"Players\").LocalPlayer.Character.Humanoid`, while as of Vortex Studio 0.3.4 a server Script can also reach a visible player's character through `game:GetService(\"Players\"):GetPlayers()[1].Character`. The character's root transform is exposed separately via the HumanoidRootPart. The Humanoid value is a specialized table exposing properties like Health and MaxHealth, the IsDead() method, and the Died and HealthChanged signals. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
+  },
+  {
+    "topic": "Humanoid.ClassName",
+    "questions": [
+      "What is Humanoid.ClassName?",
+      "Explain Humanoid.ClassName in Vortex",
+      "How do I use Humanoid.ClassName?",
+      "Tell me about Humanoid.ClassName"
+    ],
+    "answer": "ClassName is a String property on a Humanoid that reports the class name of the object. In observed cases it returns the literal value `\"Humanoid\"`. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
+  },
+  {
+    "topic": "Humanoid.Name",
+    "questions": [
+      "What is Humanoid.Name?",
+      "Explain Humanoid.Name in Vortex",
+      "How do I use Humanoid.Name?",
+      "Tell me about Humanoid.Name"
+    ],
+    "answer": "Name is a String property on a Humanoid that holds the Humanoid's name. In observed cases it also reports the value `\"Humanoid\"`. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
+  },
+  {
+    "topic": "Humanoid.Health",
+    "questions": [
+      "What is Humanoid.Health?",
+      "Explain Humanoid.Health in Vortex",
+      "How do I use Humanoid.Health?",
+      "Tell me about Humanoid.Health"
+    ],
+    "answer": "Health is a Number property on a Humanoid that holds the current health value, observed to report 100. Attempting to assign to it is rejected in both a LocalScript and a server Script, making it read-only from a client's perspective and not server-authoritative for writes in tested builds. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
+  },
+  {
+    "topic": "Humanoid.MaxHealth",
+    "questions": [
+      "What is Humanoid.MaxHealth?",
+      "Explain Humanoid.MaxHealth in Vortex",
+      "How do I use Humanoid.MaxHealth?",
+      "Tell me about Humanoid.MaxHealth"
+    ],
+    "answer": "MaxHealth is a Number property on a Humanoid that holds the maximum health value, observed to report 100. Like Health, assigning to MaxHealth is rejected from both LocalScript and server Script contexts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
+  },
+  {
+    "topic": "Humanoid:IsDead",
+    "questions": [
+      "What is Humanoid:IsDead?",
+      "Explain Humanoid:IsDead in Vortex",
+      "How do I use Humanoid:IsDead?",
+      "Tell me about Humanoid:IsDead"
+    ],
+    "answer": "IsDead is a method on a Humanoid called via `humanoid:IsDead()` that returns a Boolean. It reports whether the Humanoid is currently dead, and was observed to return `false` on a live character. It is the only confirmed method on the server-side Humanoid projection; Roblox-style methods like TakeDamage and movement/animator methods all read as nil. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
+  },
+  {
+    "topic": "Humanoid.Died",
+    "questions": [
+      "What is Humanoid.Died?",
+      "Explain Humanoid.Died in Vortex",
+      "How do I use Humanoid.Died?",
+      "Tell me about Humanoid.Died"
+    ],
+    "answer": "Died is a Signal exposed on a Humanoid via `humanoid.Died` that fires when the Humanoid dies. It is one of only two connectable signals on the tested Humanoid projection and supports `Signal:Connect`, although actual signal delivery in this build was unconfirmed. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
+  },
+  {
+    "topic": "Humanoid.HealthChanged",
+    "questions": [
+      "What is Humanoid.HealthChanged?",
+      "Explain Humanoid.HealthChanged in Vortex",
+      "How do I use Humanoid.HealthChanged?",
+      "Tell me about Humanoid.HealthChanged"
+    ],
+    "answer": "HealthChanged is a Signal exposed on a Humanoid via `humanoid.HealthChanged` that fires when the Humanoid's health value changes. Its callback receives a single Number parameter named `health` containing the updated health value, and it supports `Signal:Connect` though signal delivery was unconfirmed in testing. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
+  },
+  {
+    "topic": "Humanoid Server-Script Access",
+    "questions": [
+      "What is Humanoid server-script access?",
+      "Explain Humanoid server-script access in Vortex",
+      "How do I use Humanoid server-script access?",
+      "Tell me about Humanoid server-script access"
+    ],
+    "answer": "As of Vortex Studio 0.3.4, server Scripts can enumerate Players, read a player's Character, and obtain its Humanoid via `game:GetService(\"Players\"):GetPlayers()[1].Character`. However, this server-visible Humanoid projection does not grant Health-write authority, and Roblox-style properties like WalkSpeed, JumpPower, JumpHeight, and UseJumpPower all read as nil on it, so their write behavior is unknown. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
+  },
+  {
+    "topic": "Instance",
+    "questions": [
+      "What is Instance?",
+      "Explain Instance in Vortex",
+      "How do I use Instance?",
+      "Tell me about Instance"
+    ],
+    "answer": "Instance is the base class from which all classes in the Vortex engine inherit. It defines a small common surface consisting of two properties, Name and Parent, along with three methods: Clone, Destroy, and GetChildren. Every object placed into the engine's object hierarchy is ultimately an Instance or a subclass of it. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance.Name",
+    "questions": [
+      "What is Instance.Name?",
+      "Explain Instance.Name in Vortex",
+      "How do I use Instance.Name?",
+      "Tell me about Instance.Name"
+    ],
+    "answer": "Name is a property of the Instance class of type String that holds the display name of the object. It can be read and assigned to identify the Instance within its hierarchy or in code. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance.Parent",
+    "questions": [
+      "What is Instance.Parent?",
+      "Explain Instance.Parent in Vortex",
+      "How do I use Instance.Parent?",
+      "Tell me about Instance.Parent"
+    ],
+    "answer": "Parent is a property of the Instance class that is either another Instance or nil. It represents the object's position in the hierarchical tree; setting it to nil detaches the object, while assigning an Instance adopts it as a child of that parent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance:Clone",
+    "questions": [
+      "What is Instance:Clone()?",
+      "Explain Instance:Clone() in Vortex",
+      "How do I use Instance:Clone()?",
+      "Tell me about Instance:Clone()"
+    ],
+    "answer": "Clone is a method on the Instance class that takes no arguments and returns a new Instance. The returned object is a duplicate of the original, including its properties and descendants, and is created without a parent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance:Destroy",
+    "questions": [
+      "What is Instance:Destroy()?",
+      "Explain Instance:Destroy() in Vortex",
+      "How do I use Instance:Destroy()?",
+      "Tell me about Instance:Destroy()"
+    ],
+    "answer": "Destroy is a method on the Instance class that removes the object and all of its descendants from the hierarchy, returning nil. Once called, the Instance and its children are no longer accessible through their previous Parent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance:GetChildren",
+    "questions": [
+      "What is Instance:GetChildren()?",
+      "Explain Instance:GetChildren() in Vortex",
+      "How do I use Instance:GetChildren()?",
+      "Tell me about Instance:GetChildren()"
+    ],
+    "answer": "GetChildren is a method on the Instance class that returns an array of Instance values, representing the direct children of the object. It does not recurse into those descendants; only the immediate children of the calling Instance are included in the returned table. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "IntValue",
+    "questions": [
+      "What is IntValue?",
+      "Explain IntValue in Vortex",
+      "How do I use IntValue?",
+      "Tell me about IntValue"
+    ],
+    "answer": "IntValue is an integer value container available in Vortex Studio 0.3.4, constructable from both Script and LocalScript contexts. Unlike many Vortex instances, it does not require a parent to read or write its stored number. It is a detached, lightweight object holding a single integral Value property. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/int-value.md"
+  },
+  {
+    "topic": "IntValue.Name",
+    "questions": [
+      "What is IntValue.Name?",
+      "Explain IntValue.Name in Vortex",
+      "How do I use IntValue.Name?",
+      "Tell me about IntValue.Name"
+    ],
+    "answer": "Name is a string property on IntValue representing the instance's display name. A newly constructed IntValue is given the default name \"IntValue\". This property is a string type and can be reassigned like any standard instance name. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/int-value.md"
+  },
+  {
+    "topic": "IntValue.Value",
+    "questions": [
+      "What is IntValue.Value?",
+      "Explain IntValue.Value in Vortex",
+      "How do I use IntValue.Value?",
+      "Tell me about IntValue.Value"
+    ],
+    "answer": "Value is a number property on IntValue that holds the stored integer. A freshly created IntValue starts at 0. The property supports both reading and assignment of integral numbers, as shown in typical usage such as setting a score to 42 and reading it back. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/int-value.md"
+  },
+  {
+    "topic": "IntValue Changed signal behavior",
+    "questions": [
+      "What is IntValue Changed signal behavior?",
+      "Explain IntValue Changed signal behavior in Vortex",
+      "How do I use IntValue Changed signal behavior?",
+      "Tell me about IntValue Changed signal behavior"
+    ],
+    "answer": "IntValue exposes the Changed event and GetPropertyChangedSignal(\"Value\") method, and both can be connected to callbacks. However, in the tested 0.3.4 runtime, mutating Value did not actually invoke either signal. Code that needs to react to Value changes should poll the property instead of relying on change notifications. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/int-value.md"
+  },
+  {
+    "topic": "Instance.new for IntValue",
+    "questions": [
+      "What is Instance.new for IntValue?",
+      "Explain Instance.new for IntValue in Vortex",
+      "How do I use Instance.new for IntValue?",
+      "Tell me about Instance.new for IntValue"
+    ],
+    "answer": "Instance.new(\"IntValue\") constructs a new IntValue instance in Vortex. The resulting object has Value defaulting to 0 and Name defaulting to \"IntValue\". It can be used immediately for reading and writing integral values without parenting it to an object hierarchy. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/int-value.md"
+  },
+  {
+    "topic": "Lighting",
+    "questions": [
+      "What is Lighting?",
+      "Explain Lighting in Vortex",
+      "How do I use Lighting?",
+      "Tell me about Lighting"
+    ],
+    "answer": "Lighting is a built-in Vortex game service that governs basic rendering and atmospherics for a place. It cannot be created or destroyed by scripts. In Vortex Studio 0.3.4, however, `game:GetService(\"Lighting\")` fails because the service is not yet registered as a runtime service in either Script or LocalScript contexts, so the documented properties are only accessible through editor-facing controls. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/lighting.md"
+  },
+  {
+    "topic": "Ambient Color",
+    "questions": [
+      "What is Ambient Color?",
+      "Explain Ambient Color in Vortex",
+      "How do I use Ambient Color?",
+      "Tell me about Ambient Color"
+    ],
+    "answer": "Ambient Color is a Lighting property of type Color3 that determines the visible color of ambient lighting. It also affects the color produced by a part's Material. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/lighting.md"
+  },
+  {
+    "topic": "Brightness",
+    "questions": [
+      "What is Brightness?",
+      "Explain Brightness in Vortex",
+      "How do I use Brightness?",
+      "Tell me about Brightness"
+    ],
+    "answer": "Brightness is a Lighting property of type Float that controls how bright the ambient lighting is in the scene. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/lighting.md"
+  },
+  {
+    "topic": "Sun Color",
+    "questions": [
+      "What is Sun Color?",
+      "Explain Sun Color in Vortex",
+      "How do I use Sun Color?",
+      "Tell me about Sun Color"
+    ],
+    "answer": "Sun Color is a Lighting property of type Color3 that determines the color of the sunlight hitting objects. It blends with the ambient coloring to produce the final lit appearance. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/lighting.md"
+  },
+  {
+    "topic": "Sun Brightness",
+    "questions": [
+      "What is Sun Brightness?",
+      "Explain Sun Brightness in Vortex",
+      "How do I use Sun Brightness?",
+      "Tell me about Sun Brightness"
+    ],
+    "answer": "Sun Brightness is a Lighting property of type Float that determines how bright the directional sun light appears on surfaces. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/lighting.md"
+  },
+  {
+    "topic": "Sun Shadows",
+    "questions": [
+      "What is Sun Shadows?",
+      "Explain Sun Shadows in Vortex",
+      "How do I use Sun Shadows?",
+      "Tell me about Sun Shadows"
+    ],
+    "answer": "Sun Shadows is a Lighting property of type Boolean that globally toggles shadows cast by the sun. Because no other light types produce shadows, it effectively acts as a global on/off switch for all shadowing in the game. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/lighting.md"
+  },
+  {
+    "topic": "Position",
+    "questions": [
+      "What is Position?",
+      "Explain Position in Vortex",
+      "How do I use Position?",
+      "Tell me about Position"
+    ],
+    "answer": "Position is a Lighting property of type Vector3 that has no effect on rendering. It is listed under Lighting for completeness but does not influence lighting or atmospherics. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/lighting.md"
+  },
+  {
+    "topic": "Rotation",
+    "questions": [
+      "What is Rotation?",
+      "Explain Rotation in Vortex",
+      "How do I use Rotation?",
+      "Tell me about Rotation"
+    ],
+    "answer": "Rotation is a Lighting property of type Vector3 that determines the angle at which sunlight strikes objects. Changing it shifts the direction of the sun and therefore the size and orientation of cast shadows. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/lighting.md"
+  },
+  {
+    "topic": "Size",
+    "questions": [
+      "What is Size?",
+      "Explain Size in Vortex",
+      "How do I use Size?",
+      "Tell me about Size"
+    ],
+    "answer": "Size is a Lighting property of type Vector3 that is read-only and has no effect on rendering. It is exposed on Lighting but does not influence the scene. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/lighting.md"
+  },
+  {
+    "topic": "LocalScript",
+    "questions": [
+      "What is LocalScript?",
+      "Explain LocalScript in Vortex",
+      "How do I use LocalScript?",
+      "Tell me about LocalScript"
+    ],
+    "answer": "A LocalScript is a type of Luau script in Vortex that runs on the client side, meaning it executes on the player's local machine rather than on the server. It is intended for client-only behavior such as UI logic, camera control, and input handling, and should not be used for server-authoritative logic. LocalScripts have key properties including Parent (an Instance specifying where the script lives, such as a PlayerGui or StarterPlayerScripts), Disabled (a Boolean indicating whether the script is currently disabled), and Source (a String representing the script's code, which may be read-only in some tools and is not guaranteed at runtime). LocalScripts do not execute in server-only containers like ServerScriptService, and code that requires Players.LocalPlayer will only work inside a LocalScript since LocalPlayer is nil on the server. For security, client-side code should never be trusted for authoritative logic, permissions, or game state — that validation must happen on the server. Typical placements for LocalScripts include StarterPlayerScripts, StarterGui/PlayerGui, StarterCharacterScripts, and Backpack (for tool-local behavior). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/localscript.md"
+  },
+  {
+    "topic": "Model",
+    "questions": [
+      "What is Model?",
+      "Explain Model in Vortex",
+      "How do I use Model?",
+      "Tell me about Model"
+    ],
+    "answer": "In Vortex, a Model is an explorer-level grouping of Parts used purely for organization. Creating one requires selecting at least 2 parts, after which the second part may be deleted; the model has no physical connection between its children. An empty model still appears in the explorer but has no world presence and no transform handles. Move and Rotate tools work on models, but scaling is not properly supported. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "Model.Name",
+    "questions": [
+      "What is Model.Name?",
+      "Explain Model.Name in Vortex",
+      "How do I use Model.Name?",
+      "Tell me about Model.Name"
+    ],
+    "answer": "Model.Name is a String property that sets the model's display label in the explorer. It is the same as the standard Instance Name field and follows the usual naming rules. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "Model.Position",
+    "questions": [
+      "What is Model.Position?",
+      "Explain Model.Position in Vortex",
+      "How do I use Model.Position?",
+      "Tell me about Model.Position"
+    ],
+    "answer": "Model.Position is a Vector3 property representing the model's center in World-space. It is automatically computed as the mathematical average of all the model's child positions, so it is not independently settable in the normal sense. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "Model Testing Notes",
+    "questions": [
+      "What is Model Testing Notes?",
+      "Explain Model Testing Notes in Vortex",
+      "How do I use Model Testing Notes?",
+      "Tell me about Model Testing Notes"
+    ],
+    "answer": "Testing Notes in Vortex 0.3.4 document that a detached Model only exposes the generic Instance surface, with no readable Position, PrimaryPart, or WorldPivot. Parenting a Part to a detached Model does not produce a real hierarchy: parent equality is false, FindFirstChild returns nil, GetChildren returns an empty table, and WaitForChild never returns the part. Pivot APIs (GetPivot, PivotTo, GetPrimaryPartCFrame, SetPrimaryPartCFrame) are nil, and assigning Model.PrimaryPart is rejected. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "Character Model",
+    "questions": [
+      "What is Character Model?",
+      "Explain Character Model in Vortex",
+      "How do I use Character Model?",
+      "Tell me about Character Model"
+    ],
+    "answer": "The live Character Model in Vortex 0.3.4 is a special case that exposes ClassName, Name, Position, plus direct Humanoid and HumanoidRootPart members, while Parent reads as nil. It supports the generic Instance method surface and a connectable Changed signal, but its tested hierarchy and lifecycle signals are unavailable. Like a detached Model, its pivot and primary-part APIs are not accessible. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "Character Write-only Visual Rotation",
+    "questions": [
+      "What is Character Write-only Visual Rotation?",
+      "Explain Character Write-only Visual Rotation in Vortex",
+      "How do I use Character Write-only Visual Rotation?",
+      "Tell me about Character Write-only Visual Rotation"
+    ],
+    "answer": "In Vortex 0.3.4, the live Character Model is a verified write-only visual rotation target. Assigning character.Orientation = Vector3.new(0, 90, 0) in a server Script visibly turns the character, but the field still reads back as nil. This is the only documented write that produces an observable visual change on the Character without a readable return value. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "Character Visual Scene",
+    "questions": [
+      "What is Character Visual Scene?",
+      "Explain Character Visual Scene in Vortex",
+      "How do I use Character Visual Scene?",
+      "Tell me about Character Visual Scene"
+    ],
+    "answer": "After the visual character finishes loading, Character:GetChildren() returns one unnamed generic Instance that can expose a Scene member. This Scene is a separate, transient render hierarchy distinct from the public Character projection. Code that depends on it must poll and re-resolve it after every replacement, since it can change at runtime. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "Character Armature Path",
+    "questions": [
+      "What is Character Armature Path?",
+      "Explain Character Armature Path in Vortex",
+      "How do I use Character Armature Path?",
+      "Tell me about Character Armature Path"
+    ],
+    "answer": "Once the transient Character Scene resolves, its primary rig is indexable as scene['Armature.001'], which contains HumanoidRootPart, Torso, Head, and limb children such as 'Left Arm' and 'Right Leg'. Bracket indexing is required for names containing dots like 'Armature.001' and for limb names containing spaces. This inner rig is separate from the public Character.HumanoidRootPart Part projection. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "Visual Rig Properties",
+    "questions": [
+      "What is Visual Rig Properties?",
+      "Explain Visual Rig Properties in Vortex",
+      "How do I use Visual Rig Properties?",
+      "Tell me about Visual Rig Properties"
+    ],
+    "answer": "Visual rig and attachment nodes in Vortex report ClassName == 'Instance' and expose the generic hierarchy and attribute methods, plus readable Name, Parent, Position, and Size. Changed, Touched, and TouchEnded can be connected, but no delivery was observed when a limb's Position updated, so the values are readable render state rather than a substitute for the public HumanoidRootPart projection. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "Visual Rig Transparency",
+    "questions": [
+      "What is Visual Rig Transparency?",
+      "Explain Visual Rig Transparency in Vortex",
+      "How do I use Visual Rig Transparency?",
+      "Tell me about Visual Rig Transparency"
+    ],
+    "answer": "Visual rig and attachment nodes in Vortex accept numeric Transparency writes from both LocalScripts and server Scripts. An initially unset value reads as nil, but after writing 0.5 or 0 it reads back as that numeric value. The tested torso and leg did not visibly change, so this is currently stored projection state rather than a confirmed render-opacity control, unlike the public HumanoidRootPart which rejects the same write. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/model.md"
+  },
+  {
+    "topic": "ModuleScript",
+    "questions": [
+      "What is ModuleScript?",
+      "Explain ModuleScript in Vortex",
+      "How do I use ModuleScript?",
+      "Tell me about ModuleScript"
+    ],
+    "answer": "ModuleScript is a class in Vortex that represents a non-executable runtime module shell. It can be instantiated in both Script and LocalScript contexts starting with Vortex Studio 0.3.4, but it cannot be turned into a functioning module at runtime. Assigning one to ReplicatedStorage does not establish an observable parent-child relationship. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/modulescript.md"
+  },
+  {
+    "topic": "ModuleScript runtime construction",
+    "questions": [
+      "What is ModuleScript runtime construction?",
+      "Explain ModuleScript runtime construction in Vortex",
+      "How do I use ModuleScript runtime construction?",
+      "Tell me about ModuleScript runtime construction"
+    ],
+    "answer": "In Vortex Studio 0.3.4, a ModuleScript can be created at runtime from within Script or LocalScript contexts, but it is not a usable module. The properties Source, Disabled, and RunContext all read as nil when accessed on such a runtime instance, and any attempt to assign Source is rejected. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/modulescript.md"
+  },
+  {
+    "topic": "ModuleScript Source property",
+    "questions": [
+      "What is ModuleScript Source property?",
+      "Explain ModuleScript Source property in Vortex",
+      "How do I use ModuleScript Source property?",
+      "Tell me about ModuleScript Source property"
+    ],
+    "answer": "Source is a property of ModuleScript that holds the module's code. On a ModuleScript constructed at runtime in Vortex, reading Source returns nil, and writing to Source is not allowed, so the shell cannot be supplied with executable code. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/modulescript.md"
+  },
+  {
+    "topic": "ModuleScript Disabled property",
+    "questions": [
+      "What is ModuleScript Disabled property?",
+      "Explain ModuleScript Disabled property in Vortex",
+      "How do I use ModuleScript Disabled property?",
+      "Tell me about ModuleScript Disabled property"
+    ],
+    "answer": "Disabled is a property of ModuleScript that normally controls whether the module runs. On a runtime-instantiated ModuleScript in Vortex, reading Disabled yields nil rather than a boolean value. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/modulescript.md"
+  },
+  {
+    "topic": "ModuleScript RunContext property",
+    "questions": [
+      "What is ModuleScript RunContext property?",
+      "Explain ModuleScript RunContext property in Vortex",
+      "How do I use ModuleScript RunContext property?",
+      "Tell me about ModuleScript RunContext property"
+    ],
+    "answer": "RunContext is a property of ModuleScript indicating the execution context in which the module runs. When a ModuleScript is created at runtime in Vortex, reading RunContext returns nil, since the instance cannot be promoted to a real module. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/modulescript.md"
+  },
+  {
+    "topic": "require and ModuleScript",
+    "questions": [
+      "What is require and ModuleScript?",
+      "Explain require and ModuleScript in Vortex",
+      "How do I use require and ModuleScript?",
+      "Tell me about require and ModuleScript"
+    ],
+    "answer": "The global require function is not available in Vortex's runtime environment. Because require is unavailable, a ModuleScript that was constructed at runtime cannot deliver shared executable code to other scripts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/modulescript.md"
+  },
+  {
+    "topic": "ModuleScript and ReplicatedStorage parenting",
+    "questions": [
+      "What is ModuleScript and ReplicatedStorage parenting?",
+      "Explain ModuleScript and ReplicatedStorage parenting in Vortex",
+      "How do I use ModuleScript and ReplicatedStorage parenting?",
+      "Tell me about ModuleScript and ReplicatedStorage parenting"
+    ],
+    "answer": "Assigning a runtime-created ModuleScript to ReplicatedStorage in Vortex does not produce an observable child-parent relationship. The instance is effectively a non-functional shell and is not surfaced as a child of the destination container. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/modulescript.md"
+  },
+  {
+    "topic": "Player",
+    "questions": [
+      "What is Player?",
+      "Explain Player in Vortex",
+      "How do I use Player?",
+      "Tell me about Player"
+    ],
+    "answer": "Player is an instance that represents a connected client in Vortex. The current client is exposed through the Players service as Players.LocalPlayer, accessible from a LocalScript. In Vortex Studio 0.3.4, the Player surface only reliably exposes the fields ClassName (the string \"Player\"), Name, and Character. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Player.Name",
+    "questions": [
+      "What is Player.Name?",
+      "Explain Player.Name in Vortex",
+      "How do I use Player.Name?",
+      "Tell me about Player.Name"
+    ],
+    "answer": "Player.Name is a property holding the player's display name. It is one of the three non-nil fields (along with ClassName and Character) observed on a Player in both server Scripts and LocalScripts during the 0.3.4 surface probe. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Player.ClassName",
+    "questions": [
+      "What is Player.ClassName?",
+      "Explain Player.ClassName in Vortex",
+      "How do I use Player.ClassName?",
+      "Tell me about Player.ClassName"
+    ],
+    "answer": "Player.ClassName is a string property that reads as \"Player\" for the current client projection. It is exposed as a non-nil field on Player instances in Vortex Studio 0.3.4. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Player.Character",
+    "questions": [
+      "What is Player.Character?",
+      "Explain Player.Character in Vortex",
+      "How do I use Player.Character?",
+      "Tell me about Player.Character"
+    ],
+    "answer": "Player.Character is a property that references the player's current Character Model when one is available. In the observed runtime projection, the Character contains a Humanoid and a HumanoidRootPart, both of which are direct readable members rather than results returned from Player:GetChildren(). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Player.Position",
+    "questions": [
+      "What is Player.Position?",
+      "Explain Player.Position in Vortex",
+      "How do I use Player.Position?",
+      "Tell me about Player.Position"
+    ],
+    "answer": "Player.Position begins as nil but accepts and retains an assigned Vector3 value in both server Scripts and LocalScripts. However, it does not update the public Character.HumanoidRootPart and the values are context-local, so a server-side write is not visible to a client observer and vice versa. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Player.Rotation",
+    "questions": [
+      "What is Player.Rotation?",
+      "Explain Player.Rotation in Vortex",
+      "How do I use Player.Rotation?",
+      "Tell me about Player.Rotation"
+    ],
+    "answer": "Player.Rotation starts as nil and is writable, accepting CFrame rotation values in both server and client contexts. It does not translate into motion of the Character's HumanoidRootPart and the retained values are isolated per writer, so it should not be used as a movement or replication channel. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Player.CFrame",
+    "questions": [
+      "What is Player.CFrame?",
+      "Explain Player.CFrame in Vortex",
+      "How do I use Player.CFrame?",
+      "Tell me about Player.CFrame"
+    ],
+    "answer": "Player.CFrame is initially nil and behaves like the Position and Rotation projection fields: it accepts an assigned CFrame but does not move the visible Character. It is one of the writable but context-local Player fields tested in Vortex Studio 0.3.4. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Player.Orientation",
+    "questions": [
+      "What is Player.Orientation?",
+      "Explain Player.Orientation in Vortex",
+      "How do I use Player.Orientation?",
+      "Tell me about Player.Orientation"
+    ],
+    "answer": "Player.Orientation is a writable Vector3 projection field that begins as nil and retains assigned values. It is not a verified route for visually rotating the Character; Character.Orientation should be used instead when the goal is to turn the rendered character. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Player transform projection fields",
+    "questions": [
+      "What are Player transform projection fields?",
+      "Explain Player transform projection fields in Vortex",
+      "How do I use Player transform projection fields?",
+      "Tell me about Player transform projection fields"
+    ],
+    "answer": "Player transform projection fields are Position, CFrame, and Rotation, which start as nil but accept assigned Vector3/CFrame values in both server and client contexts. They do not affect the public Character's HumanoidRootPart and the written values are kept separately by each context, making them unreliable for character movement, replicated state, or a server-client metadata channel. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Players.LocalPlayer",
+    "questions": [
+      "What is Players.LocalPlayer?",
+      "Explain Players.LocalPlayer in Vortex",
+      "How do I use Players.LocalPlayer?",
+      "Tell me about Players.LocalPlayer"
+    ],
+    "answer": "Players.LocalPlayer returns the Player instance representing the current client and is available inside a LocalScript. It is nil inside a normal server Script, and its Parent reads as nil. Server scripts can instead obtain Players through Players:GetPlayers(). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/player.md"
+  },
+  {
+    "topic": "Players service",
+    "questions": [
+      "What is Players?",
+      "Explain Players in Vortex",
+      "How do I use Players?",
+      "Tell me about Players"
+    ],
+    "answer": "Players is a service in Vortex that represents all clients currently connected to the game as Player objects. It can be accessed via game:GetService(\"Players\") and is commonly used in both LocalScripts and server Scripts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/players.md"
+  },
+  {
+    "topic": "Players:GetPlayers",
+    "questions": [
+      "What is Players:GetPlayers?",
+      "Explain Players:GetPlayers in Vortex",
+      "How do I use Players:GetPlayers?",
+      "Tell me about Players:GetPlayers"
+    ],
+    "answer": "GetPlayers() is a method on the Players service that returns an array of currently visible Player objects. In a LocalScript it returns the player list as seen by that client, and in a server Script it returns a list containing the live Player object whose Character can be read. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/players.md"
+  },
+  {
+    "topic": "Players.LocalPlayer",
+    "questions": [
+      "What is Players.LocalPlayer?",
+      "Explain Players.LocalPlayer in Vortex",
+      "How do I use Players.LocalPlayer?",
+      "Tell me about Players.LocalPlayer"
+    ],
+    "answer": "LocalPlayer is a property on the Players service that returns the local Player object for the current client. It is only available in a LocalScript; on the server it is nil. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/players.md"
+  },
+  {
+    "topic": "Players.Name",
+    "questions": [
+      "What is Players.Name?",
+      "Explain Players.Name in Vortex",
+      "How do I use Players.Name?",
+      "Tell me about Players.Name"
+    ],
+    "answer": "Name is a property on the Players service that holds the name of the service, typically \"Players\". Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/players.md"
+  },
+  {
+    "topic": "Players.ClassName",
+    "questions": [
+      "What is Players.ClassName?",
+      "Explain Players.ClassName in Vortex",
+      "How do I use Players.ClassName?",
+      "Tell me about Players.ClassName"
+    ],
+    "answer": "ClassName is a property on the Players service that returns the runtime class name of the object, such as \"Players\". Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/players.md"
+  },
+  {
+    "topic": "Players service limitations",
+    "questions": [
+      "What are the Players service limitations?",
+      "Explain Players service limitations in Vortex",
+      "How do I handle Players service limitations?",
+      "Tell me about Players service limitations"
+    ],
+    "answer": "The Players service in Vortex does not expose GetChildren for enumerating its children, and there is no known public mapping from the numeric connection id passed as the first OnServerEvent argument back to a specific Player. Numeric or string indexing of services and tested player lookup methods do not provide that connection id to Player mapping. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/players.md"
+  },
+  {
+    "topic": "PointLight",
+    "questions": [
+      "What is PointLight?",
+      "Explain PointLight in Vortex",
+      "How do I use PointLight?",
+      "Tell me about PointLight"
+    ],
+    "answer": "PointLight is a class in Vortex that represents a spherical light emitting from a single point. It must be parented to a Part, and it inherits its world position from that parent Part. There is no on/off toggle, but you can simulate turning the light off by setting its Color, Brightness, or Range to 0. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/point-light.md"
+  },
+  {
+    "topic": "PointLight:Brightness",
+    "questions": [
+      "What is PointLight:Brightness?",
+      "Explain PointLight:Brightness in Vortex",
+      "How do I use PointLight:Brightness?",
+      "Tell me about PointLight:Brightness"
+    ],
+    "answer": "Brightness is a Float property of PointLight that controls the emission intensity of the light. It affects how bright the light appears but does not influence its range. In Vortex Studio 0.3.4 scripting, this property cannot be assigned via code and initially reads as nil. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/point-light.md"
+  },
+  {
+    "topic": "PointLight:Color",
+    "questions": [
+      "What is PointLight:Color?",
+      "Explain PointLight:Color in Vortex",
+      "How do I use PointLight:Color?",
+      "Tell me about PointLight:Color"
+    ],
+    "answer": "Color is a Color3 property of PointLight that determines the color of the light being emitted. Darker color values produce a similar visual effect to turning the light off. In runtime scripting, it accepts and retains a Color3 value, even though the instance itself is otherwise non-functional. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/point-light.md"
+  },
+  {
+    "topic": "PointLight:Range",
+    "questions": [
+      "What is PointLight:Range?",
+      "Explain PointLight:Range in Vortex",
+      "How do I use PointLight:Range?",
+      "Tell me about PointLight:Range"
+    ],
+    "answer": "Range is a Float property of PointLight that defines the maximum spherical distance the light can reach. It controls how the brightness falls off with distance but does not increase the light's overall brightness. In Vortex Studio 0.3.4, it is not settable from scripts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/point-light.md"
+  },
+  {
+    "topic": "PointLight:Name",
+    "questions": [
+      "What is PointLight:Name?",
+      "Explain PointLight:Name in Vortex",
+      "How do I use PointLight:Name?",
+      "Tell me about PointLight:Name"
+    ],
+    "answer": "Name is a String property inherited from Instance that sets the label of the PointLight as it is shown in the hierarchy explorer. It functions the same way as the Name property on other Vortex instances. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/point-light.md"
+  },
+  {
+    "topic": "PointLight runtime scripting limitation",
+    "questions": [
+      "What is PointLight runtime scripting limitation?",
+      "Explain PointLight runtime scripting limitation in Vortex",
+      "How do I use PointLight runtime scripting limitation?",
+      "Tell me about PointLight runtime scripting limitation"
+    ],
+    "answer": "In Vortex Studio 0.3.4, calling Instance.new(\"PointLight\") from a Script or LocalScript creates a non-functional shell rather than a working light. Generic Instance methods and a Changed signal are exposed, but Brightness, Range, Enabled, and Shadows read as nil and cannot be set. While Color retains an assigned Color3, setting Parent on the shell does not actually attach it to a Part, so there is no working scripted way to configure or render a PointLight at runtime. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/point-light.md"
+  },
+  {
+    "topic": "RemoteEvent",
+    "questions": [
+      "What is RemoteEvent?",
+      "Explain RemoteEvent in Vortex",
+      "How do I use RemoteEvent?",
+      "Tell me about RemoteEvent"
+    ],
+    "answer": "RemoteEvent is a class used for sending information between the server and clients in Vortex. It supports both server-to-client and client-to-server communication, and is typically parented under ReplicatedStorage so both sides can access it via WaitForChild. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-event.md"
+  },
+  {
+    "topic": "FireAllClients",
+    "questions": [
+      "What is FireAllClients?",
+      "Explain FireAllClients in Vortex",
+      "How do I use FireAllClients?",
+      "Tell me about FireAllClients"
+    ],
+    "answer": "FireAllClients is a RemoteEvent method that fires data to every connected client. Its signature is FireAllClients(arguments: Tuple) and it returns nothing; the data is delivered to each client's OnClientEvent handler. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-event.md"
+  },
+  {
+    "topic": "FireClient",
+    "questions": [
+      "What is FireClient?",
+      "Explain FireClient in Vortex",
+      "How do I use FireClient?",
+      "Tell me about FireClient"
+    ],
+    "answer": "FireClient is a RemoteEvent method used by the server to send data to one specific client. Its signature is FireClient(player: Player, arguments: Tuple) and returns nothing. Note that in Vortex 0.3.4, the method is exposed but its delivery has not yet been confirmed. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-event.md"
+  },
+  {
+    "topic": "FireServer",
+    "questions": [
+      "What is FireServer?",
+      "Explain FireServer in Vortex",
+      "How do I use FireServer?",
+      "Tell me about FireServer"
+    ],
+    "answer": "FireServer is a RemoteEvent method called from the client to send data to the server. Its signature is FireServer(arguments: Tuple) and returns nothing. It triggers the server-side OnServerEvent handler and was confirmed working in Vortex Studio 0.3.4 for editor-authored remotes in ReplicatedStorage. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-event.md"
+  },
+  {
+    "topic": "OnClientEvent",
+    "questions": [
+      "What is OnClientEvent?",
+      "Explain OnClientEvent in Vortex",
+      "How do I use OnClientEvent?",
+      "Tell me about OnClientEvent"
+    ],
+    "answer": "OnClientEvent is a RemoteEvent signal fired on the client when the server sends data via FireClient or FireAllClients. Its signature is OnClientEvent(arguments: Tuple): Signal. The event is exposed in Vortex 0.3.4, although delivery has not yet been fully established. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-event.md"
+  },
+  {
+    "topic": "OnServerEvent",
+    "questions": [
+      "What is OnServerEvent?",
+      "Explain OnServerEvent in Vortex",
+      "How do I use OnServerEvent?",
+      "Tell me about OnServerEvent"
+    ],
+    "answer": "OnServerEvent is a RemoteEvent signal fired on the server when a client invokes FireServer. Its signature is OnServerEvent(senderId: Number, arguments: Tuple): Signal. In Vortex the senderId is a numeric connection identifier rather than a Player object, so it cannot currently be mapped back to a specific player, character, or humanoid. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-event.md"
+  },
+  {
+    "topic": "RemoteFunction",
+    "questions": [
+      "What is RemoteFunction?",
+      "Explain RemoteFunction in Vortex",
+      "How do I use RemoteFunction?",
+      "Tell me about RemoteFunction"
+    ],
+    "answer": "RemoteFunction is a networking object in Vortex that, unlike RemoteEvent, lets data be computed inside a function call and the resulting values returned to the caller. It supports calling from server to client and from client to server, but does not support an InvokeAllClients because reliably yielding until every player has returned a value is not guaranteed. Instances of RemoteFunction are typically parented under ReplicatedStorage so both server and client scripts can access them. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-function.md"
+  },
+  {
+    "topic": "InvokeClient",
+    "questions": [
+      "What is InvokeClient?",
+      "Explain InvokeClient in Vortex",
+      "How do I use InvokeClient?",
+      "Tell me about InvokeClient"
+    ],
+    "answer": "InvokeClient is a method on RemoteFunction used by the server to invoke data from the server to a specific client. Its signature is InvokeClient(player: Player, arguments: Tuple) : Tuple, where player is the target Player and arguments is a tuple of values sent to the client, and it yields until the client returns a tuple response via OnClientInvoke. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-function.md"
+  },
+  {
+    "topic": "InvokeServer",
+    "questions": [
+      "What is InvokeServer?",
+      "Explain InvokeServer in Vortex",
+      "How do I use InvokeServer?",
+      "Tell me about InvokeServer"
+    ],
+    "answer": "InvokeServer is a method on RemoteFunction used by the client to invoke data from the client to the server. Its signature is InvokeServer(arguments: Tuple) : Tuple, where arguments is a tuple of values sent to the server, and it returns the tuple that the server produces via its OnServerInvoke callback. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-function.md"
+  },
+  {
+    "topic": "OnClientInvoke",
+    "questions": [
+      "What is OnClientInvoke?",
+      "Explain OnClientInvoke in Vortex",
+      "How do I use OnClientInvoke?",
+      "Tell me about OnClientInvoke"
+    ],
+    "answer": "OnClientInvoke is a writable callback on RemoteFunction that runs on the client in response to InvokeClient from the server. Its signature is OnClientInvoke(arguments: Tuple) : Tuple, where arguments is the tuple the server passed, and whatever tuple it returns is sent back to the server. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-function.md"
+  },
+  {
+    "topic": "OnServerInvoke",
+    "questions": [
+      "What is OnServerInvoke?",
+      "Explain OnServerInvoke in Vortex",
+      "How do I use OnServerInvoke?",
+      "Tell me about OnServerInvoke"
+    ],
+    "answer": "OnServerInvoke is a writable callback on RemoteFunction that runs on the server in response to InvokeServer from a client. Its signature is OnServerInvoke(senderId: Number, arguments: Tuple) : Tuple, where senderId is a numeric identifier for the invoking client and arguments is the tuple the client sent; the returned tuple is delivered back to that client. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-function.md"
+  },
+  {
+    "topic": "Vortex Studio 0.3.4 RemoteFunction limitations",
+    "questions": [
+      "What are the Vortex Studio 0.3.4 RemoteFunction limitations?",
+      "Explain the Vortex Studio 0.3.4 RemoteFunction limitations",
+      "How do I handle the Vortex Studio 0.3.4 RemoteFunction limitations?",
+      "Tell me about the Vortex Studio 0.3.4 RemoteFunction limitations"
+    ],
+    "answer": "In Vortex Studio 0.3.4, InvokeServer is exposed on the client and OnServerInvoke can be assigned in a Script for an editor-authored RemoteFunction under ReplicatedStorage. However, InvokeServer(LocalPlayer) is rejected before delivery because Instances cannot currently be sent through remotes, so a successful primitive request/response round trip has not yet been established. The server-side Players:GetChildren() route is unavailable, but Players:GetPlayers() does return visible Player objects in a server Script, providing the Player target in principle. OnClientInvoke and InvokeClient delivery are still untested in this version. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/remote-function.md"
+  },
+  {
+    "topic": "ReplicatedStorage",
+    "questions": [
+      "What is ReplicatedStorage?",
+      "Explain ReplicatedStorage in Vortex",
+      "How do I use ReplicatedStorage?",
+      "Tell me about ReplicatedStorage"
+    ],
+    "answer": "ReplicatedStorage is a service container whose contents are loaded by both the server and the client. Instances placed inside it automatically have their properties synced from the server to clients. It is accessed via game:GetService(\"ReplicatedStorage\"). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/replicated-storage.md"
+  },
+  {
+    "topic": "ReplicatedStorage.ClassName",
+    "questions": [
+      "What is ReplicatedStorage.ClassName?",
+      "Explain ReplicatedStorage.ClassName in Vortex",
+      "How do I use ReplicatedStorage.ClassName?",
+      "Tell me about ReplicatedStorage.ClassName"
+    ],
+    "answer": "ClassName is a String property of ReplicatedStorage that holds the runtime class name of the service. It is read-only and identifies the service type during execution. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/replicated-storage.md"
+  },
+  {
+    "topic": "ReplicatedStorage.Name",
+    "questions": [
+      "What is ReplicatedStorage.Name?",
+      "Explain ReplicatedStorage.Name in Vortex",
+      "How do I use ReplicatedStorage.Name?",
+      "Tell me about ReplicatedStorage.Name"
+    ],
+    "answer": "Name is a String property of ReplicatedStorage that stores the service name shown by the runtime. It identifies the service within the game's hierarchy. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/replicated-storage.md"
+  },
+  {
+    "topic": "ReplicatedStorage:FindFirstChild",
+    "questions": [
+      "What is ReplicatedStorage:FindFirstChild?",
+      "Explain ReplicatedStorage:FindFirstChild in Vortex",
+      "How do I use ReplicatedStorage:FindFirstChild?",
+      "Tell me about ReplicatedStorage:FindFirstChild"
+    ],
+    "answer": "FindFirstChild is a method on ReplicatedStorage with the signature ReplicatedStorage:FindFirstChild(name: String). It returns the first direct child matching the supplied name, or nil if no such child exists. Only direct (non-recursive) children are searched. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/replicated-storage.md"
+  },
+  {
+    "topic": "ReplicatedStorage:GetChildren",
+    "questions": [
+      "What is ReplicatedStorage:GetChildren?",
+      "Explain ReplicatedStorage:GetChildren in Vortex",
+      "How do I use ReplicatedStorage:GetChildren?",
+      "Tell me about ReplicatedStorage:GetChildren"
+    ],
+    "answer": "GetChildren is a method on ReplicatedStorage that returns an array of Instance values representing the direct children of the service. It provides a snapshot of the immediate contents rather than a recursive listing. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/replicated-storage.md"
+  },
+  {
+    "topic": "ReplicatedStorage:WaitForChild",
+    "questions": [
+      "What is ReplicatedStorage:WaitForChild?",
+      "Explain ReplicatedStorage:WaitForChild in Vortex",
+      "How do I use ReplicatedStorage:WaitForChild?",
+      "Tell me about ReplicatedStorage:WaitForChild"
+    ],
+    "answer": "WaitForChild is a method on ReplicatedStorage with the signature ReplicatedStorage:WaitForChild(name: String). It blocks until a direct child with the supplied name appears and then returns that Instance. It is useful for synchronizing code that depends on a replicated instance that may not exist yet at runtime. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/replicated-storage.md"
+  },
+  {
+    "topic": "Parenting instances to ReplicatedStorage",
+    "questions": [
+      "What is Parenting instances to ReplicatedStorage?",
+      "Explain Parenting instances to ReplicatedStorage in Vortex",
+      "How do I use Parenting instances to ReplicatedStorage?",
+      "Tell me about Parenting instances to ReplicatedStorage"
+    ],
+    "answer": "To place an instance into ReplicatedStorage, the developer creates it with Instance.new and sets its Parent property to the ReplicatedStorage service. For example, a new Part can be named \"SharedPart\" and assigned as a child of ReplicatedStorage so that both server and client can see it. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/replicated-storage.md"
+  },
+  {
+    "topic": "Vortex Studio 0.3.4 testing notes",
+    "questions": [
+      "What is Vortex Studio 0.3.4 testing notes?",
+      "Explain Vortex Studio 0.3.4 testing notes in Vortex",
+      "How do I use Vortex Studio 0.3.4 testing notes?",
+      "Tell me about Vortex Studio 0.3.4 testing notes"
+    ],
+    "answer": "These notes document observed behavior in Vortex Studio version 0.3.4 and may not apply to later releases. They confirm that a temporary Part can be parented to ReplicatedStorage and that WaitForChild will resolve it, while FindFirstChild returns nil and GetChildren omits it under the same conditions. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/replicated-storage.md"
+  },
+  {
+    "topic": "ServerScriptService",
+    "questions": [
+      "What is ServerScriptService?",
+      "Explain ServerScriptService in Vortex",
+      "How do I use ServerScriptService?",
+      "Tell me about ServerScriptService"
+    ],
+    "answer": "ServerScriptService is a Roblox-style service obtained via game:GetService(\"ServerScriptService\") in Vortex Studio 0.3.4. It is accessible from both Script and LocalScript execution contexts and provides standard enumeration methods such as FindFirstChild, GetChildren, and WaitForChild. A notable limitation is that Scripts created at runtime do not appear as observable children of this service: parent-equality checks and FindFirstChild will not locate them, and GetChildren() will exclude them. To work reliably, server Scripts should be authored and placed in the editor rather than instantiated programmatically. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/server-script-service.md"
+  },
+  {
+    "topic": "SpawnLocation",
+    "questions": [
+      "What is SpawnLocation?",
+      "Explain SpawnLocation in Vortex",
+      "How do I use SpawnLocation?",
+      "Tell me about SpawnLocation"
+    ],
+    "answer": "SpawnLocation is a specialized Part used to define where player characters load into the world. It inherits from the base part class. Its primary purpose is providing a spawn point for players when they join or respawn. SpawnLocation inherits all standard Part properties such as Color, Transparency, Material, Cast Shadow, Anchored, CanCollide, Truss, Name, Position, Rotation, and Size. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spawnlocation.md"
+  },
+  {
+    "topic": "SpawnLocation runtime availability",
+    "questions": [
+      "What is SpawnLocation runtime availability?",
+      "Explain SpawnLocation runtime availability in Vortex",
+      "How do I use SpawnLocation runtime availability?",
+      "Tell me about SpawnLocation runtime availability"
+    ],
+    "answer": "In Vortex Studio 0.3.4, calling Instance.new(\"SpawnLocation\") fails in both Script and LocalScript contexts. A workspace descendant scan also did not find any live SpawnLocation instances in the tested project. This means the editor-facing property documentation is not confirmed to be a working runtime scripting surface in this version. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spawnlocation.md"
+  },
+  {
+    "topic": "SpotLight",
+    "questions": [
+      "What is SpotLight?",
+      "Explain SpotLight in Vortex",
+      "How do I use SpotLight?",
+      "Tell me about SpotLight"
+    ],
+    "answer": "A SpotLight in Vortex is a conical light that emits from a single point in 3D space. It must be parented to a Part, and it inherits its position from the parent Part. There is no built-in on/off switch, but setting the Color, Brightness, Angle, or Range to 0 will visually disable the light. Under the Properties tab, SpotLight displays Position, Rotation, and Size attributes, but Position and Rotation are read-only while Size has no effect. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spot-light.md"
+  },
+  {
+    "topic": "SpotLight runtime scripting limitation",
+    "questions": [
+      "What is the SpotLight runtime scripting limitation?",
+      "Explain the SpotLight runtime scripting limitation in Vortex",
+      "How do I use the SpotLight runtime scripting limitation?",
+      "Tell me about the SpotLight runtime scripting limitation"
+    ],
+    "answer": "In Vortex Studio 0.3.4, calling Instance.new(\"SpotLight\") succeeds in both Script and LocalScript but returns a non-functional shell. The instance only exposes generic Instance methods plus a connectable Changed signal, while the tested light-specific fields initially read as nil. Brightness, Range, Angle, Enabled, and Shadows cannot be set, and although Color accepts and retains a Color3 value, assigning Parent to a temporary Part does not actually establish parentage. As a result, there is no confirmed script route for configuring or attaching a rendered SpotLight in the current runtime. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spot-light.md"
+  },
+  {
+    "topic": "SpotLight.Angle",
+    "questions": [
+      "What is SpotLight.Angle?",
+      "Explain SpotLight.Angle in Vortex",
+      "How do I use SpotLight.Angle?",
+      "Tell me about SpotLight.Angle"
+    ],
+    "answer": "Angle is a Float property of a SpotLight that defines the spread of the emission cone. Smaller values produce a sharper, more focused cutoff, while wider values create a softer fall-off at the edges of the cone. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spot-light.md"
+  },
+  {
+    "topic": "SpotLight.Brightness",
+    "questions": [
+      "What is SpotLight.Brightness?",
+      "Explain SpotLight.Brightness in Vortex",
+      "How do I use SpotLight.Brightness?",
+      "Tell me about SpotLight.Brightness"
+    ],
+    "answer": "Brightness is a Float property of a SpotLight that controls how intensely the light is emitted. It affects only the strength of the light and does not influence how far the light reaches. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spot-light.md"
+  },
+  {
+    "topic": "SpotLight.Color",
+    "questions": [
+      "What is SpotLight.Color?",
+      "Explain SpotLight.Color in Vortex",
+      "How do I use SpotLight.Color?",
+      "Tell me about SpotLight.Color"
+    ],
+    "answer": "Color is a Color3 property of a SpotLight that determines the color tint of the emitted light. Darker colors effectively behave like turning the light off. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spot-light.md"
+  },
+  {
+    "topic": "SpotLight.Face",
+    "questions": [
+      "What is SpotLight.Face?",
+      "Explain SpotLight.Face in Vortex",
+      "How do I use SpotLight.Face?",
+      "Tell me about SpotLight.Face"
+    ],
+    "answer": "Face is an Enum.Face property of a SpotLight that selects which face of the parent Part the light is emitted from. By choosing a different face, the direction of the cone can be aimed along a specific axis of the parent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spot-light.md"
+  },
+  {
+    "topic": "SpotLight.Name",
+    "questions": [
+      "What is SpotLight.Name?",
+      "Explain SpotLight.Name in Vortex",
+      "How do I use SpotLight.Name?",
+      "Tell me about SpotLight.Name"
+    ],
+    "answer": "Name is a String property of a SpotLight that serves as both the internal identifier and the label shown in the Explorer panel. Changing it renames the instance in the hierarchy. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spot-light.md"
+  },
+  {
+    "topic": "SpotLight.Range",
+    "questions": [
+      "What is SpotLight.Range?",
+      "Explain SpotLight.Range in Vortex",
+      "How do I use SpotLight.Range?",
+      "Tell me about SpotLight.Range"
+    ],
+    "answer": "Range is a Float property of a SpotLight that specifies the maximum linear distance the light can reach. It governs how the brightness falls off over distance, but increasing it does not make the light itself brighter. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/spot-light.md"
+  },
+  {
+    "topic": "StarterPlayerScripts",
+    "questions": [
+      "What is StarterPlayerScripts?",
+      "Explain StarterPlayerScripts in Vortex",
+      "How do I use StarterPlayerScripts?",
+      "Tell me about StarterPlayerScripts"
+    ],
+    "answer": "StarterPlayerScripts is a container located inside the StarterPlayer service that holds client-side scripts. When a player joins the experience, the contents of StarterPlayerScripts are automatically copied into that player's PlayerScripts container. It is designed primarily for LocalScripts, which execute on the client side of the experience. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/starter-player-scripts.md"
+  },
+  {
+    "topic": "PlayerScripts",
+    "questions": [
+      "What is PlayerScripts?",
+      "Explain PlayerScripts in Vortex",
+      "How do I use PlayerScripts?",
+      "Tell me about PlayerScripts"
+    ],
+    "answer": "PlayerScripts is the per-player destination container where scripts from StarterPlayerScripts are copied when a player joins the experience. It serves as the runtime location for client-side scripts associated with that specific player during their session. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/starter-player-scripts.md"
+  },
+  {
+    "topic": "StarterPlayerScripts usage",
+    "questions": [
+      "What is StarterPlayerScripts used for?",
+      "Explain StarterPlayerScripts usage in Vortex",
+      "How do I use StarterPlayerScripts?",
+      "Tell me about StarterPlayerScripts usage"
+    ],
+    "answer": "StarterPlayerScripts is commonly used for client-side game systems, player input handling, camera systems, client-side effects and animations, user interface logic, keyboard, mouse, and controller input, local player movement systems, and client-side visual effects. It houses code that runs on the player's device for player-specific behavior. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/starter-player-scripts.md"
+  },
+  {
+    "topic": "StarterCharacterScripts distinction",
+    "questions": [
+      "What is the StarterCharacterScripts distinction?",
+      "Explain the StarterCharacterScripts distinction in Vortex",
+      "How do I use the StarterCharacterScripts distinction?",
+      "Tell me about the StarterCharacterScripts distinction"
+    ],
+    "answer": "StarterCharacterScripts should not be confused with StarterPlayerScripts. Although both look similar, they have different purposes: StarterPlayerScripts focuses on client-side player systems, while StarterCharacterScripts is intended for scripts tied to the player's character specifically. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/starter-player-scripts.md"
+  },
+  {
+    "topic": "StarterPlayerScripts script types",
+    "questions": [
+      "What script types run in StarterPlayerScripts?",
+      "Explain script types in StarterPlayerScripts in Vortex",
+      "How do I use script types in StarterPlayerScripts?",
+      "Tell me about script types in StarterPlayerScripts"
+    ],
+    "answer": "StarterPlayerScripts is primarily intended for LocalScripts, which run on the client. Server Scripts placed there will not run on the server. ModuleScripts can be placed inside StarterPlayerScripts when they will be required by other client-side scripts, but for modules that need to be shared by both client and server, ReplicatedStorage is the recommended location. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/starter-player-scripts.md"
+  },
+  {
+    "topic": "StarterPlayerScripts security",
+    "questions": [
+      "What are the StarterPlayerScripts security considerations?",
+      "Explain StarterPlayerScripts security in Vortex",
+      "How do I use StarterPlayerScripts security considerations?",
+      "Tell me about StarterPlayerScripts security"
+    ],
+    "answer": "StarterPlayerScripts should never be used for server-side security or validation, since the client is controlled by the player and cannot be trusted. Server validation, anti-cheat enforcement, and other security-critical logic must always run on the server rather than in client-side scripts placed in StarterPlayerScripts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/starter-player-scripts.md"
   }
 ]

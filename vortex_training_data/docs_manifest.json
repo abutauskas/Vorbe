@@ -1,0 +1,406 @@
+{
+  "content/guides/attributes.md": {
+    "sha": "733416e98c10709d269428b4c87dbcb32c555d65",
+    "topics": [
+      "Attributes",
+      "SetAttribute",
+      "GetAttribute",
+      "GetAttributes",
+      "GetAttributeChangedSignal",
+      "Vortex Studio 0.3.4 Attribute Compatibility"
+    ]
+  },
+  "content/guides/bindable-events.md": {
+    "sha": "da7eaa86b0ac6d3124cc98feba0213599be3b5c6",
+    "topics": [
+      "BindableEvent",
+      "BindableEvent:Fire",
+      "BindableEvent script-to-script messaging"
+    ]
+  },
+  "content/guides/client-server.md": {
+    "sha": "98f9fb4c144e4384b83f0e8b4c491503e353320b",
+    "topics": [
+      "Client-Server Model",
+      "Server",
+      "Client",
+      "Client to Server Remote Validation",
+      "Studio 0.3.4 Remote Sender Limitations"
+    ]
+  },
+  "content/guides/events.md": {
+    "sha": "a1a1258cfb9f00dbdca7548f0ee9ec5f5070226d",
+    "topics": [
+      "Signal",
+      "Signal:Connect",
+      "Signal:Once",
+      "Signal:Wait",
+      "Signal:Fire",
+      "Connection",
+      "Connection:Disconnect",
+      "Event delivery limitations",
+      "Connectable signals as producer proof"
+    ]
+  },
+  "content/guides/first-script.md": {
+    "sha": "3a100a0f2a30604e47d21759cec03340ef87449a",
+    "topics": [
+      "Hello World Script in Vortex",
+      "Spawning a Part in Workspace",
+      "Configuring Part Properties"
+    ]
+  },
+  "content/guides/instances.md": {
+    "sha": "42b0807d1fb63093063115ceed9218efb592f597",
+    "topics": [
+      "Instance",
+      "Instance.new"
+    ]
+  },
+  "content/guides/intro.md": {
+    "sha": "c9372b601191fe706b51307db2e16ffb18ac6779",
+    "topics": [
+      "Vortex",
+      "Vortex Engine",
+      "Your First Script guide"
+    ]
+  },
+  "content/guides/properties.md": {
+    "sha": "a34b393f485e1e3a56052929f020cfe0892f6b43",
+    "topics": [
+      "Properties",
+      "Reading optional properties safely",
+      "Change signals"
+    ]
+  },
+  "content/guides/remote-events.md": {
+    "sha": "0f6ca6aaefdc411c2d33b256dc5d19c20c5912c4",
+    "topics": [
+      "RemoteEvent",
+      "RemoteEvent:FireServer",
+      "RemoteEvent:FireClient",
+      "RemoteEvent:FireAllClients",
+      "RemoteEvent:OnServerEvent",
+      "RemoteEvent:OnClientEvent",
+      "RemoteEvent Security Considerations",
+      "RemoteEvent in ReplicatedStorage",
+      "RemoteEvent Argument Limitations",
+      "RemoteEvent Example: ChangeColor"
+    ]
+  },
+  "content/guides/remote-functions.md": {
+    "sha": "cde1222abc48141c7c2c1d897e1f2c5b37851a54",
+    "topics": [
+      "RemoteFunction",
+      "RemoteFunction InvokeServer",
+      "RemoteFunction OnServerInvoke",
+      "RemoteFunction instance argument limitation",
+      "RemoteEvent alternative"
+    ]
+  },
+  "content/guides/sandbox-limits.md": {
+    "sha": "8ff286c34beb3ccaf37a8655d4baa2666428df01",
+    "topics": [
+      "Script and LocalScript Globals in Vortex Studio 0.3.4",
+      "Filesystem and Hook Globals Restriction",
+      "Unavailable Game Entry Points",
+      "Blocked Services in Vortex",
+      "Available Reflection Helpers",
+      "Sandbox Isolation Guarantees"
+    ]
+  },
+  "content/guides/scripts-and-vms.md": {
+    "sha": "c39d8f96cfe93a21b247bb7afdb9a7904fd1cbaa",
+    "topics": [
+      "Script",
+      "LocalScript",
+      "Luau Virtual Machine",
+      "Execution Pipeline",
+      "Vortex Engine Integration"
+    ]
+  },
+  "content/guides/studio/keybindings.md": {
+    "sha": "64bc4ff7db71423c24c9995cdc251ff79a71f7f4",
+    "topics": [
+      "Studio Keybindings",
+      "File Shortcuts",
+      "Editing Shortcuts",
+      "Text Shortcuts",
+      "Tools Shortcuts",
+      "Camera Shortcuts",
+      "Selection Shortcuts",
+      "Window Shortcuts"
+    ]
+  },
+  "content/guides/tasks.md": {
+    "sha": "d75833731cc8fe7672e512025f389e08ea97ccd1",
+    "topics": [
+      "task.spawn",
+      "task.defer",
+      "task.delay",
+      "task.wait",
+      "Task scheduling behavior"
+    ]
+  },
+  "content/guides/values.md": {
+    "sha": "95141088f537ee965cda27f6fce789cd44cafcc4",
+    "topics": [
+      "IntValue",
+      "StringValue",
+      "BoolValue",
+      "Value containers",
+      "Changed signal",
+      "GetPropertyChangedSignal"
+    ]
+  },
+  "content/reference/classes/bindable-event.md": {
+    "sha": "23e9231ca0ea104feadc7885c441de756dae3aec",
+    "topics": [
+      "BindableEvent",
+      "BindableEvent.Event",
+      "BindableEvent.Fire"
+    ]
+  },
+  "content/reference/classes/bool-value.md": {
+    "sha": "30c1093aeb95cc9d57e703b336fc15266786c338",
+    "topics": [
+      "BoolValue"
+    ]
+  },
+  "content/reference/classes/character.md": {
+    "sha": "c91a0804e2af0ef3a3b6fdbe1bcbf9eb284ee8c5",
+    "topics": [
+      "Character",
+      "Character public fields",
+      "Character generic Instance methods",
+      "Character.Orientation",
+      "Character visual Scene projection",
+      "Character visual Scene replacement",
+      "Character lifecycle limitation"
+    ]
+  },
+  "content/reference/classes/debris.md": {
+    "sha": "d0eaf72ab4a5e499d4d955d6be021f4651351e3e",
+    "topics": [
+      "Debris",
+      "AddItem",
+      "SetMaxItems",
+      "Debris testing notes"
+    ]
+  },
+  "content/reference/classes/folder.md": {
+    "sha": "3cd5f7c061b09e5dfe300fc9cf9055903678cec9",
+    "topics": [
+      "Folder",
+      "Folder runtime hierarchy limitation"
+    ]
+  },
+  "content/reference/classes/humanoid-root-part.md": {
+    "sha": "b631e9abbe664d555e76f069cbe48418682651c0",
+    "topics": [
+      "HumanoidRootPart",
+      "HumanoidRootPart Confirmed Surface",
+      "HumanoidRootPart Unavailable Fields",
+      "HumanoidRootPart Character-State Authority"
+    ]
+  },
+  "content/reference/classes/humanoid.md": {
+    "sha": "3833ab995cea32e5bf6dd1f33fd2bbe082740c88",
+    "topics": [
+      "Humanoid",
+      "Humanoid.ClassName",
+      "Humanoid.Name",
+      "Humanoid.Health",
+      "Humanoid.MaxHealth",
+      "Humanoid:IsDead",
+      "Humanoid.Died",
+      "Humanoid.HealthChanged",
+      "Humanoid Server-Script Access"
+    ]
+  },
+  "content/reference/classes/instance.md": {
+    "sha": "59d16348f8ac5c2b3746f32cdcf85fee19df5051",
+    "topics": [
+      "Instance",
+      "Instance.Name",
+      "Instance.Parent",
+      "Instance:Clone",
+      "Instance:Destroy",
+      "Instance:GetChildren"
+    ]
+  },
+  "content/reference/classes/int-value.md": {
+    "sha": "c80a1c1f3b86e04ff709090a8c40b3e6163f0989",
+    "topics": [
+      "IntValue",
+      "IntValue.Name",
+      "IntValue.Value",
+      "IntValue Changed signal behavior",
+      "Instance.new for IntValue"
+    ]
+  },
+  "content/reference/classes/lighting.md": {
+    "sha": "e15a0226e37907323f09c33e863ac055a94d0a25",
+    "topics": [
+      "Lighting",
+      "Ambient Color",
+      "Brightness",
+      "Sun Color",
+      "Sun Brightness",
+      "Sun Shadows",
+      "Position",
+      "Rotation",
+      "Size"
+    ]
+  },
+  "content/reference/classes/localscript.md": {
+    "sha": "c8f8015538154ac40efdcc6a8980fcd8424d2828",
+    "topics": [
+      "LocalScript"
+    ]
+  },
+  "content/reference/classes/model.md": {
+    "sha": "2b1553f7b4027d8ec850a79a93f8b027566095cd",
+    "topics": [
+      "Model",
+      "Model.Name",
+      "Model.Position",
+      "Model Testing Notes",
+      "Character Model",
+      "Character Write-only Visual Rotation",
+      "Character Visual Scene",
+      "Character Armature Path",
+      "Visual Rig Properties",
+      "Visual Rig Transparency"
+    ]
+  },
+  "content/reference/classes/modulescript.md": {
+    "sha": "fe768a0b45259df7cd5825ddf8bac170e654edb9",
+    "topics": [
+      "ModuleScript",
+      "ModuleScript runtime construction",
+      "ModuleScript Source property",
+      "ModuleScript Disabled property",
+      "ModuleScript RunContext property",
+      "require and ModuleScript",
+      "ModuleScript and ReplicatedStorage parenting"
+    ]
+  },
+  "content/reference/classes/part.md": {
+    "sha": "adadf696a1f6dd1bd93f3920acd5f79524281dd1",
+    "topics": []
+  },
+  "content/reference/classes/player.md": {
+    "sha": "f16e149158088bb90c2a4323375e980640c0b8c1",
+    "topics": [
+      "Player",
+      "Player.Name",
+      "Player.ClassName",
+      "Player.Character",
+      "Player.Position",
+      "Player.Rotation",
+      "Player.CFrame",
+      "Player.Orientation",
+      "Player transform projection fields",
+      "Players.LocalPlayer"
+    ]
+  },
+  "content/reference/classes/players.md": {
+    "sha": "f880ee6f9ddeb4a2a796fa5359af3bd17ebe379c",
+    "topics": [
+      "Players service",
+      "Players:GetPlayers",
+      "Players.LocalPlayer",
+      "Players.Name",
+      "Players.ClassName",
+      "Players service limitations"
+    ]
+  },
+  "content/reference/classes/point-light.md": {
+    "sha": "95115ba392cce978e0c7da306520957656611af4",
+    "topics": [
+      "PointLight",
+      "PointLight:Brightness",
+      "PointLight:Color",
+      "PointLight:Range",
+      "PointLight:Name",
+      "PointLight runtime scripting limitation"
+    ]
+  },
+  "content/reference/classes/remote-event.md": {
+    "sha": "b079c30adfa74d404d24006accc0e910a48b727d",
+    "topics": [
+      "RemoteEvent",
+      "FireAllClients",
+      "FireClient",
+      "FireServer",
+      "OnClientEvent",
+      "OnServerEvent"
+    ]
+  },
+  "content/reference/classes/remote-function.md": {
+    "sha": "85f465f5f57a1afa26af7d205a3d447746127bf0",
+    "topics": [
+      "RemoteFunction",
+      "InvokeClient",
+      "InvokeServer",
+      "OnClientInvoke",
+      "OnServerInvoke",
+      "Vortex Studio 0.3.4 RemoteFunction limitations"
+    ]
+  },
+  "content/reference/classes/replicated-storage.md": {
+    "sha": "15d0bc11338a0a38710ab48421856ca5749813bf",
+    "topics": [
+      "ReplicatedStorage",
+      "ReplicatedStorage.ClassName",
+      "ReplicatedStorage.Name",
+      "ReplicatedStorage:FindFirstChild",
+      "ReplicatedStorage:GetChildren",
+      "ReplicatedStorage:WaitForChild",
+      "Parenting instances to ReplicatedStorage",
+      "Vortex Studio 0.3.4 testing notes"
+    ]
+  },
+  "content/reference/classes/script.md": {
+    "sha": "6601a3abb7536efcacc83b78a96a0be359c48493",
+    "topics": []
+  },
+  "content/reference/classes/server-script-service.md": {
+    "sha": "9b842a5708c5fdc73da1c08d1b1b7b4b64fc0cd6",
+    "topics": [
+      "ServerScriptService"
+    ]
+  },
+  "content/reference/classes/spawnlocation.md": {
+    "sha": "153204b229eaee2a9220a502e7a316e81c893602",
+    "topics": [
+      "SpawnLocation",
+      "SpawnLocation runtime availability"
+    ]
+  },
+  "content/reference/classes/spot-light.md": {
+    "sha": "6fcffa8bcaaf7f6a2d945fdaf9fb3139d5d11396",
+    "topics": [
+      "SpotLight",
+      "SpotLight runtime scripting limitation",
+      "SpotLight.Angle",
+      "SpotLight.Brightness",
+      "SpotLight.Color",
+      "SpotLight.Face",
+      "SpotLight.Name",
+      "SpotLight.Range"
+    ]
+  },
+  "content/reference/classes/starter-player-scripts.md": {
+    "sha": "538073cb0bc995a4f2ce3b9effbd2a5f8deabe43",
+    "topics": [
+      "StarterPlayerScripts",
+      "PlayerScripts",
+      "StarterPlayerScripts usage",
+      "StarterCharacterScripts distinction",
+      "StarterPlayerScripts script types",
+      "StarterPlayerScripts security"
+    ]
+  }
+}
