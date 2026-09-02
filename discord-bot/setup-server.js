@@ -18,61 +18,79 @@ if (!BOT_TOKEN || !GUILD_ID) {
   process.exit(1);
 }
 
+// Vorbe's brand purple (public/index.html's --brand: #a13dff) - used as the
+// accent color on every embed below, so bot messages read as genuinely
+// Vorbe-branded rather than generic bot output.
+const BRAND_COLOR = 0xa13dff;
+
 // Read-only channels (below) deny @everyone the ability to post - for
 // announcements/rules/welcome, where only admins should write.
 //
-// seedMessage, where present, gets posted by the bot once - only when the
-// channel is genuinely empty (checked via lastMessageId), so re-running
-// this script never double-posts or overwrites something you've since
-// edited by hand in Discord.
+// `key` is a stable identifier independent of the emoji-prefixed display
+// name - used for cross-channel mentions (see `mention()` in main()) so
+// e.g. the welcome embed can link to #help by its real channel ID rather
+// than typing the literal text "#help", which Discord does NOT turn into
+// a clickable mention on its own (confirmed live - it rendered as plain
+// text, not a link).
+//
+// `embed`, where present, is a function (mention) => {title, description}
+// posted by the bot once - only when the channel is genuinely empty
+// (checked via lastMessageId), so re-running this script never
+// double-posts or overwrites something you've since edited by hand.
 const STRUCTURE = [
   ["📌 INFORMATION", [
-    ["👋│welcome", {
-      readOnly: true,
+    {
+      key: "welcome", name: "👋│welcome", readOnly: true,
       topic: "Start here - what Vorbe is and how this server works.",
-      seedMessage: [
-        "**Welcome to the Vorbe server.**",
-        "",
-        "Vorbe is a free, open-source AI coding assistant for Vortex developers - describe what you want, get working Luau code. Not affiliated with Vortex itself, just a community tool built for it.",
-        "",
-        "**Get started:** https://vorber.vercel.app  |  **Source:** https://github.com/abutauskas/Vorbe",
-        "",
-        "Questions go in #help. Found a bug? #bug-reports (or open a GitHub issue). Built something with Vorbe? Show it off in #showcase.",
-      ].join("\n"),
-    }],
-    ["📢│announcements", {
-      readOnly: true,
+      embed: (mention) => ({
+        title: "Welcome to the Vorbe server",
+        description: [
+          "Vorbe is a free, open-source AI coding assistant for Vortex developers - describe what you want, get working Luau code. Not affiliated with Vortex itself, just a community tool built for it.",
+          "",
+          "**Get started:** https://vorber.vercel.app  |  **Source:** https://github.com/abutauskas/Vorbe",
+          "",
+          `Questions go in ${mention("help")}. Found a bug? ${mention("bug-reports")} (or open a GitHub issue). Built something with Vorbe? Show it off in ${mention("showcase")}.`,
+        ].join("\n"),
+      }),
+    },
+    {
+      key: "announcements", name: "📢│announcements", readOnly: true,
       topic: "Releases and project updates.",
-      seedMessage: "Server's live. This is where Vorbe releases and project updates get posted - everything else has its own channel, check the categories on the left.",
-    }],
-    ["📜│rules", {
-      readOnly: true,
+      embed: () => ({
+        title: "Server's live",
+        description: "This is where Vorbe releases and project updates get posted - everything else has its own channel, check the categories on the left.",
+      }),
+    },
+    {
+      key: "rules", name: "📜│rules", readOnly: true,
       topic: "Server rules.",
-      seedMessage: [
-        "**Rules**",
-        "1. Be respectful - disagree without being a jerk.",
-        "2. Keep it on-topic for the channel you're in.",
-        "3. No spam, self-promo dumps, or unrelated advertising.",
-        "4. No harassment, hate speech, or NSFW content.",
-        "5. Follow Discord's own Terms of Service and Community Guidelines.",
-        "",
-        "Breaking these gets you a warning, then a kick or ban depending on severity.",
-      ].join("\n"),
-    }],
+      embed: () => ({
+        title: "Rules",
+        description: [
+          "1. Be respectful - disagree without being a jerk.",
+          "2. Keep it on-topic for the channel you're in.",
+          "3. No spam, self-promo dumps, or unrelated advertising.",
+          "4. No harassment, hate speech, or NSFW content.",
+          "5. Follow Discord's own Terms of Service and Community Guidelines.",
+          "",
+          "Breaking these gets you a warning, then a kick or ban depending on severity.",
+        ].join("\n"),
+      }),
+    },
   ]],
   ["👥 COMMUNITY", [
-    ["💬│general", { topic: "General chat." }],
-    ["🎨│showcase", { topic: "Share what you built with Vorbe." }],
-    ["🎲│off-topic", { topic: "Anything not Vorbe/Vortex related." }],
+    { key: "general", name: "💬│general", topic: "General chat." },
+    { key: "showcase", name: "🎨│showcase", topic: "Share what you built with Vorbe." },
+    { key: "off-topic", name: "🎲│off-topic", topic: "Anything not Vorbe/Vortex related." },
   ]],
   ["🛠️ SUPPORT", [
-    ["🆘│help", { topic: "Ask questions about using Vorbe." }],
-    ["🐛│bug-reports", { topic: "Found a bug? Also welcome as a GitHub issue: github.com/abutauskas/Vorbe/issues" }],
-    ["💡│feature-requests", { topic: "Ideas for what Vorbe should do next." }],
+    { key: "help", name: "🆘│help", topic: "Ask questions about using Vorbe." },
+    { key: "bug-reports", name: "🐛│bug-reports", topic: "Found a bug? Also welcome as a GitHub issue: github.com/abutauskas/Vorbe/issues" },
+    { key: "feature-requests", name: "💡│feature-requests", topic: "Ideas for what Vorbe should do next." },
   ]],
   ["💻 DEVELOPMENT", [
-    ["🤝│contributing", { topic: "Want to help build Vorbe? Start here - see CONTRIBUTING.md." }],
-    ["👨‍💻│dev-chat", { topic: "Technical discussion for contributors." }],
+    { key: "contributing", name: "🤝│contributing", topic: "Want to help build Vorbe? Start here - see CONTRIBUTING.md." },
+    { key: "dev-chat", name: "👨‍💻│dev-chat", topic: "Technical discussion for contributors." },
   ]],
 ];
 
@@ -156,7 +174,14 @@ async function main() {
 
   console.log("");
 
-  for (const [categoryName, channels] of STRUCTURE) {
+  // Pass 1: create everything, fix permissions, and record each channel by
+  // its stable `key` - needed before any embed is built, since mentions
+  // need real channel IDs that only exist once every channel in STRUCTURE
+  // has actually been created (a channel referenced early in the list can
+  // still need to mention one defined later).
+  const channelsByKey = {};
+
+  for (const [categoryName, entries] of STRUCTURE) {
     let category = guild.channels.cache.find(
       (c) => c.type === ChannelType.GuildCategory && c.name === categoryName
     );
@@ -167,19 +192,19 @@ async function main() {
       console.log(`category "${categoryName}" created`);
     }
 
-    for (const [channelName, opts] of channels) {
+    for (const entry of entries) {
       let channel = guild.channels.cache.find(
-        (c) => c.type === ChannelType.GuildText && c.name === channelName && c.parentId === category.id
+        (c) => c.type === ChannelType.GuildText && c.name === entry.name && c.parentId === category.id
       );
 
       if (channel) {
-        console.log(`  #${channelName} already exists`);
+        console.log(`  #${entry.name} already exists`);
       } else {
         // The @everyone deny below also blocks the bot itself (it only has
         // Manage Channels/Manage Roles, not Administrator) - the explicit
-        // allow for the bot's own ID is what lets it post the seed message
-        // below into a channel nobody else can write to.
-        const permissionOverwrites = opts.readOnly
+        // allow for the bot's own ID is what lets it post the embed below
+        // into a channel nobody else can write to.
+        const permissionOverwrites = entry.readOnly
           ? [
               { id: guild.roles.everyone.id, deny: [PermissionsBitField.Flags.SendMessages] },
               { id: client.user.id, allow: [PermissionsBitField.Flags.SendMessages] },
@@ -187,33 +212,58 @@ async function main() {
           : [];
 
         channel = await guild.channels.create({
-          name: channelName,
+          name: entry.name,
           type: ChannelType.GuildText,
           parent: category.id,
-          topic: opts.topic,
+          topic: entry.topic,
           permissionOverwrites,
         });
-        console.log(`  #${channelName} created${opts.readOnly ? " (read-only)" : ""}`);
+        console.log(`  #${entry.name} created${entry.readOnly ? " (read-only)" : ""}`);
       }
 
       // Applied every run, not just at creation - fixes channels that
       // already existed before this bot-allow overwrite was added (exactly
       // what happened on this project's own server: the channels were
       // created first, this fix came after).
-      if (opts.readOnly) {
+      if (entry.readOnly) {
         const botOverwrite = channel.permissionOverwrites.cache.get(client.user.id);
         if (!botOverwrite || !botOverwrite.allow.has(PermissionsBitField.Flags.SendMessages)) {
           await channel.permissionOverwrites.edit(client.user.id, { SendMessages: true });
-          console.log(`    fixed bot's own send-permission in #${channelName}`);
+          console.log(`    fixed bot's own send-permission in #${entry.name}`);
         }
       }
 
+      channelsByKey[entry.key] = channel;
+    }
+  }
+
+  // Pass 2: post embeds now that every channel (and therefore every real
+  // ID a mention might need) exists. `mention(key)` returns a real,
+  // clickable <#id> mention when the target channel exists, or falls back
+  // to plain "#key" text (still readable, just not a link) if it doesn't -
+  // e.g. if STRUCTURE is ever edited to reference a key that was removed.
+  console.log("");
+  const mention = (key) => (channelsByKey[key] ? `<#${channelsByKey[key].id}>` : `#${key}`);
+
+  for (const [, entries] of STRUCTURE) {
+    for (const entry of entries) {
+      if (!entry.embed) continue;
+      const channel = channelsByKey[entry.key];
+
       // Only seed if the channel is genuinely empty - never overwrites or
       // duplicates something already posted, by the bot or by a human.
-      if (opts.seedMessage && !channel.lastMessageId) {
-        await channel.send(opts.seedMessage);
-        console.log(`    seed message posted in #${channelName}`);
-      }
+      // Deliberately NOT using channel.lastMessageId here: Discord doesn't
+      // roll that field back when the last message is deleted, so it stays
+      // non-null forever once anything's ever been posted (confirmed live -
+      // this bit the exact case of "delete the old message, expect it to
+      // re-seed" while building this). An actual fetch is the only
+      // reliable check.
+      const recent = await channel.messages.fetch({ limit: 1 });
+      if (recent.size > 0) continue;
+
+      const built = entry.embed(mention);
+      await channel.send({ embeds: [{ color: BRAND_COLOR, ...built }] });
+      console.log(`embed posted in #${entry.name}`);
     }
   }
 
