@@ -402,5 +402,275 @@
       "StarterPlayerScripts script types",
       "StarterPlayerScripts security"
     ]
+  },
+  "content/reference/classes/string-value.md": {
+    "sha": "36ea8342a28fb2cfd6891c18372f039a84d2a886",
+    "topics": [
+      "StringValue",
+      "StringValue.Value",
+      "StringValue.Name",
+      "StringValue.Changed",
+      "StringValue.GetPropertyChangedSignal"
+    ]
+  },
+  "content/reference/classes/texture.md": {
+    "sha": "1531b4be9fc50964f3397a359c0d3cd5d166685c",
+    "topics": [
+      "Texture",
+      "Texture.Face",
+      "Texture.Texture",
+      "Texture scripting support"
+    ]
+  },
+  "content/reference/classes/tween-service.md": {
+    "sha": "7d9babbd8147547922f32cda68ba48828aa2c706",
+    "topics": [
+      "TweenService",
+      "TweenService:Create",
+      "Tween",
+      "TweenInfo"
+    ]
+  },
+  "content/reference/classes/user-input-service.md": {
+    "sha": "2dece59752dc8e19c3010a4ee92194b6a0cb09f1",
+    "topics": [
+      "UserInputService",
+      "InputBegan",
+      "InputEnded",
+      "IsKeyDown",
+      "InputChanged",
+      "GetMouseLocation",
+      "MouseBehavior",
+      "MouseIconEnabled",
+      "KeyboardEnabled",
+      "MouseEnabled",
+      "GamepadEnabled",
+      "TouchEnabled",
+      "InputObject"
+    ]
+  },
+  "content/reference/classes/workspace.md": {
+    "sha": "cdf1f4f16a2504c32c84b8045c4bcda270d9a1a9",
+    "topics": [
+      "Workspace",
+      "Workspace.ClassName",
+      "Workspace.Name",
+      "Workspace.FindFirstChild",
+      "Workspace.GetChildren",
+      "Workspace.WaitForChild"
+    ]
+  },
+  "content/reference/datatypes/cframe.lookat.md": {
+    "sha": "9d2fc286b9ff3e40b8d3ea09f5bd56a71ae537e2",
+    "topics": [
+      "CFrame.lookAt"
+    ]
+  },
+  "content/reference/datatypes/cframe.md": {
+    "sha": "f5963ee3d23b0b5624b01249896204e0882bb30c",
+    "topics": []
+  },
+  "content/reference/datatypes/color3.fromrgb.md": {
+    "sha": "9c501a18bd12421a36db484e7e5ef437c5464618",
+    "topics": [
+      "Color3.fromRGB"
+    ]
+  },
+  "content/reference/datatypes/color3.md": {
+    "sha": "57df70478c6ad7363c9b2dac45aa258a7c72e985",
+    "topics": [
+      "Color3",
+      "Color3.R",
+      "Color3.G",
+      "Color3.B",
+      "Color3.new",
+      "Color3.fromRGB",
+      "Color3:Lerp"
+    ]
+  },
+  "content/reference/datatypes/connection.md": {
+    "sha": "9c17f9a3994e99f18eb0e033ebb0f4cadd5c18b8",
+    "topics": [
+      "Connection",
+      "Connected",
+      "Connection:Disconnect"
+    ]
+  },
+  "content/reference/datatypes/enum.md": {
+    "sha": "a5403dc06b4fc74b01b1b22915a7378470de357f",
+    "topics": [
+      "Enum",
+      "Enum:GetEnumItems",
+      "Enum:FromName",
+      "Enum:FromValue"
+    ]
+  },
+  "content/reference/datatypes/enumitem.md": {
+    "sha": "6f01d24759edb2518123ba53e1b6cdd18a3d2039",
+    "topics": [
+      "EnumItem",
+      "EnumItem.Name",
+      "EnumItem.Value",
+      "EnumItem.EnumType"
+    ]
+  },
+  "content/reference/datatypes/input-object.md": {
+    "sha": "5b83a04f5d1640f0726dc82b779e8a6520aa6962",
+    "topics": [
+      "InputObject"
+    ]
+  },
+  "content/reference/datatypes/signal.md": {
+    "sha": "e5015667e4f0a5b136018358bbab00a623d58fd8",
+    "topics": []
+  },
+  "content/reference/datatypes/tween-info.md": {
+    "sha": "b29167faeb1b980ec076a1ff38aaa8a8e7ba9ed3",
+    "topics": [
+      "TweenInfo",
+      "Time",
+      "EasingStyle",
+      "EasingDirection",
+      "RepeatCount",
+      "Reverses",
+      "DelayTime",
+      "TweenInfo.new"
+    ]
+  },
+  "content/reference/datatypes/tween.md": {
+    "sha": "437389383e293a30893aa106e42dc84f0c70e6a3",
+    "topics": [
+      "Tween",
+      "PlaybackState",
+      "Play",
+      "Pause",
+      "Cancel",
+      "Completed"
+    ]
+  },
+  "content/reference/datatypes/vector3.md": {
+    "sha": "f61fd70f42bdcff22a402e66ce5a32edb2c205eb",
+    "topics": [
+      "Vector3",
+      "Vector3.X",
+      "Vector3.Y",
+      "Vector3.Z",
+      "Vector3.Magnitude",
+      "Vector3.Unit",
+      "Vector3.zero",
+      "Vector3.one",
+      "Vector3.xAxis",
+      "Vector3.yAxis",
+      "Vector3.zAxis",
+      "Vector3.new",
+      "Vector3:Cross",
+      "Vector3:Dot",
+      "Vector3:Lerp"
+    ]
+  },
+  "content/reference/globals/debris.md": {
+    "sha": "62d578b1ad0d06d9338c7d3347c48c231a4ef5d2",
+    "topics": [
+      "Debris",
+      "Debris:AddItem",
+      "Debris:SetMaxItems"
+    ]
+  },
+  "content/reference/globals/enum.md": {
+    "sha": "5edbdb792e732925cec8fef1b1d1b3c177c937af",
+    "topics": [
+      "Enum",
+      "Enum.EasingDirection",
+      "Enum.EasingStyle",
+      "Enum.KeyCode",
+      "Enum.Material",
+      "Enum.NormalId",
+      "Enum.PlaybackState",
+      "Enum.UserInputType",
+      "EnumType:FromName",
+      "EnumType:FromValue",
+      "EnumType:GetEnumItems"
+    ]
+  },
+  "content/reference/globals/game.md": {
+    "sha": "3f97b165402732ea219281a19ef54b24887caabe",
+    "topics": [
+      "Game",
+      "Workspace (game property)",
+      "Players (game property)",
+      "GetService",
+      "OnClose",
+      "ReplicatedStorage (game service)",
+      "StarterPlayerScripts (game service)",
+      "ServerScriptService (game service)",
+      "Lighting (game service)",
+      "Debris (game service)",
+      "RunService (game service)",
+      "TweenService (game service)",
+      "UserInputService (game service)"
+    ]
+  },
+  "content/reference/globals/instance-new.md": {
+    "sha": "fa8bafc8fa41d814f9f1a8c8fc9cae25f8690ca6",
+    "topics": [
+      "Instance.new",
+      "Instance.new parent argument",
+      "Parenting new instances",
+      "Default Part state",
+      "Instance.fromExisting",
+      "Creatable classes",
+      "GetChildren and FindFirstChild reliability"
+    ]
+  },
+  "content/reference/globals/legacy.md": {
+    "sha": "48b30b3e607764e24b99e86c13935261e041d9c2",
+    "topics": [
+      "Vortex runtime standard libraries",
+      "coroutine library",
+      "math library",
+      "string library",
+      "table library",
+      "Unavailable standard library surface"
+    ]
+  },
+  "content/reference/globals/output.md": {
+    "sha": "ddb943f002612604f0cb65746d25b8a445683a33",
+    "topics": [
+      "print",
+      "warn",
+      "error",
+      "assert",
+      "Output panel"
+    ]
+  },
+  "content/reference/globals/runservice.md": {
+    "sha": "dff0e4b7530a1a83f85829876c317c982880bccf",
+    "topics": [
+      "RunService",
+      "IsClient",
+      "IsServer",
+      "IsStudio",
+      "Heartbeat"
+    ]
+  },
+  "content/reference/globals/script.md": {
+    "sha": "f3c937cfe6086cb3c57139cad103942cf78959ef",
+    "topics": []
+  },
+  "content/reference/globals/task.md": {
+    "sha": "e5a98e4bb5ef903ee286c8187412dc844345691c",
+    "topics": [
+      "task.defer",
+      "task.delay",
+      "task.spawn",
+      "task.wait",
+      "task module runtime compatibility"
+    ]
+  },
+  "content/reference/globals/tween-info.md": {
+    "sha": "c6b4b7353f80e58b12551103297b1fc44abf7d96",
+    "topics": [
+      "TweenInfo"
+    ]
   }
 }
