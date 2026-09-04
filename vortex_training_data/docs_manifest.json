@@ -51,9 +51,9 @@
     ]
   },
   "content/guides/instances.md": {
-    "sha": "42b0807d1fb63093063115ceed9218efb592f597",
+    "sha": "e3125de64c5672efa698c42b9655a61547857f15",
     "topics": [
-      "Instance",
+      "Instances",
       "Instance.new"
     ]
   },
@@ -219,14 +219,23 @@
     ]
   },
   "content/reference/classes/instance.md": {
-    "sha": "59d16348f8ac5c2b3746f32cdcf85fee19df5051",
+    "sha": "3ef52abd6c35b584b3755adadba252f31663fa79",
     "topics": [
       "Instance",
       "Instance.Name",
       "Instance.Parent",
-      "Instance:Clone",
-      "Instance:Destroy",
-      "Instance:GetChildren"
+      "Instance.Clone()",
+      "Instance.Destroy()",
+      "Instance.GetChildren()",
+      "Vortex Studio Method Availability Matrix",
+      "Part (method availability)",
+      "Script (method availability)",
+      "Character (method availability)",
+      "Workspace (method availability)",
+      "ReplicatedStorage (method availability)",
+      "Players (method availability)",
+      "Player (method availability)",
+      "Humanoid (method availability)"
     ]
   },
   "content/reference/classes/int-value.md": {
@@ -423,7 +432,7 @@
     ]
   },
   "content/reference/classes/tween-service.md": {
-    "sha": "7d9babbd8147547922f32cda68ba48828aa2c706",
+    "sha": "ccf953eaf8a7dae2317bae4c23e85245157d9f81",
     "topics": [
       "TweenService",
       "TweenService:Create",
@@ -525,31 +534,32 @@
     "topics": []
   },
   "content/reference/datatypes/tween-info.md": {
-    "sha": "b29167faeb1b980ec076a1ff38aaa8a8e7ba9ed3",
+    "sha": "7f81492e5e3bb69e93bf152451627378baa22abf",
     "topics": [
       "TweenInfo",
-      "Time",
-      "EasingStyle",
-      "EasingDirection",
-      "RepeatCount",
-      "Reverses",
-      "DelayTime",
-      "TweenInfo.new"
+      "TweenInfo.new",
+      "TweenInfo.Time",
+      "TweenInfo.EasingStyle",
+      "TweenInfo.EasingDirection",
+      "TweenInfo.RepeatCount",
+      "TweenInfo.Reverses",
+      "TweenInfo.DelayTime"
     ]
   },
   "content/reference/datatypes/tween.md": {
-    "sha": "437389383e293a30893aa106e42dc84f0c70e6a3",
+    "sha": "44ad622a31d27b060b178f4395cdf39a7ab688fd",
     "topics": [
       "Tween",
-      "PlaybackState",
-      "Play",
-      "Pause",
-      "Cancel",
-      "Completed"
+      "Tween.Instance",
+      "Tween.PlaybackState",
+      "Tween:Play()",
+      "Tween:Pause()",
+      "Tween:Cancel()",
+      "Tween.Completed"
     ]
   },
   "content/reference/datatypes/vector3.md": {
-    "sha": "f61fd70f42bdcff22a402e66ce5a32edb2c205eb",
+    "sha": "e4dd6c0666e3529755aa59dd483344580b73f3d1",
     "topics": [
       "Vector3",
       "Vector3.X",
@@ -563,9 +573,14 @@
       "Vector3.yAxis",
       "Vector3.zAxis",
       "Vector3.new",
-      "Vector3:Cross",
-      "Vector3:Dot",
-      "Vector3:Lerp"
+      "Vector3.Dot",
+      "Vector3.Cross",
+      "Vector3.Lerp",
+      "Vector3 Addition Operator",
+      "Vector3 Subtraction Operator",
+      "Vector3 Multiplication Operator",
+      "Vector3 Division Operator",
+      "Vector3 Negation Operator"
     ]
   },
   "content/reference/globals/debris.md": {
@@ -671,6 +686,67 @@
     "sha": "c6b4b7353f80e58b12551103297b1fc44abf7d96",
     "topics": [
       "TweenInfo"
+    ]
+  },
+  "content/reference/globals/tween-service.md": {
+    "sha": "7fb4a5ede2dec79c15eb25a333473fac48ca4e94",
+    "topics": [
+      "TweenService",
+      "TweenService:Create",
+      "TweenInfo",
+      "TweenInfo.new",
+      "Tween:Play",
+      "Tween goal table"
+    ]
+  },
+  "content/reference/globals/user-input-service.md": {
+    "sha": "df1211d3c8f544232bb6f07dd15302e82f49d212",
+    "topics": [
+      "UserInputService",
+      "IsKeyDown",
+      "InputBegan",
+      "InputEnded",
+      "Vortex Studio 0.3.4 UserInputService limitations"
+    ]
+  },
+  "content/reference/globals/workspace.md": {
+    "sha": "2192fe98615f2afb820aaa8d2d067afbb01fcf9b",
+    "topics": [
+      "workspace"
+    ]
+  },
+  "content/reference/index.md": {
+    "sha": "3a23cb28a81c31e44cb96b30495fd07ee8bad7ce",
+    "topics": []
+  },
+  "content/reference/instance/clone.md": {
+    "sha": "fc310c2d4f5fa9aa71b840e4e5faf2902698ae5f",
+    "topics": [
+      "Instance:Clone()"
+    ]
+  },
+  "content/reference/instance/destroy.md": {
+    "sha": "1431979b4334efc9ca47ab1ddce6917d64d3cf20",
+    "topics": [
+      "Instance:Destroy()"
+    ]
+  },
+  "content/reference/instance/findfirstchild.md": {
+    "sha": "c4edd5a0a9c4d6a3203d79a431e255f044e0a098",
+    "topics": [
+      "FindFirstChild"
+    ]
+  },
+  "content/reference/instance/getchildren.md": {
+    "sha": "aa6dbfeff97d48989147ee88126ed0bd1f02064d",
+    "topics": [
+      "GetChildren"
+    ]
+  },
+  "content/reference/instance/waitforchild.md": {
+    "sha": "ff6bfd16bed6cea0d3bfcaa9df239135c1b854d5",
+    "topics": [
+      "WaitForChild"
     ]
   }
 }

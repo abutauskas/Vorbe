@@ -1760,26 +1760,6 @@
     "answer": "After creating a part, its appearance and behavior can be customized by assigning values to its properties. In Vortex you can set part.Name = \"MyPart\", part.Size = Vector3.new(2, 2, 2), part.Position = Vector3.new(0, 10, 0), part.Color = Color3.fromRGB(192, 32, 12), and part.Anchored = false. Anchoring a part false allows physics to act on it, while setting position, size, name, and color control its location, scale, identifier, and visual appearance. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/first-script.md"
   },
   {
-    "topic": "Instance",
-    "questions": [
-      "What is an Instance?",
-      "Explain Instance in Vortex",
-      "How do I use Instance?",
-      "Tell me about Instance"
-    ],
-    "answer": "An Instance is the fundamental building block for every object in a Vortex game, similar to Roblox's Instance model. There are many types of Instances, and each one has its own set of Properties along with unique behaviors. Instances form the basis of the entire game object hierarchy in Vortex Studio. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/instances.md"
-  },
-  {
-    "topic": "Instance.new",
-    "questions": [
-      "What is Instance.new?",
-      "Explain Instance.new in Vortex",
-      "How do I use Instance.new?",
-      "Tell me about Instance.new"
-    ],
-    "answer": "Instance.new is a global method used to create a new Instance in a script. It takes the ClassName of the desired Instance type as its first argument. This is the primary way developers instantiate objects programmatically in Vortex. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/instances.md"
-  },
-  {
     "topic": "Vortex",
     "questions": [
       "What is Vortex?",
@@ -2588,66 +2568,6 @@
       "Tell me about Humanoid server-script access"
     ],
     "answer": "As of Vortex Studio 0.3.4, server Scripts can enumerate Players, read a player's Character, and obtain its Humanoid via `game:GetService(\"Players\"):GetPlayers()[1].Character`. However, this server-visible Humanoid projection does not grant Health-write authority, and Roblox-style properties like WalkSpeed, JumpPower, JumpHeight, and UseJumpPower all read as nil on it, so their write behavior is unknown. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/humanoid.md"
-  },
-  {
-    "topic": "Instance",
-    "questions": [
-      "What is Instance?",
-      "Explain Instance in Vortex",
-      "How do I use Instance?",
-      "Tell me about Instance"
-    ],
-    "answer": "Instance is the base class from which all classes in the Vortex engine inherit. It defines a small common surface consisting of two properties, Name and Parent, along with three methods: Clone, Destroy, and GetChildren. Every object placed into the engine's object hierarchy is ultimately an Instance or a subclass of it. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
-  },
-  {
-    "topic": "Instance.Name",
-    "questions": [
-      "What is Instance.Name?",
-      "Explain Instance.Name in Vortex",
-      "How do I use Instance.Name?",
-      "Tell me about Instance.Name"
-    ],
-    "answer": "Name is a property of the Instance class of type String that holds the display name of the object. It can be read and assigned to identify the Instance within its hierarchy or in code. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
-  },
-  {
-    "topic": "Instance.Parent",
-    "questions": [
-      "What is Instance.Parent?",
-      "Explain Instance.Parent in Vortex",
-      "How do I use Instance.Parent?",
-      "Tell me about Instance.Parent"
-    ],
-    "answer": "Parent is a property of the Instance class that is either another Instance or nil. It represents the object's position in the hierarchical tree; setting it to nil detaches the object, while assigning an Instance adopts it as a child of that parent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
-  },
-  {
-    "topic": "Instance:Clone",
-    "questions": [
-      "What is Instance:Clone()?",
-      "Explain Instance:Clone() in Vortex",
-      "How do I use Instance:Clone()?",
-      "Tell me about Instance:Clone()"
-    ],
-    "answer": "Clone is a method on the Instance class that takes no arguments and returns a new Instance. The returned object is a duplicate of the original, including its properties and descendants, and is created without a parent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
-  },
-  {
-    "topic": "Instance:Destroy",
-    "questions": [
-      "What is Instance:Destroy()?",
-      "Explain Instance:Destroy() in Vortex",
-      "How do I use Instance:Destroy()?",
-      "Tell me about Instance:Destroy()"
-    ],
-    "answer": "Destroy is a method on the Instance class that removes the object and all of its descendants from the hierarchy, returning nil. Once called, the Instance and its children are no longer accessible through their previous Parent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
-  },
-  {
-    "topic": "Instance:GetChildren",
-    "questions": [
-      "What is Instance:GetChildren()?",
-      "Explain Instance:GetChildren() in Vortex",
-      "How do I use Instance:GetChildren()?",
-      "Tell me about Instance:GetChildren()"
-    ],
-    "answer": "GetChildren is a method on the Instance class that returns an array of Instance values, representing the direct children of the object. It does not recurse into those descendants; only the immediate children of the calling Instance are included in the returned table. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
   },
   {
     "topic": "IntValue",
@@ -3650,46 +3570,6 @@
     "answer": "In Vortex Studio 0.3.4, calls such as Instance.new(\"Texture\"), Instance.new(\"Decal\"), and Instance.new(\"SurfaceAppearance\") fail in both Script and LocalScript contexts. Script-created Parts also lack readable Texture, TextureID, SurfaceAppearance, or Decal fields, so there is currently no confirmed script API for creating or changing textures even though editor-authored textures are supported. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/texture.md"
   },
   {
-    "topic": "TweenService",
-    "questions": [
-      "What is TweenService?",
-      "Explain TweenService in Vortex",
-      "How do I use TweenService?",
-      "Tell me about TweenService"
-    ],
-    "answer": "TweenService is a service accessed via game:GetService(\"TweenService\") that creates Tween objects used to animate instance properties. Its primary purpose is producing Tween instances that interpolate properties of Roblox-like instances over time. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/tween-service.md"
-  },
-  {
-    "topic": "TweenService:Create",
-    "questions": [
-      "What is TweenService:Create?",
-      "Explain TweenService:Create in Vortex",
-      "How do I use TweenService:Create?",
-      "Tell me about TweenService:Create"
-    ],
-    "answer": "Create is a method on TweenService with the signature TweenService:Create(instance: Instance, tweenInfo: TweenInfo, propertyTable: table) that returns a Tween. The instance parameter is the target object, tweenInfo holds the animation configuration, and propertyTable is a Lua table mapping property names to their target values. The returned Tween drives interpolation of those properties on the supplied instance. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/tween-service.md"
-  },
-  {
-    "topic": "Tween",
-    "questions": [
-      "What is Tween?",
-      "Explain Tween in Vortex",
-      "How do I use Tween?",
-      "Tell me about Tween"
-    ],
-    "answer": "Tween is the datatype returned by TweenService:Create, representing an active animation against a specific instance's properties. It is constructed from an Instance target, a TweenInfo describing how the animation runs, and a table of property-to-value targets. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/tween-service.md"
-  },
-  {
-    "topic": "TweenInfo",
-    "questions": [
-      "What is TweenInfo?",
-      "Explain TweenInfo in Vortex",
-      "How do I use TweenInfo?",
-      "Tell me about TweenInfo"
-    ],
-    "answer": "TweenInfo is the configuration object passed into TweenService:Create to define how a Tween animation behaves, such as its duration and easing. It is constructed via TweenInfo.new and supplied alongside the target instance and property table when creating a Tween. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/tween-service.md"
-  },
-  {
     "topic": "UserInputService",
     "questions": [
       "What is UserInputService?",
@@ -4088,296 +3968,6 @@
       "Tell me about InputObject"
     ],
     "answer": "InputObject is a Vortex data type that describes a single user input event. It lets the developer identify which input device produced the event, such as a keyboard key press, a mouse action, or another supported device, and to read state information, position, and other relevant details about that event. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/input-object.md"
-  },
-  {
-    "topic": "TweenInfo",
-    "questions": [
-      "What is TweenInfo?",
-      "Explain TweenInfo in Vortex",
-      "How do I use TweenInfo?",
-      "Tell me about TweenInfo"
-    ],
-    "answer": "TweenInfo is a configuration object in Vortex that describes how a Tween should animate, including its duration, easing, repeat behavior, and start delay. It exposes properties such as Time, EasingStyle, EasingDirection, RepeatCount, Reverses, and DelayTime. A TweenInfo is constructed via TweenInfo.new(...) and then passed to a Tween. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
-  },
-  {
-    "topic": "Time",
-    "questions": [
-      "What is Time?",
-      "Explain Time in Vortex",
-      "How do I use Time?",
-      "Tell me about Time"
-    ],
-    "answer": "Time is a Number property of TweenInfo that specifies the duration of the tween in seconds. It controls how long one playback cycle of the tween lasts. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
-  },
-  {
-    "topic": "EasingStyle",
-    "questions": [
-      "What is EasingStyle?",
-      "Explain EasingStyle in Vortex",
-      "How do I use EasingStyle?",
-      "Tell me about EasingStyle"
-    ],
-    "answer": "EasingStyle is a TweenInfo property of type Enum.EasingStyle that selects the easing curve applied to the tween, such as Linear or other named styles. It shapes how the interpolation progresses over the tween's duration. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
-  },
-  {
-    "topic": "EasingDirection",
-    "questions": [
-      "What is EasingDirection?",
-      "Explain EasingDirection in Vortex",
-      "How do I use EasingDirection?",
-      "Tell me about EasingDirection"
-    ],
-    "answer": "EasingDirection is a TweenInfo property of type Enum.EasingDirection that indicates which way the easing curve runs (for example In, Out, or InOut). It works together with EasingStyle to determine the curve shape. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
-  },
-  {
-    "topic": "RepeatCount",
-    "questions": [
-      "What is RepeatCount?",
-      "Explain RepeatCount in Vortex",
-      "How do I use RepeatCount?",
-      "Tell me about RepeatCount"
-    ],
-    "answer": "RepeatCount is a Number property of TweenInfo that specifies how many additional times the tween should repeat after its initial run. A value of -1 is treated as repeating forever. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
-  },
-  {
-    "topic": "Reverses",
-    "questions": [
-      "What is Reverses?",
-      "Explain Reverses in Vortex",
-      "How do I use Reverses?",
-      "Tell me about Reverses"
-    ],
-    "answer": "Reverses is a Boolean property of TweenInfo that, when true, causes each repeat to play in reverse back toward the starting value before running forward again. When false, the tween restarts from the beginning value each repeat. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
-  },
-  {
-    "topic": "DelayTime",
-    "questions": [
-      "What is DelayTime?",
-      "Explain DelayTime in Vortex",
-      "How do I use DelayTime?",
-      "Tell me about DelayTime"
-    ],
-    "answer": "DelayTime is a Number property of TweenInfo that sets how many seconds to wait before the tween begins playing after it is started. It is measured in seconds and applies once at the start of playback. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
-  },
-  {
-    "topic": "TweenInfo.new",
-    "questions": [
-      "What is TweenInfo.new?",
-      "Explain TweenInfo.new in Vortex",
-      "How do I use TweenInfo.new?",
-      "Tell me about TweenInfo.new"
-    ],
-    "answer": "TweenInfo.new is the constructor that creates a new TweenInfo instance. Its signature is TweenInfo.new(time: Number, easingStyle: Enum.EasingStyle, easingDirection: Enum.EasingDirection, repeatCount: Number, reverses: Boolean, delayTime: Number), where time is duration, repeatCount of -1 loops forever, reverses toggles yoyo behavior, and delayTime is the pre-play delay in seconds. The returned value is a TweenInfo table usable to configure a Tween. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
-  },
-  {
-    "topic": "Tween",
-    "questions": [
-      "What is Tween?",
-      "Explain Tween in Vortex",
-      "How do I use Tween?",
-      "Tell me about Tween"
-    ],
-    "answer": "A Tween in Vortex is an animation object produced by TweenService:Create that interpolates a target object's properties over a specified duration. It exposes a PlaybackState property of type Enum.PlaybackState that reflects whether the animation is currently playing, paused, completed, or cancelled. The Tween provides Play, Pause, and Cancel methods for controlling playback, along with a Completed signal that listeners can connect to in order to react when playback ends. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
-  },
-  {
-    "topic": "PlaybackState",
-    "questions": [
-      "What is PlaybackState?",
-      "Explain PlaybackState in Vortex",
-      "How do I use PlaybackState?",
-      "Tell me about PlaybackState"
-    ],
-    "answer": "PlaybackState is a read-only property on a Tween instance that returns an Enum.PlaybackState describing the animation's current status. Possible values include Playing, Paused, Completed, and Cancelled. In Vortex Studio 0.3.4, calling Play sets the state to Playing, while Cancel sets it to Cancelled. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
-  },
-  {
-    "topic": "Play",
-    "questions": [
-      "What is Play?",
-      "Explain Play in Vortex",
-      "How do I use Play?",
-      "Tell me about Play"
-    ],
-    "answer": "Play is a method on a Tween invoked as tween:Play() with no arguments. It starts the tween if it has not yet run or resumes playback if the tween had previously been paused. It is accessible from both Script and LocalScript contexts in Vortex Studio 0.3.4. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
-  },
-  {
-    "topic": "Pause",
-    "questions": [
-      "What is Pause?",
-      "Explain Pause in Vortex",
-      "How do I use Pause?",
-      "Tell me about Pause"
-    ],
-    "answer": "Pause is a method on a Tween invoked as tween:Pause() with no arguments. It halts the tween's playback at its current interpolated value so that a subsequent call to Play resumes from where it stopped. The method is exposed in both Script and LocalScript. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
-  },
-  {
-    "topic": "Cancel",
-    "questions": [
-      "What is Cancel?",
-      "Explain Cancel in Vortex",
-      "How do I use Cancel?",
-      "Tell me about Cancel"
-    ],
-    "answer": "Cancel is a method on a Tween invoked as tween:Cancel() with no arguments. It stops the tween immediately, sets PlaybackState to Enum.PlaybackState.Cancelled, and fires the Completed signal once with that same Cancelled state. The method is available from both Script and LocalScript in Vortex Studio 0.3.4. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
-  },
-  {
-    "topic": "Completed",
-    "questions": [
-      "What is Completed?",
-      "Explain Completed in Vortex",
-      "How do I use Completed?",
-      "Tell me about Completed"
-    ],
-    "answer": "Completed is a Signal on a Tween, connected via tween.Completed. It fires exactly once when playback ends, whether the tween finished naturally or was stopped via Cancel. The signal passes a single parameter named playbackState of type Enum.PlaybackState that indicates which terminal state caused the signal to fire. It is usable from both Script and LocalScript. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
-  },
-  {
-    "topic": "Vector3",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3 is a built-in type in Vortex representing a three-dimensional vector. It exposes numeric properties X, Y, and Z, along with derived values such as Magnitude and Unit, supports standard constructors, and offers vector math helpers like Cross, Dot, and Lerp. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.X",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "X is a Number property of a Vector3 representing its component along the X axis. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.Y",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Y is a Number property of a Vector3 representing its component along the Y axis. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.Z",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Z is a Number property of a Vector3 representing its component along the Z axis. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.Magnitude",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Magnitude is a Number property of a Vector3 holding the length of the vector, computed from its X, Y, and Z components. For example, Vector3.new(3, 4, 12) has a magnitude of 13. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.Unit",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Unit is a Vector3 property that returns the normalized form of the vector, scaled so its magnitude is 1. For Vector3.new(3, 4, 12), the unit vector is approximately (0.230769, 0.307692, 0.923077). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.zero",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3.zero is a constant Vector3 with all components set to 0, giving the value (0, 0, 0). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.one",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3.one is a constant Vector3 with all components set to 1, giving the value (1, 1, 1). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.xAxis",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3.xAxis is a constant unit vector pointing along the positive X axis, with the value (1, 0, 0). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.yAxis",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3.yAxis is a constant unit vector pointing along the positive Y axis, with the value (0, 1, 0). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.zAxis",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3.zAxis is a constant unit vector pointing along the positive Z axis, with the value (0, 0, 1). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3.new",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3.new(X: Number, Y: Number, Z: Number) is the constructor for Vector3. It accepts three numeric components and returns a new Vector3 built from them. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3:Cross",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3:Cross(other: Vector3) returns a new Vector3 that is the cross product of the calling vector and the other vector. For instance, Vector3.new(1, 0, 0):Cross(Vector3.new(0, 1, 0)) returns (0, 0, 1). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3:Dot",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3:Dot(other: Vector3) returns a Number representing the dot product of the calling vector and the other vector. For example, Vector3.new(1, 2, 3):Dot(Vector3.new(4, 5, 6)) returns 32. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
-  },
-  {
-    "topic": "Vector3:Lerp",
-    "questions": [
-      "What is X?",
-      "Explain X in Vortex",
-      "How do I use X?",
-      "Tell me about X"
-    ],
-    "answer": "Vector3:Lerp(other: Vector3, alpha: Number) returns a new Vector3 linearly interpolated between the calling vector and the other vector, using alpha in the range 0 to 1. An interpolation from (0, 0, 0) toward (8, 4, 2) at alpha 0.25 returns (2, 1, 0.5). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
   },
   {
     "topic": "Debris",
@@ -4938,5 +4528,735 @@
       "Tell me about TweenInfo"
     ],
     "answer": "TweenInfo is a global constructor in Vortex used to configure the animation parameters of a Tween, such as duration and easing behavior. An instance is created with TweenInfo.new, passing arguments that define properties like time, easing style, easing direction, repeat count, reverses flag, and delay. Setting the repeatCount argument to -1 causes the tween to repeat forever, and a separate datatype reference page provides the complete parameter details. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/tween-info.md"
+  },
+  {
+    "topic": "Instances",
+    "questions": [
+      "What is Instances in Vortex?",
+      "Explain Instances in Vortex",
+      "How do I use Instances?",
+      "Tell me about Instances"
+    ],
+    "answer": "Instances are the fundamental building blocks for objects in a Vortex game, where each concrete class comes with its own Properties and methods. A new Instance can be created in a script by calling Instance.new and passing the desired ClassName as the first argument. Vortex does not currently expose a universal base API on every engine-backed value, so common hierarchy methods may be available on classes like Part but not on Player or Humanoid. Developers should consult the concrete class reference, which contains the tested Vortex Studio 0.3.4 availability matrix, before calling a particular method. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/instances.md"
+  },
+  {
+    "topic": "Instance.new",
+    "questions": [
+      "What is Instance.new in Vortex?",
+      "Explain Instance.new in Vortex",
+      "How do I use Instance.new?",
+      "Tell me about Instance.new"
+    ],
+    "answer": "Instance.new is a global method used in scripts to create a new Instance in Vortex. It takes the ClassName of the desired Instance as its first argument and returns a new object of that class. This is the primary way to programmatically spawn new engine-backed objects at runtime. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/guides/instances.md"
+  },
+  {
+    "topic": "Instance",
+    "questions": [
+      "What is Instance?",
+      "Explain Instance in Vortex",
+      "How do I use Instance?",
+      "Tell me about Instance"
+    ],
+    "answer": "Instance is a shared convention used in Vortex for engine-backed objects, similar to Roblox's Instance. Vortex Studio 0.3.4 does not expose one uniform Instance method set on every engine-backed value, so the members listed describe ordinary Instance-like objects rather than a guaranteed interface. Each Instance-like object shares common properties (Name, Parent) and common methods (Clone, Destroy, GetChildren), but actual method availability depends on the concrete class. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance.Name",
+    "questions": [
+      "What is Instance.Name?",
+      "Explain Instance.Name in Vortex",
+      "How do I use Instance.Name?",
+      "Tell me about Instance.Name"
+    ],
+    "answer": "Instance.Name is a String property that holds the name assigned to an Instance-like object. It is one of the two common properties shared across engine-backed values in Vortex. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance.Parent",
+    "questions": [
+      "What is Instance.Parent?",
+      "Explain Instance.Parent in Vortex",
+      "How do I use Instance.Parent?",
+      "Tell me about Instance.Parent"
+    ],
+    "answer": "Instance.Parent is a property of type `Instance | nil` that represents the hierarchical parent of the object. It is `nil` when the instance has no parent in the hierarchy. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance.Clone()",
+    "questions": [
+      "What is Instance.Clone()?",
+      "Explain Instance.Clone() in Vortex",
+      "How do I use Instance.Clone()?",
+      "Tell me about Instance.Clone()"
+    ],
+    "answer": "Instance.Clone() is a method that returns a copy of the Instance as a new `Instance`. It is one of the common methods shared across Instance-like objects in Vortex. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance.Destroy()",
+    "questions": [
+      "What is Instance.Destroy()?",
+      "Explain Instance.Destroy() in Vortex",
+      "How do I use Instance.Destroy()?",
+      "Tell me about Instance.Destroy()"
+    ],
+    "answer": "Instance.Destroy() is a method that destroys the Instance along with its children and returns `nil`. It is one of the common methods shared across Instance-like objects in Vortex. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Instance.GetChildren()",
+    "questions": [
+      "What is Instance.GetChildren()?",
+      "Explain Instance.GetChildren() in Vortex",
+      "How do I use Instance.GetChildren()?",
+      "Tell me about Instance.GetChildren()"
+    ],
+    "answer": "Instance.GetChildren() is a method that returns a table/array `{ Instance }` containing the children of the Instance. It is one of the common methods shared across Instance-like objects in Vortex. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Vortex Studio Method Availability Matrix",
+    "questions": [
+      "What is the Vortex Studio Method Availability Matrix?",
+      "Explain the Vortex Studio Method Availability Matrix in Vortex",
+      "How do I use the Vortex Studio Method Availability Matrix?",
+      "Tell me about the Vortex Studio Method Availability Matrix"
+    ],
+    "answer": "The Vortex Studio Method Availability Matrix is a table on the Instance reference page that records which generic Instance methods (FindFirstChild, FindFirstChildOfClass, WaitForChild, GetChildren, GetDescendants, Clone, Destroy, IsA) are exposed as functions on each live runtime object. Part, Script, and Character expose all of these methods as Yes. Workspace and ReplicatedStorage only expose FindFirstChild and WaitForChild (plus GetChildren). Players, Player, and Humanoid expose none of the generic methods. Class-specific methods like Players:GetPlayers() and Humanoid:IsDead() may still exist even when the generic methods are absent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Part (method availability)",
+    "questions": [
+      "What is Part (method availability)?",
+      "Explain Part (method availability) in Vortex",
+      "How do I use Part (method availability)?",
+      "Tell me about Part (method availability"
+    ],
+    "answer": "According to the Vortex Studio 0.3.4 availability matrix, the Part runtime object exposes all generic Instance methods: FindFirstChild, FindFirstChildOfClass, WaitForChild, GetChildren, GetDescendants, Clone, Destroy, and IsA all return Yes. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Script (method availability)",
+    "questions": [
+      "What is Script (method availability)?",
+      "Explain Script (method availability) in Vortex",
+      "How do I use Script (method availability)?",
+      "Tell me about Script (method availability"
+    ],
+    "answer": "According to the Vortex Studio 0.3.4 availability matrix, the Script runtime object exposes all generic Instance methods: FindFirstChild, FindFirstChildOfClass, WaitForChild, GetChildren, GetDescendants, Clone, Destroy, and IsA all return Yes. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Character (method availability)",
+    "questions": [
+      "What is Character (method availability)?",
+      "Explain Character (method availability) in Vortex",
+      "How do I use Character (method availability)?",
+      "Tell me about Character (method availability"
+    ],
+    "answer": "According to the Vortex Studio 0.3.4 availability matrix, the Character runtime object exposes all generic Instance methods: FindFirstChild, FindFirstChildOfClass, WaitForChild, GetChildren, GetDescendants, Clone, Destroy, and IsA all return Yes. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Workspace (method availability)",
+    "questions": [
+      "What is Workspace (method availability)?",
+      "Explain Workspace (method availability) in Vortex",
+      "How do I use Workspace (method availability)?",
+      "Tell me about Workspace (method availability"
+    ],
+    "answer": "According to the Vortex Studio 0.3.4 availability matrix, the Workspace runtime object exposes only FindFirstChild and WaitForChild as Yes. FindFirstChildOfClass, GetChildren, GetDescendants, Clone, Destroy, and IsA are not available. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "ReplicatedStorage (method availability)",
+    "questions": [
+      "What is ReplicatedStorage (method availability)?",
+      "Explain ReplicatedStorage (method availability) in Vortex",
+      "How do I use ReplicatedStorage (method availability)?",
+      "Tell me about ReplicatedStorage (method availability"
+    ],
+    "answer": "According to the Vortex Studio 0.3.4 availability matrix, the ReplicatedStorage runtime object exposes only FindFirstChild and WaitForChild as Yes. FindFirstChildOfClass, GetChildren, GetDescendants, Clone, Destroy, and IsA are not available. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Players (method availability)",
+    "questions": [
+      "What is Players (method availability)?",
+      "Explain Players (method availability) in Vortex",
+      "How do I use Players (method availability)?",
+      "Tell me about Players (method availability"
+    ],
+    "answer": "According to the Vortex Studio 0.3.4 availability matrix, the Players service runtime object exposes no generic Instance methods (all entries are No). However, it can still provide its class-specific GetPlayers() method. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Player (method availability)",
+    "questions": [
+      "What is Player (method availability)?",
+      "Explain Player (method availability) in Vortex",
+      "How do I use Player (method availability)?",
+      "Tell me about Player (method availability"
+    ],
+    "answer": "According to the Vortex Studio 0.3.4 availability matrix, the Player runtime object exposes no generic Instance methods (FindFirstChild, FindFirstChildOfClass, WaitForChild, GetChildren, GetDescendants, Clone, Destroy, IsA are all No). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "Humanoid (method availability)",
+    "questions": [
+      "What is Humanoid (method availability)?",
+      "Explain Humanoid (method availability) in Vortex",
+      "How do I use Humanoid (method availability)?",
+      "Tell me about Humanoid (method availability"
+    ],
+    "answer": "According to the Vortex Studio 0.3.4 availability matrix, the Humanoid runtime object exposes no generic Instance methods (all entries are No). It can still provide class-specific methods such as IsDead() even though the generic ones are absent. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/instance.md"
+  },
+  {
+    "topic": "TweenService",
+    "questions": [
+      "What is TweenService?",
+      "Explain TweenService in Vortex",
+      "How do I use TweenService?",
+      "Tell me about TweenService"
+    ],
+    "answer": "TweenService is a service in Vortex that creates Tween objects used to smoothly interpolate an instance's properties between two states over a period of time. It is obtained via the standard service accessor pattern, such as `game:GetService(\"TweenService\")`. Tweens produced by TweenService are started and controlled through methods on the returned Tween object. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/tween-service.md"
+  },
+  {
+    "topic": "TweenService:Create",
+    "questions": [
+      "What is TweenService:Create?",
+      "Explain TweenService:Create in Vortex",
+      "How do I use TweenService:Create?",
+      "Tell me about TweenService:Create"
+    ],
+    "answer": "TweenService:Create is a method that builds and returns a Tween configured to animate a target instance. It accepts three parameters: an Instance to animate, an optional TweenInfo describing timing/easing, and a goals table that maps property name strings (e.g. `\"Position\"`, `\"Color\"`, `\"Transparency\"`) to their desired target values. Once created, the returned Tween is activated by calling `Tween:Play()`; the goals table does not need to include every property, only those you want interpolated. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/tween-service.md"
+  },
+  {
+    "topic": "Tween",
+    "questions": [
+      "What is Tween?",
+      "Explain Tween in Vortex",
+      "How do I use Tween?",
+      "Tell me about Tween"
+    ],
+    "answer": "A Tween is the object returned by TweenService:Create that represents a pending smooth interpolation between an instance's current property values and a set of target values. It is configured with a specific Instance, TweenInfo, and goals table at creation time. To actually run the animation, you call `Tween:Play()` on it. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/tween-service.md"
+  },
+  {
+    "topic": "TweenInfo",
+    "questions": [
+      "What is TweenInfo?",
+      "Explain TweenInfo in Vortex",
+      "How do I use TweenInfo?",
+      "Tell me about TweenInfo"
+    ],
+    "answer": "TweenInfo is the configuration object passed to TweenService:Create that describes how a tween's interpolation runs, including its duration and other timing/easing parameters. It is constructed separately (e.g. via `TweenInfo.new(0.1)`) and then supplied as the second argument to TweenService:Create. The method signature accepts TweenInfo as an optional parameter. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/classes/tween-service.md"
+  },
+  {
+    "topic": "TweenInfo",
+    "questions": [
+      "What is TweenInfo?",
+      "Explain TweenInfo in Vortex",
+      "How do I use TweenInfo?",
+      "Tell me about TweenInfo"
+    ],
+    "answer": "TweenInfo is a data container that holds configuration parameters describing how a tween should animate, such as duration, easing style, direction, repeat count, reverse behavior, and delay. It is passed into TweenService to define the behavior of a tween animation. All six fields are optional and default to reasonable values if not provided. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
+  },
+  {
+    "topic": "TweenInfo.new",
+    "questions": [
+      "What is TweenInfo.new?",
+      "Explain TweenInfo.new in Vortex",
+      "How do I use TweenInfo.new?",
+      "Tell me about TweenInfo.new"
+    ],
+    "answer": "TweenInfo.new is the constructor that returns a TweenInfo configured with the supplied animation parameters. Its signature is TweenInfo.new(time: Number?, easingStyle: Enum.EasingStyle?, easingDirection: Enum.EasingDirection?, repeatCount: Number?, reverses: Boolean?, delayTime: Number?), and every argument is optional. When omitted, Time defaults to 1, EasingStyle to Quad, EasingDirection to Out, RepeatCount to 0, Reverses to false, and DelayTime to 0. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
+  },
+  {
+    "topic": "TweenInfo.Time",
+    "questions": [
+      "What is TweenInfo.Time?",
+      "Explain TweenInfo.Time in Vortex",
+      "How do I use TweenInfo.Time?",
+      "Tell me about TweenInfo.Time"
+    ],
+    "answer": "Time is a Number property of TweenInfo that specifies how long the tween takes to run, measured in seconds. It corresponds to the first constructor argument and defaults to 1 when not provided. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
+  },
+  {
+    "topic": "TweenInfo.EasingStyle",
+    "questions": [
+      "What is TweenInfo.EasingStyle?",
+      "Explain TweenInfo.EasingStyle in Vortex",
+      "How do I use TweenInfo.EasingStyle?",
+      "Tell me about TweenInfo.EasingStyle"
+    ],
+    "answer": "EasingStyle is an Enum.EasingStyle property of TweenInfo that selects the mathematical easing curve used during interpolation. It defaults to Enum.EasingStyle.Quad when no value is passed to the constructor. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
+  },
+  {
+    "topic": "TweenInfo.EasingDirection",
+    "questions": [
+      "What is TweenInfo.EasingDirection?",
+      "Explain TweenInfo.EasingDirection in Vortex",
+      "How do I use TweenInfo.EasingDirection?",
+      "Tell me about TweenInfo.EasingDirection"
+    ],
+    "answer": "EasingDirection is an Enum.EasingDirection property of TweenInfo that determines the direction in which the easing style applies (such as In, Out, or InOut). It defaults to Enum.EasingDirection.Out when not explicitly set. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
+  },
+  {
+    "topic": "TweenInfo.RepeatCount",
+    "questions": [
+      "What is TweenInfo.RepeatCount?",
+      "Explain TweenInfo.RepeatCount in Vortex",
+      "How do I use TweenInfo.RepeatCount?",
+      "Tell me about TweenInfo.RepeatCount"
+    ],
+    "answer": "RepeatCount is a Number property of TweenInfo that controls how many additional times the tween plays after the first run. A value of 0 plays once, and -1 means the tween repeats forever. It defaults to 0 when omitted. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
+  },
+  {
+    "topic": "TweenInfo.Reverses",
+    "questions": [
+      "What is TweenInfo.Reverses?",
+      "Explain TweenInfo.Reverses in Vortex",
+      "How do I use TweenInfo.Reverses?",
+      "Tell me about TweenInfo.Reverses"
+    ],
+    "answer": "Reverses is a Boolean property of TweenInfo that, when true, causes the tween to play back to its starting value after reaching its goal, producing a back-and-forth animation. It defaults to false. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
+  },
+  {
+    "topic": "TweenInfo.DelayTime",
+    "questions": [
+      "What is TweenInfo.DelayTime?",
+      "Explain TweenInfo.DelayTime in Vortex",
+      "How do I use TweenInfo.DelayTime?",
+      "Tell me about TweenInfo.DelayTime"
+    ],
+    "answer": "DelayTime is a Number property of TweenInfo specifying how many seconds the tween should wait before starting. It defaults to 0 when not specified. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween-info.md"
+  },
+  {
+    "topic": "Tween",
+    "questions": [
+      "What is Tween?",
+      "Explain Tween in Vortex",
+      "How do I use Tween?",
+      "Tell me about Tween"
+    ],
+    "answer": "A Tween in Vortex is an object that smoothly animates properties of an object over time, such as position, size, transparency, or color. Tweens are not created directly but are constructed via TweenService. They expose properties for the target Instance and current PlaybackState, methods to control playback, and a Completed event that fires when the tween finishes. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
+  },
+  {
+    "topic": "Tween.Instance",
+    "questions": [
+      "What is Tween.Instance?",
+      "Explain Tween.Instance in Vortex",
+      "How do I use Tween.Instance?",
+      "Tell me about Tween.Instance"
+    ],
+    "answer": "Tween.Instance is a property of a Tween that holds the object the tween acts upon. It is typed as `Instance` and represents the target whose properties are being animated by the tween. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
+  },
+  {
+    "topic": "Tween.PlaybackState",
+    "questions": [
+      "What is Tween.PlaybackState?",
+      "Explain Tween.PlaybackState in Vortex",
+      "How do I use Tween.PlaybackState?",
+      "Tell me about Tween.PlaybackState"
+    ],
+    "answer": "Tween.PlaybackState is a property of a Tween that reflects the current state of the tween, typed as `Enum.PlaybackState`. Possible values include `Playing` while the tween is active and `Cancelled` if the tween was stopped before completing. Other states are defined on `Enum.PlaybackState`. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
+  },
+  {
+    "topic": "Tween:Play()",
+    "questions": [
+      "What is Tween:Play()?",
+      "Explain Tween:Play() in Vortex",
+      "How do I use Tween:Play()?",
+      "Tell me about Tween:Play()"
+    ],
+    "answer": "Tween:Play() is a method on a Tween that returns `nil` and causes the tween to start playing or to continue if it had been paused. It is the primary way to begin or resume a tween's animation. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
+  },
+  {
+    "topic": "Tween:Pause()",
+    "questions": [
+      "What is Tween:Pause()?",
+      "Explain Tween:Pause() in Vortex",
+      "How do I use Tween:Pause()?",
+      "Tell me about Tween:Pause()"
+    ],
+    "answer": "Tween:Pause() is a method on a Tween that returns `nil` and pauses the tween at its current position. Calling Tween:Play() again will resume the animation from where it was paused. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
+  },
+  {
+    "topic": "Tween:Cancel()",
+    "questions": [
+      "What is Tween:Cancel()?",
+      "Explain Tween:Cancel() in Vortex",
+      "How do I use Tween:Cancel()?",
+      "Tell me about Tween:Cancel()"
+    ],
+    "answer": "Tween:Cancel() is a method on a Tween that returns `nil` and stops the tween at its current position while resetting it to the starting values. Cancellation also causes the Completed event to fire with the Cancelled playback state. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
+  },
+  {
+    "topic": "Tween.Completed",
+    "questions": [
+      "What is Tween.Completed?",
+      "Explain Tween.Completed in Vortex",
+      "How do I use Tween.Completed?",
+      "Tell me about Tween.Completed"
+    ],
+    "answer": "Tween.Completed is an event on a Tween that fires when the tween finishes, whether it completed naturally or was stopped early with Cancel(). The connected callback receives one argument, a `Enum.PlaybackState` value of either `Completed` or `Cancelled`, which lets you determine the reason the tween ended. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/tween.md"
+  },
+  {
+    "topic": "Vector3",
+    "questions": [
+      "What is Vector3?",
+      "Explain Vector3 in Vortex",
+      "How do I use Vector3?",
+      "Tell me about Vector3"
+    ],
+    "answer": "Vector3 is a three-dimensional vector type in Vortex representing a position or direction using X, Y, and Z numeric components. It supports common vector operations like dot product, cross product, and linear interpolation, and includes both read-only instance properties and static constants such as zero, one, and the axis unit vectors. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.X",
+    "questions": [
+      "What is Vector3.X?",
+      "Explain Vector3.X in Vortex",
+      "How do I use Vector3.X?",
+      "Tell me about Vector3.X"
+    ],
+    "answer": "X is a Number property of a Vector3 representing its component along the X axis. It can be read and assigned like any standard numeric field. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.Y",
+    "questions": [
+      "What is Vector3.Y?",
+      "Explain Vector3.Y in Vortex",
+      "How do I use Vector3.Y?",
+      "Tell me about Vector3.Y"
+    ],
+    "answer": "Y is a Number property of a Vector3 representing its component along the Y axis. It is read and written just like the X component. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.Z",
+    "questions": [
+      "What is Vector3.Z?",
+      "Explain Vector3.Z in Vortex",
+      "How do I use Vector3.Z?",
+      "Tell me about Vector3.Z"
+    ],
+    "answer": "Z is a Number property of a Vector3 representing its component along the Z axis. It completes the three numeric components that define the vector. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.Magnitude",
+    "questions": [
+      "What is Vector3.Magnitude?",
+      "Explain Vector3.Magnitude in Vortex",
+      "How do I use Vector3.Magnitude?",
+      "Tell me about Vector3.Magnitude"
+    ],
+    "answer": "Magnitude is a Number property of a Vector3 that gives the length of the vector (also known as its magnitude). It is computed from the X, Y, and Z components. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.Unit",
+    "questions": [
+      "What is Vector3.Unit?",
+      "Explain Vector3.Unit in Vortex",
+      "How do I use Vector3.Unit?",
+      "Tell me about Vector3.Unit"
+    ],
+    "answer": "Unit is a Vector3 property of a Vector3 that returns the normalized form of the vector, pointing in the same direction but with a magnitude of 1. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.zero",
+    "questions": [
+      "What is Vector3.zero?",
+      "Explain Vector3.zero in Vortex",
+      "How do I use Vector3.zero?",
+      "Tell me about Vector3.zero"
+    ],
+    "answer": "zero is a static Vector3 constant equal to (0, 0, 0). It is accessed as Vector3.zero and serves as the additive identity for vectors. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.one",
+    "questions": [
+      "What is Vector3.one?",
+      "Explain Vector3.one in Vortex",
+      "How do I use Vector3.one?",
+      "Tell me about Vector3.one"
+    ],
+    "answer": "one is a static Vector3 constant equal to (1, 1, 1). It is accessed as Vector3.one. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.xAxis",
+    "questions": [
+      "What is Vector3.xAxis?",
+      "Explain Vector3.xAxis in Vortex",
+      "How do I use Vector3.xAxis?",
+      "Tell me about Vector3.xAxis"
+    ],
+    "answer": "xAxis is a static Vector3 constant representing the unit vector along the X axis, with the value (1, 0, 0). It is accessed as Vector3.xAxis. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.yAxis",
+    "questions": [
+      "What is Vector3.yAxis?",
+      "Explain Vector3.yAxis in Vortex",
+      "How do I use Vector3.yAxis?",
+      "Tell me about Vector3.yAxis"
+    ],
+    "answer": "yAxis is a static Vector3 constant representing the unit vector along the Y axis, with the value (0, 1, 0). It is accessed as Vector3.yAxis. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.zAxis",
+    "questions": [
+      "What is Vector3.zAxis?",
+      "Explain Vector3.zAxis in Vortex",
+      "How do I use Vector3.zAxis?",
+      "Tell me about Vector3.zAxis"
+    ],
+    "answer": "zAxis is a static Vector3 constant representing the unit vector along the Z axis, with the value (0, 0, 1). It is accessed as Vector3.zAxis. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.new",
+    "questions": [
+      "What is Vector3.new?",
+      "Explain Vector3.new in Vortex",
+      "How do I use Vector3.new?",
+      "Tell me about Vector3.new"
+    ],
+    "answer": "Vector3.new(X: Number, Y: Number, Z: Number) is the constructor that returns a new Vector3 built from the supplied X, Y, and Z component numbers. All three arguments are required to define the resulting vector. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.Dot",
+    "questions": [
+      "What is Vector3.Dot?",
+      "Explain Vector3.Dot in Vortex",
+      "How do I use Vector3.Dot?",
+      "Tell me about Vector3.Dot"
+    ],
+    "answer": "Dot(other: Vector3) is a method on Vector3 that returns the dot product of the calling vector and the other vector passed in as a Number. The result is a scalar value derived from the component-wise sum of products. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.Cross",
+    "questions": [
+      "What is Vector3.Cross?",
+      "Explain Vector3.Cross in Vortex",
+      "How do I use Vector3.Cross?",
+      "Tell me about Vector3.Cross"
+    ],
+    "answer": "Cross(other: Vector3) is a method on Vector3 that returns the cross product of the calling vector and the other vector, producing a Vector3 perpendicular to both inputs. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3.Lerp",
+    "questions": [
+      "What is Vector3.Lerp?",
+      "Explain Vector3.Lerp in Vortex",
+      "How do I use Vector3.Lerp?",
+      "Tell me about Vector3.Lerp"
+    ],
+    "answer": "Lerp(other: Vector3, alpha: Number) is a method on Vector3 that returns a vector interpolated between self and other. When alpha is 0.0 the result equals self, when alpha is 0.5 the result is the midpoint, and when alpha is 1.0 the result equals other. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3 Addition Operator",
+    "questions": [
+      "What is Vector3 Addition Operator?",
+      "Explain Vector3 Addition Operator in Vortex",
+      "How do I use Vector3 Addition Operator?",
+      "Tell me about Vector3 Addition Operator"
+    ],
+    "answer": "The + operator applied to two Vector3 values returns a Vector3 whose components are the sums of the corresponding X, Y, and Z components of the operands. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3 Subtraction Operator",
+    "questions": [
+      "What is Vector3 Subtraction Operator?",
+      "Explain Vector3 Subtraction Operator in Vortex",
+      "How do I use Vector3 Subtraction Operator?",
+      "Tell me about Vector3 Subtraction Operator"
+    ],
+    "answer": "The - operator applied to two Vector3 values returns a Vector3 whose components are the differences between the corresponding X, Y, and Z components of the operands. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3 Multiplication Operator",
+    "questions": [
+      "What is Vector3 Multiplication Operator?",
+      "Explain Vector3 Multiplication Operator in Vortex",
+      "How do I use Vector3 Multiplication Operator?",
+      "Tell me about Vector3 Multiplication Operator"
+    ],
+    "answer": "The * operator on Vector3 returns a Vector3 produced by component-wise multiplication when both operands are Vector3, or by scaling every component when one of the operands is a Number. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3 Division Operator",
+    "questions": [
+      "What is Vector3 Division Operator?",
+      "Explain Vector3 Division Operator in Vortex",
+      "How do I use Vector3 Division Operator?",
+      "Tell me about Vector3 Division Operator"
+    ],
+    "answer": "The / operator on Vector3 returns a Vector3 produced by component-wise division when both operands are Vector3, or by scaling every component when the right-hand operand is a Number. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "Vector3 Negation Operator",
+    "questions": [
+      "What is Vector3 Negation Operator?",
+      "Explain Vector3 Negation Operator in Vortex",
+      "How do I use Vector3 Negation Operator?",
+      "Tell me about Vector3 Negation Operator"
+    ],
+    "answer": "The unary - operator applied to a Vector3 returns a new Vector3 whose X, Y, and Z components are negated, effectively reversing the direction of the vector. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/datatypes/vector3.md"
+  },
+  {
+    "topic": "TweenService",
+    "questions": [
+      "What is TweenService?",
+      "Explain TweenService in Vortex",
+      "How do I use TweenService?",
+      "Tell me about TweenService"
+    ],
+    "answer": "TweenService is a global service in Vortex used to smoothly animate supported properties of an object over a specified duration. It can be accessed either through the global alias `TweenService` or via `game:GetService(\"TweenService\")`. The service lets developers configure how a property changes using easing styles and directions. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/tween-service.md"
+  },
+  {
+    "topic": "TweenService:Create",
+    "questions": [
+      "What is TweenService:Create?",
+      "Explain TweenService:Create in Vortex",
+      "How do I use TweenService:Create?",
+      "Tell me about TweenService:Create"
+    ],
+    "answer": "`TweenService:Create()` constructs a tween instance given a target object, a TweenInfo configuration, and a goal table describing the property values to reach. The created tween does not start automatically; it must be started by calling `:Play()` on the returned object. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/tween-service.md"
+  },
+  {
+    "topic": "TweenInfo",
+    "questions": [
+      "What is TweenInfo?",
+      "Explain TweenInfo in Vortex",
+      "How do I use TweenInfo?",
+      "Tell me about TweenInfo"
+    ],
+    "answer": "TweenInfo is a data object built with `TweenInfo.new()` that defines how a tween behaves. Its constructor accepts parameters including the duration in seconds, an `Enum.EasingStyle`, and an `Enum.EasingDirection`. Additional easing styles and directions are documented on the Enum reference page. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/tween-service.md"
+  },
+  {
+    "topic": "TweenInfo.new",
+    "questions": [
+      "What is TweenInfo.new?",
+      "Explain TweenInfo.new in Vortex",
+      "How do I use TweenInfo.new?",
+      "Tell me about TweenInfo.new"
+    ],
+    "answer": "`TweenInfo.new()` is the constructor used to create a TweenInfo configuration for a tween. Typical arguments include a numeric duration, an easing style from `Enum.EasingStyle` (such as `Linear`), and an easing direction from `Enum.EasingDirection` (such as `Out`). It encapsulates the timing and easing behavior applied to a tween. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/tween-service.md"
+  },
+  {
+    "topic": "Tween:Play",
+    "questions": [
+      "What is Tween:Play?",
+      "Explain Tween:Play in Vortex",
+      "How do I use Tween:Play?",
+      "Tell me about Tween:Play"
+    ],
+    "answer": "`Tween:Play()` is the method that starts a tween previously built with `TweenService:Create()`. When invoked, it smoothly applies the configured property changes from the goal table to the target object over the TweenInfo duration and easing. Only properties that support interpolation can be animated this way. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/tween-service.md"
+  },
+  {
+    "topic": "Tween goal table",
+    "questions": [
+      "What is the tween goal table?",
+      "Explain the tween goal table in Vortex",
+      "How do I use the tween goal table?",
+      "Tell me about the tween goal table"
+    ],
+    "answer": "The tween goal table is a Luau table passed as the third argument to `TweenService:Create()` that maps property names to target values. For example, setting `Position = Vector3.new(0, 5, 0)` and `Color = Color3.fromRGB(137, 111, 255)` would animate the part's position and color toward those values. Any property listed must be one that supports interpolation on the target object. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/tween-service.md"
+  },
+  {
+    "topic": "UserInputService",
+    "questions": [
+      "What is UserInputService?",
+      "Explain UserInputService in Vortex",
+      "How do I use UserInputService?",
+      "Tell me about UserInputService"
+    ],
+    "answer": "UserInputService is a service in the Vortex platform used to detect a player's device and to detect inputs from the player. It is obtained via game:GetService and can only be used in a LocalScript; it is not available in a standard server Script. In Vortex Studio 0.3.4 testing, the client reported KeyboardEnabled=true, MouseEnabled=true, GamepadEnabled=false, and TouchEnabled=false. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/user-input-service.md"
+  },
+  {
+    "topic": "IsKeyDown",
+    "questions": [
+      "What is IsKeyDown?",
+      "Explain IsKeyDown in Vortex",
+      "How do I use IsKeyDown?",
+      "Tell me about IsKeyDown"
+    ],
+    "answer": "IsKeyDown is a method on UserInputService that reports whether a specific key is currently being held down. Its signature is UserInputService:IsKeyDown(KeyCode: Enum.KeyCode): Boolean, taking an Enum.KeyCode and returning a boolean (true while pressed, false otherwise). In Vortex 0.3.4 it is available and works for keyboard keys, but returned false for mouse-button events; mouse buttons arrive with Enum.KeyCode.Unknown. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/user-input-service.md"
+  },
+  {
+    "topic": "InputBegan",
+    "questions": [
+      "What is InputBegan?",
+      "Explain InputBegan in Vortex",
+      "How do I use InputBegan?",
+      "Tell me about InputBegan"
+    ],
+    "answer": "InputBegan is an event on UserInputService that fires whenever the player begins interacting with an input device. It is connected with signature UserInputService.InputBegan(Input: InputObject, GameProcessedEvent: Boolean), where Input is an InputObject describing the input and GameProcessedEvent is a boolean that is true when the engine already consumed the input (e.g. a UI click). In Vortex 0.3.4, InputBegan:Once and InputBegan:Wait delivered right-mouse button input in a LocalScript, while ordinary InputBegan:Connect delivered keyboard keys (S, A, W, Space) and mouse buttons (with Enum.KeyCode.Unknown), and both processed and unprocessed inputs were observed. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/user-input-service.md"
+  },
+  {
+    "topic": "InputEnded",
+    "questions": [
+      "What is InputEnded?",
+      "Explain InputEnded in Vortex",
+      "How do I use InputEnded?",
+      "Tell me about InputEnded"
+    ],
+    "answer": "InputEnded is an event on UserInputService that fires whenever the player stops interacting with an input device. It uses the same callback signature as InputBegan: (Input: InputObject, GameProcessedEvent: Boolean), where GameProcessedEvent is true if the engine already acted on the input. In Vortex 0.3.4 it can be connected from a LocalScript and delivered both keyboard and mouse-button releases. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/user-input-service.md"
+  },
+  {
+    "topic": "Vortex Studio 0.3.4 UserInputService limitations",
+    "questions": [
+      "What is Vortex Studio 0.3.4 UserInputService limitations?",
+      "Explain Vortex Studio 0.3.4 UserInputService limitations in Vortex",
+      "How do I use Vortex Studio 0.3.4 UserInputService limitations?",
+      "Tell me about Vortex Studio 0.3.4 UserInputService limitations"
+    ],
+    "answer": "In Vortex Studio 0.3.4, several UserInputService features are restricted: InputChanged is nil and cannot be connected, GetMouseLocation is unavailable, and both MouseBehavior and MouseIconEnabled read as nil. The service itself is only present in LocalScripts, not in server Scripts, and the tested client had no gamepad or touch support (GamepadEnabled=false, TouchEnabled=false). IsKeyDown and InputEnded both work, though IsKeyDown returns false for mouse-button events and mouse buttons report as Enum.KeyCode.Unknown. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/user-input-service.md"
+  },
+  {
+    "topic": "workspace",
+    "questions": [
+      "What is workspace?",
+      "Explain workspace in Vortex",
+      "How do I use workspace?",
+      "Tell me about workspace"
+    ],
+    "answer": "In Vortex, the `workspace` keyword is a reference to the game's root Workspace service, which serves as the top-level container for all physical models, parts, and other Instances that exist within it. It is used to look up specific Instances or quickly gather collections of objects from the perspective of the server or client currently running the code. A notable caveat is that Instances may not yet be available during loading, so code must verify that an Instance exists before trying to access it, or it will throw a runtime error. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/globals/workspace.md"
+  },
+  {
+    "topic": "Instance:Clone()",
+    "questions": [
+      "What is Clone()?",
+      "Explain Clone() in Vortex",
+      "How do I use Clone()?",
+      "Tell me about Clone()"
+    ],
+    "answer": "Clone() is a method available on every Instance in Vortex that produces a new instance with the same properties and child hierarchy as the original. The returned object is initially parentless, so the caller typically assigns its Parent (for example, to workspace) to insert it into the game world. Cloning never alters the source instance, and any subsequent changes to either the clone or the original will not be reflected in the other. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/instance/clone.md"
+  },
+  {
+    "topic": "Instance:Destroy()",
+    "questions": [
+      "What is Instance:Destroy()?",
+      "Explain Instance:Destroy() in Vortex",
+      "How do I use Instance:Destroy()?",
+      "Tell me about Instance:Destroy()"
+    ],
+    "answer": "Destroy() is an instance method that permanently removes the instance and all of its descendants from the game. After being called, the instance cannot be used through normal operations. As a side effect, the method also disconnects any connections tied to the instance and detaches it from its current parent. Typical usage involves calling it directly on an instance, such as part:Destroy(). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/instance/destroy.md"
+  },
+  {
+    "topic": "FindFirstChild",
+    "questions": [
+      "What is FindFirstChild?",
+      "Explain FindFirstChild in Vortex",
+      "How do I use FindFirstChild?",
+      "Tell me about FindFirstChild"
+    ],
+    "answer": "FindFirstChild is a method on Instance that searches for a direct child of the instance matching a given name. It takes a single string argument specifying the child name to look for. The method returns the found Instance, or nil if no matching child exists. For example, workspace:FindFirstChild(\"Part\") retrieves a child named \"Part\" from the workspace, returning nil if none is present. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/instance/findfirstchild.md"
+  },
+  {
+    "topic": "GetChildren",
+    "questions": [
+      "What is GetChildren?",
+      "Explain GetChildren in Vortex",
+      "How do I use GetChildren?",
+      "Tell me about GetChildren"
+    ],
+    "answer": "GetChildren is an instance method that returns an array of all direct children belonging to the instance on which it is called. The returned value is of type Array. Only first-level descendants are included; objects nested deeper within those children are excluded from the result. A typical usage is calling it on a parent such as workspace, for example local children = workspace:GetChildren(). Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/instance/getchildren.md"
+  },
+  {
+    "topic": "WaitForChild",
+    "questions": [
+      "What is WaitForChild?",
+      "Explain WaitForChild in Vortex",
+      "How do I use WaitForChild?",
+      "Tell me about WaitForChild"
+    ],
+    "answer": "WaitForChild is an Instance method that waits for a direct child with a given name to exist and yields the current thread until it appears. It takes a required name parameter of type String and an optional timeout of type Number, and returns an Instance (or nil if the timeout expires). If a matching child already exists, it is returned immediately without yielding; otherwise, the call blocks until the child is added or the specified timeout elapses, in which case nil is returned instead of an instance. Source: https://github.com/TheHaloDeveloper/vortex-docs/blob/main/content/reference/instance/waitforchild.md"
   }
 ]
