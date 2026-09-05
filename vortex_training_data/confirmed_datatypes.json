@@ -4,6 +4,7 @@
   "Connection",
   "Enum",
   "EnumItem",
+  "InputObject",
   "Signal",
   "Tween",
   "TweenInfo",

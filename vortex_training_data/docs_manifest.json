@@ -168,15 +168,13 @@
     ]
   },
   "content/reference/classes/character.md": {
-    "sha": "c91a0804e2af0ef3a3b6fdbe1bcbf9eb284ee8c5",
+    "sha": "9825a9fc86830dc8c518e78435033ef53bc81920",
     "topics": [
       "Character",
-      "Character public fields",
-      "Character generic Instance methods",
+      "Character public methods",
       "Character.Orientation",
       "Character visual Scene projection",
-      "Character visual Scene replacement",
-      "Character lifecycle limitation"
+      "CharacterAdded signal"
     ]
   },
   "content/reference/classes/debris.md": {
@@ -476,7 +474,7 @@
     ]
   },
   "content/reference/datatypes/cframe.md": {
-    "sha": "f5963ee3d23b0b5624b01249896204e0882bb30c",
+    "sha": "6d0357c6672ce9957c4c61ac533c6d2f61b29023",
     "topics": []
   },
   "content/reference/datatypes/color3.fromrgb.md": {
@@ -486,7 +484,7 @@
     ]
   },
   "content/reference/datatypes/color3.md": {
-    "sha": "57df70478c6ad7363c9b2dac45aa258a7c72e985",
+    "sha": "20eba7ebe59414694a5aba6e7b258a46b7dfee9b",
     "topics": [
       "Color3",
       "Color3.R",
@@ -498,24 +496,24 @@
     ]
   },
   "content/reference/datatypes/connection.md": {
-    "sha": "9c17f9a3994e99f18eb0e033ebb0f4cadd5c18b8",
+    "sha": "ac7e54f751f8252c8ea7abb52964ca4e00232f51",
     "topics": [
       "Connection",
       "Connected",
-      "Connection:Disconnect"
+      "Disconnect"
     ]
   },
   "content/reference/datatypes/enum.md": {
-    "sha": "a5403dc06b4fc74b01b1b22915a7378470de357f",
+    "sha": "81bc0b9c8d728916ae9e342bd98572fa7af1047a",
     "topics": [
       "Enum",
-      "Enum:GetEnumItems",
-      "Enum:FromName",
-      "Enum:FromValue"
+      "GetEnumItems",
+      "FromName",
+      "FromValue"
     ]
   },
   "content/reference/datatypes/enumitem.md": {
-    "sha": "6f01d24759edb2518123ba53e1b6cdd18a3d2039",
+    "sha": "4f7e484238c4dea0209c4ef14f7041877ac45611",
     "topics": [
       "EnumItem",
       "EnumItem.Name",
@@ -524,14 +522,29 @@
     ]
   },
   "content/reference/datatypes/input-object.md": {
-    "sha": "5b83a04f5d1640f0726dc82b779e8a6520aa6962",
+    "sha": "1520ef8cef8a70f0e407d3b5df5aa2f9d83e420b",
     "topics": [
-      "InputObject"
+      "InputObject",
+      "InputObject.KeyCode",
+      "InputObject.UserInputType",
+      "InputObject.Position",
+      "InputObject.Delta",
+      "gameProcessed parameter",
+      "InputBegan example for keyboard and mouse",
+      "Vortex Studio 0.3.8 InputObject limitations"
     ]
   },
   "content/reference/datatypes/signal.md": {
-    "sha": "e5015667e4f0a5b136018358bbab00a623d58fd8",
-    "topics": []
+    "sha": "97b89f9b220bc30deb70b94c72958bc5f8d34f2c",
+    "topics": [
+      "Signal",
+      "Signal:Connect()",
+      "Signal:Fire()",
+      "Signal:Once()",
+      "Signal:Wait()",
+      "Signal.new()",
+      "ConnectParallel"
+    ]
   },
   "content/reference/datatypes/tween-info.md": {
     "sha": "7f81492e5e3bb69e93bf152451627378baa22abf",
